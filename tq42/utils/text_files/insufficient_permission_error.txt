@@ -1,0 +1,6 @@
+Unauthorized Access: Insufficient Permissions
+You do not have the necessary privileges to execute the requested command. Double check that the resource exists and contact your system administrator or request the appropriate access level.
+Suggestions:
+Verify that you have the required permissions to perform the command.
+If you believe you should have access, contact your system administrator or request the necessary privileges.
+Ensure that you are logged in with the correct user account.

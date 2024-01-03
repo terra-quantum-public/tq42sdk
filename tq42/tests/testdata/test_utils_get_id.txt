@@ -1,0 +1,7 @@
+id: "64a35a73-3da2-4f44-bce3-9e5a8eac6d30"
+organization_id: "0b1c6ab7-9d0d-45ff-aea1-588c933d5546"
+name: "ProjectName1"
+description: "ProjectDesc1"
+image_url: "http://test.test"
+state: ACTIVE
+visibility: PUBLIC

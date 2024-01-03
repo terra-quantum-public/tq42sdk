@@ -1,0 +1,23 @@
+id: "844fe0b3-9996-4bcf-9e39-02c558dd34ce"
+experiment_id: "ad80dac6-6a82-4110-a20b-a279f82e4a03"
+status: PENDING
+algorithm: TETRA_OPT
+hardware: SMALL
+tetraOptMetadata {
+dimensionality: 10
+maximalRank: 4
+iteration_number: 5
+points_number: 1
+tolerance: 0.001
+lower_limits: 0
+grid: 10
+
+objective_function: "http://34.147.69.98:8000/func_eval/eval"
+}
+result {
+}
+created_at {
+seconds: 1686903511
+nanos: 263291000
+}
+created_by: "94b33af5-f1d0-4901-b2ad-c51de167cc17"

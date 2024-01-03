@@ -1,0 +1,192 @@
+{
+    "auth": {
+        "help": {
+            "text": "Class to manage authentication",
+            "level": "group"
+        },
+        "login": {
+            "help": {
+                "text": "This function will open a window in your browser where you must enter your TQ42 username and password to authenticate. To access TQ42 services with Python commands, you need a TQ42 account. When running TQ42 Python commands, your environment needs to have access to your TQ42 account credentials.",
+                "level": "command",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/README.html#authentication",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/README.html#authentication"
+            }
+        }
+    },
+    "org": {
+        "help": {
+            "text": "Class to manage organization",
+            "level": "group"
+        },
+        "list": {
+            "help": {
+                "text": "List all the organizations you have permission to view.  ",
+                "level": "command",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#list-all-organizations",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-organizations"
+            }
+        },
+        "set": {
+            "help": {
+                "text": "Change the active organization.",
+                "level": "command",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project"
+            }
+        }
+    },
+    "proj": {
+        "dataset": {
+            "help": {
+                "text": "Class to manage datasets.",
+                "level": "group"
+            },
+            "create": {
+                "help": {
+                    "text": "Create an experiment dataset.",
+                    "level": "command",
+                    "cli_url": "TODO",
+                    "python_url": "TODO"
+                }
+            },
+            "list": {
+                "help": {
+                    "text": "List all experiment datasets.",
+                    "level": "command",
+                    "cli_url": "TODO",
+                    "python_url": "TODO"
+                }
+            }
+        },
+        "help": {
+            "text": "Class to manage projects",
+            "level": "group"
+        },
+        "show": {
+            "help": {
+                "text": "Show the current organization, project ID and associated project friendly name (if any).",
+                "level": "command",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings"
+            }
+        },
+        "set": {
+            "help": {
+                "text": "Change the active project.",
+                "level": "command",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project"
+            }
+        },
+        "list": {
+            "help": {
+                "text": "List all the projects you have permission to view within the organization that is currently set.",
+                "level": "command",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#list-all-projects",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-projects"
+            }
+        },
+        "set-friendly-name": {
+            "help": {
+                "text": "Set a friendly name for a project.",
+                "level": "command",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments"
+            }
+        }
+    },
+    "exp": {
+        "run": {
+            "help": {
+                "text": "Class to run experiments and view results",
+                "level": "subgroup"
+            },
+            "cancel": {
+                "help": {
+                    "text": "Cancel a run that is QUEUED, PENDING, or RUNNING.",
+                    "level": "command",
+                    "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#cancelling-an-experiment-run",
+                    "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#cancelling-an-experiment-run"
+                }
+            },
+            "create": {
+                "help": {
+                    "text": "Begin an experiment run.",
+                    "level": "command",
+                    "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run",
+                    "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run"
+                }
+            },
+            "check": {
+                "help": {
+                    "text": "Monitor run status.",
+                    "level": "command",
+                    "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run",
+                    "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run"
+                }
+            },
+            "list": {
+                "help": {
+                    "text": "List all the runs within an experiment you have permission to view.",
+                    "level": "command",
+                    "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#list-all-runs-within-an-experiment",
+                    "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-runs-within-an-experiment"
+                }
+            },
+            "poll": {
+                "help": {
+                    "text": "Monitor an experiment run until it completes, then automatically display the results (if there are no errors).",
+                    "level": "command",
+                    "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run",
+                    "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run"
+                }
+            }
+        },
+        "help": {
+            "text": "Class to manage experiments",
+            "level": "group"
+        },
+        "list": {
+            "help": {
+                "text": "List all the experiments you have permission to view within a specific project.",
+                "level": "command",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#list-all-experiments",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-experiments"
+            }
+        },
+        "set-friendly-name": {
+            "help": {
+                "text": "Set a friendly name for an experiment.",
+                "level": "command",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments"
+            }
+        }
+    },
+    "compute": {
+        "help": {
+            "text": "Class to show details about compute resources",
+            "level": "group"
+        },
+        "list": {
+            "help": {
+                "text": "Show available compute configurations.",
+                "level": "command",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Selecting_Compute_Resources.html#viewing-available-compute-resources-and-configuration-details",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Selecting_Compute_Resources.html#viewing-available-compute-resources-and-configuration-details"
+            }
+        },
+        "show-details": {
+            "help": {
+                "text": "Show details of compute configurations.",
+                "level": "command",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Selecting_Compute_Resources.html#viewing-available-compute-resources-and-configuration-details",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Selecting_Compute_Resources.html#viewing-available-compute-resources-and-configuration-details"
+            }
+        }
+    },
+    "help": {
+        "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/index.html",
+        "level": "tq42"
+    }
+}

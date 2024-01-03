@@ -1,0 +1,10 @@
+{
+    "HARDWARE": [
+      "SMALL",
+      "MEDIUM",
+      "LARGE",
+      "SMALL_GPU",
+      "MEDIUM_GPU",
+      "LARGE_GPU"
+    ]
+  }

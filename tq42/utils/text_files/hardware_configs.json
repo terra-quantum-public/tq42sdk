@@ -1,0 +1,38 @@
+{
+    "SMALL": {
+        "CPUs": "(#)",
+        "Memory": "(#)",
+        "Storage": "(enter text)",
+        "GPU": "(N/A)"
+    },
+    "MEDIUM": {
+        "CPUs": "(#)",
+        "Memory": "(#)",
+        "Storage": "(enter text)",
+        "GPU": "(N/A)"
+    },
+    "LARGE": {
+        "CPUs": "(#)",
+        "Memory": "(#)",
+        "Storage": "(enter text)",
+        "GPU": "(N/A)"
+    },
+    "SMALL_GPU": {
+        "CPUs": "(#)",
+        "Memory": "(#)",
+        "Storage": "(enter text)",
+        "GPU": "(details about type)"
+    },
+    "MEDIUM_GPU": {
+        "CPUs": "(#)",
+        "Memory": "(#)",
+        "Storage": "(enter text)",
+        "GPU": "(details about type)"
+    },
+    "LARGE_GPU": {
+        "CPUs": "(#)",
+        "Memory": "(#)",
+        "Storage": "(enter text)",
+        "GPU": "(details about type)"
+    }
+}
