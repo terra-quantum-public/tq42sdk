@@ -1,0 +1,43 @@
+Visit {} for more detail on the following commands:
+
+Mandatory commands:
+
+tq42 auth login
+
+tq42 exp run create \
+    --exp="EXP_ID" \
+    --compute="COMPUTE_NAME" \
+    --algorithm="ALGORITHM_NAME" \
+    --parameters="PARAMETERS_JSON"
+
+---
+
+Optional Commands:
+
+tq42 proj show
+
+tq42 org list
+
+tq42 proj list
+
+tq42 exp list
+
+tq42 exp run list --exp="EXP_ID"
+
+tq42 org set "ORG_ID"
+
+tq42 proj set "PROJ_ID"
+
+tq42 proj set-friendly-name "FRIENDLY_NAME" --proj="PROJ_ID"
+
+tq42 exp set-friendly-name "FRIENDLY_NAME" --exp="EXP_ID"
+
+tq42 compute list
+
+tq42 compute show-details
+
+tq42 exp run check "RUN_ID"
+
+tq42 exp run poll "RUN_ID"
+
+tq42 exp run cancel "RUN_ID"

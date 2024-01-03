@@ -1,0 +1,86 @@
+[
+    {
+        "metavar": "ORG_ID",
+        "text": "Attribute the command to a particular organization",
+        "flag": "--org"
+    },
+    {
+        "metavar": "PROJ_ID",
+        "text": "Attribute the command to a particular project",
+        "flag": "--proj"
+    },
+    {
+        "metavar": "EXP_ID",
+        "text": "Attribute the command to a particular experiment",
+        "flag": "--exp"
+    },
+    {
+        "metavar": "RUN_ID",
+        "text": "Attribute the command to a particular experiment run",
+        "flag": "--run"
+    },
+    {
+        "metavar": "DATASET_NAME",
+        "text": "The official name of the dataset",
+        "flag": "--name"
+    },
+    {
+        "metavar": "DESCRIPTION",
+        "text": "A friendly description of the dataset",
+        "flag": "--desc"
+    },
+    {
+        "metavar": "DATASET_URL",
+        "text": "A URL to the dataset",
+        "flag": "--url"
+    },
+    {
+        "metavar": "DATASET_SENSITIVITY",
+        "text": "One of the following categories: PUBLIC, GENERAL, SENSITIVE, CONFIDENTIAL",
+        "flag": "--sensitivity"
+    },
+    {
+        "metavar": "ALGORITHM_NAME",
+        "text": "Specify the algorithm to apply to the command",
+        "flag": "--algorithm"
+    },
+    {
+        "metavar": "PARAMETERS_JSON",
+        "text": "Specify the parameters to apply to the command",
+        "flag": "--parameters"
+    },
+    {
+        "metavar": "COMPUTE_NAME",
+        "text": "Specify the compute resources to apply to the command",
+        "flag": "--compute"
+    },
+    {
+        "metavar": "FRIENDLY_NAME",
+        "text": "Provide a friendly name for a GUID for easier reference and collaboration",
+        "flag": "--friendly_name"
+    },
+    {
+        "metavar": "VISIBILITY",
+        "text": "Specify the visibility of an attribute",
+        "flag": "--visibility"
+    },
+    {
+        "metavar": "DESCRIPTION",
+        "text": "Provide a description for easier reference and collaboration",
+        "flag": "--description"
+    },
+    {
+        "metavar": "IMAGE_URL",
+        "text": "Specify the URL of an image",
+        "flag": "--image_url"
+    },
+    {
+        "text": "Display version number",
+        "flag": "--version",
+        "short_flag": "-V"
+    },
+    {
+        "text": "Set path to alternate configuration file location",
+        "flag": "--config"
+    }
+]

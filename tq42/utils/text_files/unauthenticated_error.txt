@@ -1,0 +1,5 @@
+User Not Logged In: Authentication Required
+You are not currently logged in. Please log in or authenticate to access this feature or command.
+To log in with your username and password or stored token, type the command: tq42 auth login
+If you don't have an account, sign up by visiting our website at tq42.com/signup.
+If you need further assistance, please contact our support team at support@terraquantum.swiss.

@@ -1,0 +1,44 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+include = ["utils/text_files/*.txt", "utils/text_files/config.json", "tests/testdata/*.txt"]
+
+[tool.poetry]
+name = "tq42"
+version = "0.5.4"
+description = "tq42 sdk"
+readme = "README.md"
+authors = ["Terra Quantum AG"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "2.31.0"
+PyYAML = "^6.0.1"
+questionary = "^2.0.1"
+tq42_grpc_client = { source="tq_gcp", version="1.0.24" }
+pytest = "^7.4.4"
+
+[[tool.poetry.source]]
+name = "tq_gcp"
+url = "https://europe-python.pkg.dev/cryptic-hawk-387713/tq-core/simple"
+priority = "supplemental"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "default"
+
+[tool.poetry.scripts]
+tq42 = "tq42.__main__:main"
+
+[tool.poetry.group.styles.dependencies]
+black = "^23.12.1"
+ruff = "^0.1.9"
+
+[tool.ruff]
+exclude = [
+    "docs"
+]
+[tool.pytest.ini_options]
+markers = [
+    "poll: Also run polling tests"
+]

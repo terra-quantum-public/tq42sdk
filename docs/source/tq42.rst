@@ -1,0 +1,62 @@
+tq42 package
+============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   tq42.tests
+   tq42.utils
+
+Submodules
+----------
+
+tq42.auth module
+----------------
+
+.. automodule:: tq42.auth
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tq42.dirs module
+----------------
+
+.. automodule:: tq42.dirs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tq42.grpc\_wrapper module
+-------------------------
+
+.. automodule:: tq42.grpc_wrapper
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tq42.main\_functions module
+---------------------------
+
+.. automodule:: tq42.main_functions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tq42.test module
+----------------
+
+.. automodule:: tq42.test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: tq42
+   :members:
+   :undoc-members:
+   :show-inheritance:

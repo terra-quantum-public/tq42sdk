@@ -1,0 +1,4 @@
+Unable to Execute: `{}`
+
+We were unable to find the default org and/or proj ID required to run this command.
+For a list of available commands, type `tq42 --help` or consult the documentation at tq42.com/help.
