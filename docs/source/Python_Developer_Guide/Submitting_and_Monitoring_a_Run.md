@@ -50,7 +50,7 @@ params = {
         'iteration_number': 1,
         'grid': [1, 2, 3],
         'limits': [1, 2, 3, 4, 5, 6],
-        'objective_function': 'http://34.32.169.11:8000/func_eval/'
+        'objective_function': 'http://34.32.169.11:8000/test_func_eval/Ackley/'
     },
     'inputs': {}
 }

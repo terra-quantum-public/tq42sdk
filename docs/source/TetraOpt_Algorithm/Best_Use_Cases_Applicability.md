@@ -120,7 +120,7 @@ parameters = {
       "lower_limits": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       "upper_limits": [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
       "grid": [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
-      "objective_function": "http://34.147.69.98:8000/func_eval/eval",
+      "objective_function": "http://34.32.169.11:8000/test_func_eval/Ackley/",
       "seed": 2,
       "device": "CPU",
       "start_points": [2, 3, 4, 2, 5, 6, 4, 7, 8, 9],
