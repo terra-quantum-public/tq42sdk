@@ -31,7 +31,7 @@ def check_params(command, args):
 
     elif command == "proj list":
         if args.proj is None:
-            example_command = 'Example usage: tq42 proj dataset list --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01"\n'
+            example_command = "Example usage: tq42 proj dataset list --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01\n"
             raise SystemExit(InvalidInputCliError(msg=example_command))
 
     elif command == "proj dataset create":
@@ -43,4 +43,9 @@ def check_params(command, args):
             or args.sensitivity is None
         ):
             example_command = 'Example usage: tq42 proj dataset create --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01 --name "Example Dataset Name" --desc "Example Description"  --url "https://mydata.com/drive/my-drive" --sensitivity "confidential" \n'
+            raise SystemExit(InvalidInputCliError(msg=example_command))
+
+    elif command == "proj dataset list":
+        if args.proj is None:
+            example_command = "Example usage: tq42 proj dataset list --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01\n"
             raise SystemExit(InvalidInputCliError(msg=example_command))
