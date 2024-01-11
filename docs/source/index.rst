@@ -88,12 +88,6 @@ Welcome to TQ42SDK's Documentation
    TQNet_Time_Series_Algorithm/Data_Format.md
    TQNet_Time_Series_Algorithm/Jobs.md
 
-.. toctree::
-   :maxdepth: 4
-   :caption: Functions:
-
-   modules
-
 Indices and tables
 ==================
 
