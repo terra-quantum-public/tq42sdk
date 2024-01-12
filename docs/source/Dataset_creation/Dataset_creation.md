@@ -37,7 +37,21 @@
    - The user runs the tq42 SDK to create new storage and transfer data.
    - Note: The URL format is `gs://[id_of_bucket]`.
 
-   ![Image 4: Running tq42 SDK](../images/dataset_image_4.png)
+```python
+from tq42.client import TQ42Client
+from tq42.dataset import Dataset, DatasetSensitivityProto
+
+with TQ42Client() as client:
+    dataset = Dataset.create(
+        client=client,
+        name="<NAME_OF_THE_NEW_DATASET>",
+        description="<DESCRIPTION_OF_THE_NEW_DATASET>",
+        url="gs://<THIS_IS_YOUR_BUCKET_URL>",
+        sensitivity=DatasetSensitivityProto.SENSITIVE,
+        project_id="<PROJECT_ID>",
+    )
+    print(dataset.id)
+```
 
 5. **Finalize Data Transfer**:
    - After the code execution, a new bucket with a random ID is created, and files are transferred into it.

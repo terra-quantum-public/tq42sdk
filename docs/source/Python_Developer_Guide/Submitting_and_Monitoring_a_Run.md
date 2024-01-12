@@ -2,7 +2,7 @@
 
 ## Submitting an Experiment Run
 
-When you are ready to begin your experiment run, type use the `ExperimentRun` class and provide the following flags:
+When you are ready to begin your experiment run, use the `ExperimentRun` class and provide the following flags:
 
 ```python
 from tq42.client import TQ42Client
@@ -13,7 +13,7 @@ with TQ42Client() as client:
 
     ExperimentRun.create(
         client=client,
-        exp="EXP_ID",
+        experiment_id="EXP_ID",
         compute="COMPUTE",
         algorithm="ALGORITHM",
         parameters="PARAMETERS_JSON"
@@ -22,7 +22,7 @@ with TQ42Client() as client:
 
 The preceding command consists of the following elements:
 
-- `exp` is a flag set to an experiment to which the run should be assigned.
+- `experiment_id` is a flag set to an experiment to which the run should be assigned.
 
 - `compute` is a flag set to the pre-configured compute infrastructure you selected.
 
