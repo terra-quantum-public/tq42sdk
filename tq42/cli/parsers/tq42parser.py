@@ -88,8 +88,9 @@ def add_proj_dataset_parser(proj_subparser):
     create_help.add_flag("url")
     create_help.add_flag("sensitivity")
 
-    check_help = tq42_help.Help.lookup_help("proj dataset list".split())
-    check_help.add_parser(cmd_parser)
+    list_help = tq42_help.Help.lookup_help("proj dataset list".split())
+    list_help.add_parser(cmd_parser)
+    list_help.add_flag("proj")
 
 
 def add_org_parser(group_parser):
