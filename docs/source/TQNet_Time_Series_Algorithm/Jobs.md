@@ -40,21 +40,20 @@ from tq42.compute import HardwareProto
 
 from google.protobuf.json_format import MessageToDict
 
-
 params = MessageToDict(TSMLPTrainMetadataProto(
     parameters=TSMLPTrainParametersProto(
-        input_width=1,
+        input_width=24,
         label_width=1,
-        dim_list=[30, 45, 60],
-        act_func=ActFuncProto.SIGMOID,
-        dropout=True,
-        dropout_p=0.5,
-        bn=True,
-        num_epochs=5,
-        batch_size=20,
-        learning_rate=0.05,
+        dim_list=[60, 40, 30],
+        act_func=ActFuncProto.RELU,
+        dropout=False,
+        dropout_p=0,
+        bn=False,
+        num_epochs=20,
+        batch_size=128,
+        learning_rate=0.001,
         optim=OptimProto.ADAM,
-        loss_func=LossFuncProto.MSE,
+        loss_func=LossFuncProto.MAE,
     ),
     inputs=TSTrainInputsProto(
         data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
@@ -115,15 +114,15 @@ from tq42.algorithm import (
 
 TSLSTMTrainMetadataProto(
     parameters=TSLSTMTrainParametersProto(
-        input_width=1,
+        input_width=24,
         label_width=1,
         hidden_size=17,
-        dropout_coef=0.24,
-        num_epochs=5,
-        batch_size=20,
-        learning_rate=0.05,
+        dropout_coef=0.17,
+        num_epochs=20,
+        batch_size=128,
+        learning_rate=0.001,
         optim=OptimProto.ADAM,
-        loss_func=LossFuncProto.MSE,
+        loss_func=LossFuncProto.MAE,
     ),
     inputs=TSTrainInputsProto(
         data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
@@ -139,22 +138,22 @@ TSHQMLPTrainMetadataProto(
     parameters=TSHQMLPTrainParametersProto(
         input_width=1,
         label_width=1,
-        hidden_size=17,
-        num_qubits=8,
-        depth=7,
+        hidden_size=10,
+        num_qubits=2,
+        depth=1,
         measurement_mode=MeasurementModeProto.NONE,
         rotation=MeasureProto.X,
         entangling=EntanglingProto.BASIC,
-        measure=MeasureProto.Z,
+        measure=MeasureProto.Y,
         diff_method=DiffMethodProto.ADJOINT,
         qubit_type=QubitTypeProto.LIGHTNING_QUBIT,
-        act_func=ActFuncProto.SIGMOID,
+        act_func=ActFuncProto.RELU,
         dropout=False,
-        dropout_p=0.2,
+        dropout_p=0.1,
         bn=False,
         num_epochs=5,
-        batch_size=20,
-        learning_rate=0.05,
+        batch_size=512,
+        learning_rate=0.1,
         optim=OptimProto.ADAM,
         loss_func=LossFuncProto.MSE,
     ),
@@ -172,14 +171,14 @@ TSHQLSTMTrainMetadataProto(
     parameters=TSHQLSTMTrainParametersProto(
         input_width=1,
         label_width=1,
-        hidden_size=17,
-        num_qubits=8,
-        depth=7,
-        n_qlayers=3,
-        dropout_coef=0.24,
+        hidden_size=10,
+        num_qubits=2,
+        depth=1,
+        n_qlayers=1,
+        dropout_coef=0,
         num_epochs=5,
-        batch_size=20,
-        learning_rate=0.05,
+        batch_size=512,
+        learning_rate=0.1,
         optim=OptimProto.ADAM,
         loss_func=LossFuncProto.MSE,
     ),
@@ -212,6 +211,7 @@ from tq42.experiment_run import ExperimentRun
 from tq42.compute import HardwareProto
 from tq42.algorithm import (
     AlgorithmProto,
+    DatasetStorageInfoProto,
     ModelStorageInfoProto,
     TSEvalInputsProto,
     ActFuncProto,
@@ -221,19 +221,19 @@ from tq42.algorithm import (
 
 from google.protobuf.json_format import MessageToDict
 
-
 params = MessageToDict(TSMLPEvalMetadataProto(
     parameters=TSMLPEvalParametersProto(
-        input_width=1,
+        input_width=24,
         label_width=1,
-        dim_list=[30, 45, 60],
-        act_func=ActFuncProto.SIGMOID,
-        dropout=True,
-        dropout_p=0.5,
-        bn=True
+        dim_list=[60, 40, 30],
+        act_func=ActFuncProto.RELU,
+        dropout=False,
+        dropout_p=0,
+        bn=False
     ),
     inputs=TSEvalInputsProto(
-        model=ModelStorageInfoProto(storage_id="MODEL_STORAGE_BUCKET_ID")
+        model=ModelStorageInfoProto(storage_id="MODEL_STORAGE_BUCKET_ID"),
+        data=DatasetStorageInfoProto(storage_id="DATA_STORAGE_BUCKET_ID")
     )
 ), preserving_proto_field_name=True)
 
@@ -290,10 +290,10 @@ from tq42.algorithm import (
 
 TSLSTMEvalMetadataProto(
     parameters=TSLSTMEvalParametersProto(
-        input_width=1,
+        input_width=24,
         label_width=1,
         hidden_size=17,
-        dropout_coef=0.24
+        dropout_coef=0.17
     ),
     inputs=TSEvalInputsProto(
         model=ModelStorageInfoProto(storage_id="MODEL_BUCKET_STORAGE_ID"),
@@ -310,18 +310,18 @@ TSHQMLPEvalMetadataProto(
     parameters=TSHQMLPEvalParametersProto(
         input_width=1,
         label_width=1,
-        hidden_size=17,
-        num_qubits=8,
-        depth=7,
+        hidden_size=10,
+        num_qubits=2,
+        depth=1,
         measurement_mode=MeasurementModeProto.NONE,
         rotation=MeasureProto.X,
         entangling=EntanglingProto.BASIC,
-        measure=MeasureProto.Z,
+        measure=MeasureProto.Y,
         diff_method=DiffMethodProto.ADJOINT,
         qubit_type=QubitTypeProto.LIGHTNING_QUBIT,
-        act_func=ActFuncProto.SIGMOID,
+        act_func=ActFuncProto.RELU,
         dropout=False,
-        dropout_p=0.2,
+        dropout_p=0.1,
         bn=False,
     ),
     inputs=TSEvalInputsProto(
@@ -339,11 +339,11 @@ TSHQLSTMEvalMetadataProto(
     parameters = TSHQLSTMEvalParametersProto(
         input_width=1,
         label_width=1,
-        hidden_size=17,
-        num_qubits=8,
-        depth=7,
-        n_qlayers=3,
-        dropout_coef=0.24,      
+        hidden_size=10,
+        num_qubits=2,
+        depth=1,
+        n_qlayers=1,
+        dropout_coef=0,      
     ),
     inputs=TSEvalInputsProto(
         model=ModelStorageInfoProto(storage_id="MODEL_BUCKET_STORAGE_ID"),
