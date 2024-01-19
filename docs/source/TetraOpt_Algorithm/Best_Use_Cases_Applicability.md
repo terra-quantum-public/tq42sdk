@@ -134,7 +134,7 @@ with TQ42Client() as client:
    run = ExperimentRun.create(
       client=client,
       algorithm=AlgorithmProto.TETRA_OPT,
-      exp="EXP_ID",
+      experiment_id="EXP_ID",
       compute=HardwareProto.SMALL,
       parameters=parameters,
    )

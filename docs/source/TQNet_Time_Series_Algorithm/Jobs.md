@@ -78,7 +78,7 @@ with TQ42Client() as client:
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.TS_MLP_TRAIN,
-        exp=exp_list[0].id,
+        experiment_id=exp_list[0].id,
         compute=HardwareProto.SMALL,
         parameters=params
     )
@@ -255,7 +255,7 @@ with TQ42Client() as client:
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.TS_MLP_EVAL,
-        exp=exp_list[0].id,
+        experiment_id=exp_list[0].id,
         compute=HardwareProto.SMALL,
         parameters=params
     )
