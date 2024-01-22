@@ -40,6 +40,7 @@ tq42 exp run create --exp  0ba18e6f-65e6-4c0a-bda3-091c5a45312d --compute small 
 from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun
 from tq42.compute import HardwareProto
+from tq42.algorithm import AlgorithmProto
 
 parameters = {
     'parameters': {
@@ -58,7 +59,7 @@ with TQ42Client() as client:
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.TETRA_QUENC,
-        exp="EXP_ID",
+        experiment_id="EXP_ID",
         compute=HardwareProto.SMALL,
         parameters=parameters
     )
@@ -92,6 +93,7 @@ tq42 exp run create --exp c385c53b-38c2-4036-9823-50ce932a9b34  --compute small 
 from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun
 from tq42.compute import HardwareProto
+from tq42.algorithm import AlgorithmProto
 
 parameters = {
     'parameters': {
@@ -107,7 +109,7 @@ with TQ42Client() as client:
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.CIRCUIT_RUN,
-        exp="EXP_ID",
+        experiment_id="EXP_ID",
         compute=HardwareProto.SMALL,
         parameters=parameters
     )
