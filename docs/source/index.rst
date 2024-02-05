@@ -81,12 +81,11 @@ Welcome to TQ42SDK's Documentation
 
 .. toctree::
    :maxdepth: 4
-   :caption: TQNet Time Series Forecasting:
+   :caption: TQNet Machine Learning:
 
-   TQNet_Time_Series_Algorithm/Introduction.md
-   TQNet_Time_Series_Algorithm/Models.md
-   TQNet_Time_Series_Algorithm/Data_Format.md
-   TQNet_Time_Series_Algorithm/Jobs.md
+   TQNet_Machine_Learning/Introduction.md
+   TQNet_Machine_Learning/Model_Architectures_&_Parameters.md
+   TQNet_Machine_Learning/Best_Use_Cases_&_Applicability.md
 
 Indices and tables
 ==================
