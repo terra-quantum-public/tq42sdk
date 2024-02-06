@@ -24,7 +24,7 @@ class Compute:
     config: HardwareConfig
 
     @handle_generic_sdk_errors
-    def __init__(self, hardware: HardwareProto = HardwareProto.UNKNOWN_HARDWARE):
+    def __init__(self, hardware: HardwareProto = HardwareProto.HARDWARE_UNSPECIFIED):
         self.hardware = hardware
         hardware_name = HardwareProto.Name(hardware)
         configuration = self._find_matching_hardware(hardware_name)
