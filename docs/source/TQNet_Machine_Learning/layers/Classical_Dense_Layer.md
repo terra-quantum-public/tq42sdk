@@ -53,6 +53,7 @@ from google.protobuf.json_format import MessageToDict
 
 params = MessageToDict(GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
+        # ... TODO: add the other parameters of your choice
         layers=[
             Layer(classical_dense_layer=ClassicalDenseLayer(
                 hidden_size=2,

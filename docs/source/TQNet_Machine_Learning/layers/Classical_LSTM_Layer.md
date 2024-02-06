@@ -50,6 +50,7 @@ from google.protobuf.json_format import MessageToDict
 
 params = MessageToDict(GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
+        # ... TODO: add the other parameters of your choice
         layers=[
             Layer(classical_lstm_layer=ClassicalLSTMLayer(
                 hidden_size=17
