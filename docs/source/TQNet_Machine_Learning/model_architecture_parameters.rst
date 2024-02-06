@@ -22,7 +22,7 @@ Available Layers
 ================
 
 .. toctree::
-   :maxdepth: 10
+   :maxdepth: 4
    :caption: Available layers:
 
    layers/Batch_Normalization_Layer.md
