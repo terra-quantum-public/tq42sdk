@@ -2,7 +2,7 @@
 ## Introduction to Classical Dense
 The Dense Layer, also known as the fully connected layer, is a fundamental building block in the architecture of many neural networks. Unlike convolutional layers that process input data in a local and spatially-invariant manner, the dense layer treats its input as a flat vector (hence, fully connected) and performs a linear transformation on it.
 
-![Dense Network Layer diagram.jpeg](..%2F..%2FLibrary%2FCloudStorage%2FOneDrive-TerraQuantumAG%2FProducts%2FTQ42%2FTechnical%20Files%2FTQnet%20layers%2FDense%20Network%20Layer%20diagram.jpeg)
+![Dense_Network_Layer_diagram.jpeg](../images/Dense_Network_Layer_diagram.jpeg)
 
 
 ## Key Benefits

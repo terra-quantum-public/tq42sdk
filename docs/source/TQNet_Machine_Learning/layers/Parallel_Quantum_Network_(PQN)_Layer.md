@@ -2,7 +2,7 @@
 ## Introduction to PQN
 The Parallel Quantum Network layer includes multiple independent variational quantum circuits, where each parameterized quantum circuit is composed of three parts: angle-embedding, variational gates, and measurement. By employing a parallel quantum network layer, the system can process different subsets of features simultaneously, in parallel.
 
-![PQN Layer Diagram]((PQN_Layer_Diagram.png))
+![PQN Layer Diagram](../images/PQN_Layer_Diagram.png)
 
 Reference: https://arxiv.org/abs/2304.09224
 
