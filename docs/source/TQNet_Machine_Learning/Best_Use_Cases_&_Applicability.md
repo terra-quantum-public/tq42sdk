@@ -63,7 +63,7 @@ from tq42.algorithm import (
     ActFuncProto,
     OptimProto,
     LossFuncProto,
-    TSTrainInputsProto,
+    MLTrainInputsProto,
     TSMLPTrainMetadataProto,
     TSMLPTrainParametersProto
 ) 
@@ -86,7 +86,7 @@ params = MessageToDict(TSMLPTrainMetadataProto(
         optim=OptimProto.ADAM,
         loss_func=LossFuncProto.MAE,
     ),
-    inputs=TSTrainInputsProto(
+    inputs=MLTrainInputsProto(
         data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
     )
 ), preserving_proto_field_name=True)
@@ -133,7 +133,7 @@ from tq42.algorithm import (
     ActFuncProto,
     OptimProto,
     LossFuncProto,
-    TSTrainInputsProto,
+    MLTrainInputsProto,
     MeasureProto,
     MeasurementModeProto,
     EntanglingProto,
@@ -155,7 +155,7 @@ TSLSTMTrainMetadataProto(
         optim=OptimProto.ADAM,
         loss_func=LossFuncProto.MAE,
     ),
-    inputs=TSTrainInputsProto(
+    inputs=MLTrainInputsProto(
         data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
     )
 )
@@ -188,7 +188,7 @@ TSHQMLPTrainMetadataProto(
         optim=OptimProto.ADAM,
         loss_func=LossFuncProto.MSE,
     ),
-    inputs=TSTrainInputsProto(
+    inputs=MLTrainInputsProto(
         data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
     )
 )
@@ -213,7 +213,7 @@ TSHQLSTMTrainMetadataProto(
         optim=OptimProto.ADAM,
         loss_func=LossFuncProto.MSE,
     ),
-    inputs=TSTrainInputsProto(
+    inputs=MLTrainInputsProto(
         data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
     )
 )

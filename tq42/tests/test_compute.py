@@ -15,7 +15,7 @@ class TestCompute(unittest.TestCase):
         self.assertIsNotNone(all_details)
         self.assertLess(3, len(all_details))
         self.assertNotIn(
-            "UNKNOWN_HARDWARE", [hw.show_details().name for hw in all_details]
+            "HARDWARE_UNSPECIFIED", [hw.show_details().name for hw in all_details]
         )
 
     def test_compute_show_details(self):

@@ -1,5 +1,3 @@
-# Model Architectures & Parameters
-
 ## Pre-Defined Model Architectures
 
 ### Classical Models
@@ -109,12 +107,3 @@ The Hybrid Quantum Long Short-Term Memory (HQLSTM) is an advanced version of the
 - **learning_rate:** Float (Default: 1e-3) | Range: 1e-4 to 1e-1 | The learning rate used during optimization.
 - **optim:** String (Default: 'Adam') | Options: ['Adam', 'AdamW', 'SGD'] | The optimization algorithm used for training.
 - **loss_func:** String (Default: 'MSE') | Options: ['MSE', 'MAE'] | The loss function used to evaluate the performance of the model.
-
-## Custom Model Architectures
-
-### Building a Custom Model with Layers
-Build a custom model containing a mix of classical, hybrid, and quantum layers. Learn more about each layer below, and construct a custom model using any combination of layers you choose, defining hyperparameters for each.
-
-Stay tuned for a sample code block and further instructions here soon.
-
-### Available Layers
