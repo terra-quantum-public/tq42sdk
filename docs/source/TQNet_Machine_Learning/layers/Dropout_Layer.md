@@ -48,45 +48,43 @@ from tq42.experiment_run import ExperimentRun
 from tq42.algorithm import (
     AlgorithmProto,
     DatasetStorageInfoProto,
-    ActFuncProto,
-    OptimProto,
-    LossFuncProto,
-    TSTrainInputsProto,
-    TSMLPTrainMetadataProto,
-    TSMLPTrainParametersProto
+    GenericMLTrainMetadataProto,
+    GenericMLTrainParametersProto,
+    Layer,
+    DropoutLayer,
+    MLTrainInputsProto
 ) 
 from tq42.compute import HardwareProto
 
 from google.protobuf.json_format import MessageToDict
 
 
-params = MessageToDict(TSDropoutTrainMetadataProto(
-    parameters=TSDropoutTrainParametersProto(
-        p=0.5,
+params = MessageToDict(GenericMLTrainMetadataProto(
+    parameters=GenericMLTrainParametersProto(
+        layers=[
+            Layer(dropout_layer=DropoutLayer(
+                value=0.5
+            ))
+        ],
     ),
-    inputs=TSTrainInputsProto(
+    inputs=MLTrainInputsProto(
         data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
     )
 ), preserving_proto_field_name=True)
 
 with TQ42Client() as client:
     org_list = list_all_organizations(client=client)
-    print(org_list)
-    print("------------")
     org = org_list[0]
     proj_list = list_all_projects(client=client, organization_id=org.id)
-    print("------------")
-    print(proj_list)
     proj = proj_list[0]
     
     exp_list = list_all_experiments(client=client, project_id=proj.id)
-    print(exp_list)
     
     print("running experiment for exp {}".format(exp_list[0]))
     
     run = ExperimentRun.create(
         client=client,
-        algorithm=AlgorithmProto.TS_Dropout_TRAIN,
+        algorithm=AlgorithmProto.GENERIC_ML_TRAIN,
         exp=exp_list[0].id,
         compute=HardwareProto.SMALL,
         parameters=params

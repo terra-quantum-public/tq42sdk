@@ -34,26 +34,65 @@ Here is an example of how to apply the PHN layer within a custom model architect
 The following example trains a custom time series prediction problem using a single PHN layer:
 
 ```python
+from tq42.client import TQ42Client
+from tq42.organization import list_all as list_all_organizations
+from tq42.project import list_all as list_all_projects
+from tq42.experiment import list_all as list_all_experiments
+from tq42.experiment_run import ExperimentRun
 from tq42.algorithm import (
+    AlgorithmProto,
+    DatasetStorageInfoProto,
+    GenericMLTrainMetadataProto,
+    GenericMLTrainParametersProto,
     Layer,
+    MLTrainInputsProto,
     PHNLayer,
     MeasureProto,
     EntanglingProto,
     DiffMethodProto,
     QubitTypeProto,
+) 
+from tq42.compute import HardwareProto
 
- )
+from google.protobuf.json_format import MessageToDict
 
-layers=[
-    Layer(phn_layer=
-          PHNLayer(in_features=20, 
-                   num_qubits=4, 
-                   depth=4, 
-                   hidden_size=40, 
-                   rotation=MeasureProto.Z,
-                   entangling=EntanglingProto.STRONG,
-                   measure=MeasureProto.Y,
-                   diff_method=DiffMethodProto.ADJOINT,
-                   qubit_type=QubitTypeProto.LIGHTNING_QUBIT))
-]
+
+params = MessageToDict(GenericMLTrainMetadataProto(
+    parameters=GenericMLTrainParametersProto(
+        layers=[
+            Layer(phn_layer=PHNLayer(
+                in_features=20, 
+                num_qubits=4, 
+                depth=4, 
+                hidden_size=40, 
+                rotation=MeasureProto.Z,
+                entangling=EntanglingProto.STRONG,
+                measure=MeasureProto.Y,
+                diff_method=DiffMethodProto.ADJOINT,
+                qubit_type=QubitTypeProto.LIGHTNING_QUBIT)
+            )
+        ],
+    ),
+    inputs=MLTrainInputsProto(
+        data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
+    )
+), preserving_proto_field_name=True)
+
+with TQ42Client() as client:
+    org_list = list_all_organizations(client=client)
+    org = org_list[0]
+    proj_list = list_all_projects(client=client, organization_id=org.id)
+    proj = proj_list[0]
+    
+    exp_list = list_all_experiments(client=client, project_id=proj.id)
+    
+    print("running experiment for exp {}".format(exp_list[0]))
+    
+    run = ExperimentRun.create(
+        client=client,
+        algorithm=AlgorithmProto.GENERIC_ML_TRAIN,
+        exp=exp_list[0].id,
+        compute=HardwareProto.SMALL,
+        parameters=params
+    )
 ```
