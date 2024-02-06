@@ -10,7 +10,7 @@
 
 from com.terraquantum.experiment.v1.experimentrun.algorithm.shared_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.circuit_run_pb2 import *
-from com.terraquantum.experiment.v1.experimentrun.algorithm.ts_shared_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_shared_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ts_mlp_train_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ts_mlp_eval_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ts_hqmlp_train_pb2 import *
@@ -23,3 +23,9 @@ from com.terraquantum.experiment.v1.experimentrun.algorithm.cva_opt_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.tetra_opt_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.tetra_quenc_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.toy_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.generic_ml_train_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.standard_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.classical_dense_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.classical_lstm_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.phn_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.pqn_pb2 import *
