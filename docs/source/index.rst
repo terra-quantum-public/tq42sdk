@@ -84,7 +84,7 @@ Welcome to TQ42SDK's Documentation
    :caption: TQNet Machine Learning:
 
    TQNet_Machine_Learning/Introduction.md
-   TQNet_Machine_Learning/Model_Architectures_&_Parameters.md
+   TQNet_Machine_Learning/model_architecture_parameters
    TQNet_Machine_Learning/Best_Use_Cases_&_Applicability.md
 
 Indices and tables
