@@ -17,6 +17,7 @@ The Multilayer Perceptron (MLP) is a staple in the realm of artificial neural ne
 - **dropout:** Boolean (Default: False) | Whether dropout regularization is used in the neural network or not.
 - **dropout_p:** Float (Default: 0.2) | Range: 0 to 1 | The probability rate at which input units are dropped during training if dropout is enabled.
 - **bn:** Boolean (Default: False) | Represents if batch normalization is applied or not.
+- **time_column:** String (Default: 'Time') | The time column for the specific dataset.
 
 ###### Only for training:
 
@@ -25,7 +26,7 @@ The Multilayer Perceptron (MLP) is a staple in the realm of artificial neural ne
 - **learning_rate:** Float (Default: 1e-3) | Range: 1e-4 to 1e-1 | The learning rate used during optimization.
 - **optim:** String (Default: 'Adam') | Options: ['Adam', 'AdamW', 'SGD'] | The optimization algorithm used for training.
 - **loss_func:** String (Default: 'MSE') | Options: ['MSE', 'MAE'] | The loss function used to evaluate the performance of the model.
-
+- **target_column:** String (Default: 'Power, kW') | The target column that the model should learn for this specific dataset.
 
 #### Classical Long Short-Term Memory (LSTM)
 
@@ -39,6 +40,7 @@ The Long Short-Term Memory (LSTM) network is a type of recurrent neural network 
 - **label_width:** Integer (Default: 1) | Range: 1 to 72 | Specifies the width or size of the label data, i.e., the number of hours at the output of the model.
 - **hidden_size:** Integer (Default: 17) | Range: 10 to 1000 | The size of the hidden layer in the neural network.
 - **dropoutCoef:** Float (Default: 0.24) | Range: 0 to 1 | Percentage chance that a given neuron will be turned off during training
+- **time_column:** String (Default: 'Time') | The time column for the specific dataset.
 
 ###### Only for training:
 
@@ -47,6 +49,7 @@ The Long Short-Term Memory (LSTM) network is a type of recurrent neural network 
 - **learning_rate:** Float (Default: 1e-3) | Range: 1e-4 to 1e-1 | The learning rate used during optimization.
 - **optim:** String (Default: 'Adam') | Options: ['Adam', 'AdamW', 'SGD'] | The optimization algorithm used for training.
 - **loss_func:** String (Default: 'MSE') | Options: ['MSE', 'MAE'] | The loss function used to evaluate the performance of the model.
+- **target_column:** String (Default: 'Power, kW') | The target column that the model should learn.
 
 ### Hybrid Quantum Models
 
@@ -73,6 +76,7 @@ The Hybrid Quantum Multilayer Perceptron (HQMLP) represents an innovative leap f
 - **dropout:** Boolean (Default: False) | Whether dropout regularization is used in the neural network or not.
 - **dropout_p:** Float (Default: 0.2) | Range: 0 to 1 | The probability rate at which input units are dropped during training if dropout is enabled.
 - **bn:** Boolean (Default: False) | Represents if batch normalization is applied or not.
+- **time_column:** String (Default: 'Time') | The time column for the specific dataset.
 
 \* When measurement_mode is set to 'single', CNOTs would be applied at the end of the quantum circuit and reduce the whole output dimension to 1. If set to 'even' only (0,2,4,...) qubits in the quantum circuit will be measured. If set to 'none' each qubit will be measured.
 
@@ -83,6 +87,7 @@ The Hybrid Quantum Multilayer Perceptron (HQMLP) represents an innovative leap f
 - **learning_rate:** Float (Default: 1e-3) | Range: 1e-4 to 1e-1 | The learning rate used during optimization.
 - **optim:** String (Default: 'Adam') | Options: ['Adam', 'AdamW', 'SGD'] | The optimization algorithm used for training.
 - **loss_func:** String (Default: 'MSE') | Options: ['MSE', 'MAE'] | The loss function used to evaluate the performance of the model.
+- **target_column:** String (Default: 'Power, kW') | The target column that the model should learn.
 
 #### Hybrid Quantum Long Short-Term Memory (HQLSTM)
 
@@ -99,6 +104,7 @@ The Hybrid Quantum Long Short-Term Memory (HQLSTM) is an advanced version of the
 - **depth:** Integer (Default: 7) | Range: 1 to 8 | Represents the number of variational layers in the quantum circuit.
 - **n_qlayers:** Integer (Default: 3) | Range: 1 to 5 | The number of quantum layers
 - **dropoutCoef:** Float (Default: 0.24) | Range: 0 to 1 | Percentage chance that a given neuron will be turned off during training
+- **time_column:** String (Default: 'Time') | The time column for the specific dataset.
 
 ###### Only for training:
 
@@ -107,3 +113,4 @@ The Hybrid Quantum Long Short-Term Memory (HQLSTM) is an advanced version of the
 - **learning_rate:** Float (Default: 1e-3) | Range: 1e-4 to 1e-1 | The learning rate used during optimization.
 - **optim:** String (Default: 'Adam') | Options: ['Adam', 'AdamW', 'SGD'] | The optimization algorithm used for training.
 - **loss_func:** String (Default: 'MSE') | Options: ['MSE', 'MAE'] | The loss function used to evaluate the performance of the model.
+- **target_column:** String (Default: 'Power, kW') | The target column that the model should learn.
