@@ -29,3 +29,4 @@ from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.classical_
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.classical_lstm_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.phn_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.pqn_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.shared_pb2 import *
