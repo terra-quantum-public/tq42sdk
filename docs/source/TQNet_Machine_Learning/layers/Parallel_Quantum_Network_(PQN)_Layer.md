@@ -2,7 +2,7 @@
 ## Introduction to PQN
 The Parallel Quantum Network layer includes multiple independent variational quantum circuits, where each parameterized quantum circuit is composed of three parts: angle-embedding, variational gates, and measurement. By employing a parallel quantum network layer, the system can process different subsets of features simultaneously, in parallel.
 
-![PQN Layer Diagram]((PQN_Layer_Diagram.png))
+![PQN Layer Diagram](../images/PQN_Layer_Diagram.png)
 
 Reference: https://arxiv.org/abs/2304.09224
 
@@ -31,7 +31,7 @@ The following hyperparameters are included in the PQN layer. These are not neces
 ## Quantum Circuit Representation
 This circuit diagram reflects the default settings listed above, plus 12 input features. To visualize a dynamic graph, please use the TQ42 web interface.
 
-![PQN Circuit Architecture Defaults](PQN_Circuit_Architecture_defaults.png)
+![PQN Circuit Architecture Defaults](../images/PQN_Circuit_Architecture_defaults.png)
 
 ## Sample Python Code Block
 Here is an example of how to apply the PQN layer within a custom model architecture in the SDK.

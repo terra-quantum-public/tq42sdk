@@ -5,7 +5,7 @@ The Parallel Hybrid Network (PHN) layer consists of Quantum Depth Infused (QDI) 
 Reference: https://arxiv.org/pdf/2303.03227v1.pdf
 
 ## Key Benefits
-![PHN_Key_Benefits.jpg](PHN_Key_Benefits.jpg)
+![PHN_Key_Benefits.jpg](../images/PHN_Key_Benefits.jpg)
 
 ## Hyperparameters and Default Settings
 The following hyperparameters are included in the PHN layer. These are not necessarily the recommended settings for every application or use case; they may require tuning to find the optimal values for your specific use case.
