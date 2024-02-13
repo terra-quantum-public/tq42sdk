@@ -1,25 +1,24 @@
-# Parallel Quantum Network (PQN) Layer
-## Introduction to PQN
-The Parallel Quantum Network layer includes multiple independent variational quantum circuits, where each parameterized quantum circuit is composed of three parts: angle-embedding, variational gates, and measurement. By employing a parallel quantum network layer, the system can process different subsets of features simultaneously, in parallel.
+# Exponential Fourier Quantum (EFQ) Layer
+## Introduction to EFQ
+Fourier analysis enables general functions to be approximated by sums of trigonometric functions. Certain quantum encodings can create an asymptotically universal Fourier estimator. That is, a long enough sequences of quantum gates can fit any given function arbitrarily precisely. In our architecture, the Fourier degree grows exponentially.
 
-![PQN Layer Diagram]((PQN_Layer_Diagram.png))
+![EFQ layer architecture](../images/EFQ_layer_architecture.png)
 
-Reference: https://arxiv.org/abs/2304.09224
+Reference: https://arxiv.org/pdf/2212.00736.pdf
 
-[Documentation](https://refactored-train-y27rprg.pages.github.io/autoapi/tqml/tqnet/layers/index.html#tqml.tqnet.layers.PQN) and [source code](https://refactored-train-y27rprg.pages.github.io/_modules/tqml/tqnet/layers.html#PQN).
+[Documentation](https://refactored-train-y27rprg.pages.github.io/autoapi/tqml/tqnet/layers/index.html#tqml.tqnet.layers.EFQ) and [source code](https://refactored-train-y27rprg.pages.github.io/_modules/tqml/tqnet/layers.html#EFQ).
 
 ## Key Benefits
-- Each quantum circuit within the parallel quantum network layer employs variational parameters exclusive to it, making the model more performant and adaptable across diverse datasets.
-- This model featuring parallel quantum circuits is particularly effective in the Noisy Intermediate-Scale Quantum (NISQ) era, where executing computations with circuits comprising a large number of qubits is a challenge. Independent parallel quantum circuits are particularly effective in the current Noisy Intermediate-Scale Quantum (NISQ) era of quantum computing where employing large numbers of qubits in a single circuit is experimentally challenging.
+- The main benefit of our exponential quantum encoding is that it creates a better Fourier estimator using fewer quantum gates.
+
 
 ## Hyperparameters and Default Settings
-The following hyperparameters are included in the PQN layer. These are not necessarily the recommended settings for every application or use case; they may require tuning to find the optimal values for your specific use case.
+The following hyperparameters are included in the EFQ layer. These are not necessarily the recommended settings for every application or use case; they may require tuning to find the optimal values for your specific use case.
 
 | Hyperparameter   | Description                                                                                                                                                                                                                                                                                                                   | Syntax | Range                             | Default           |
 |------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|-----------------------------------|-------------------|
-| in_features      | Number of features in the data.                                                                                                                                                                                                                                                                                               | int    | 1 to INT MAX                      |                   |
-| n_qubits         | Number of qubits in each quantum circuit. <br/>Note that `in_features` must be divisible by `n_qubits`. For best results, formulate `n_qubits` as a power of 2.                                                                                                                                                               | int    | 1 to 32                           | 4                 |
-| depth            | Number of variational layers inside one quantum circuit.                                                                                                                                                                                                                                                                      | int    | 1 to 30                           | 4                 |
+| n_qubits         | Number of qubits in each quantum circuit. <br/>Note that `in_features` must be divisible by `n_qubits`. For best results, formulate `n_qubits` as a power of 2.                                                                                                                                                               | int    | 1 to 25                           | 4                 |
+| depth            | Number of variational layers inside one embedding layer.                                                                                                                                                                                                                                                                      | int    | 1 to 30                           | 4                 |
 | measurement_mode | Type of CNOTs configuration before measurement. <br/>When set to `single`, CNOTs would be applied at the end of each circuit and reduce the whole output dimension by `n_qubits` times. <br/>If set to `even` only (0, 2, 4, ...) qubits in each circuit will be measured. <br/>If set to `none` each qubit will be measured. | str    | `single` `even` `none`            | `none`            |
 | rotation         | Type of embedding rotations used. Can be `X`, `Y` or `Z`.                                                                                                                                                                                                                                                                     | str    | `X` `Y` `Z`                       | `Z`               |
 | entangling       | Type of entangling layer used. Can be `strong` or `basic`.                                                                                                                                                                                                                                                                    | str    | `strong` `basic`                  | `strong`          |
@@ -31,17 +30,17 @@ The following hyperparameters are included in the PQN layer. These are not neces
 ## Quantum Circuit Representation
 This circuit diagram reflects the default settings listed above, plus 12 input features. To visualize a dynamic graph, please use the TQ42 web interface.
 
-![PQN Circuit Architecture Defaults](PQN_Circuit_Architecture_defaults.png)
+![EFQ Circuit Diagram](../images/EFQ_Circuit_Diagram.png)
 
 ## Sample Python Code Block
-Here is an example of how to apply the PQN layer within a custom model architecture in the SDK.
+Here is an example of how to apply the EFQ layer within a custom model architecture in the SDK.
 
-The following example trains a custom time series prediction problem using a single PQN layer:
+The following example trains a custom time series prediction problem using a single EFQ layer:
 
 ```python
 from tq42.algorithm import (
     Layer,
-    PQNLayer,
+    EFQLayer,
     MeasurementModeProto,
     EntanglingProto,
     MeasureProto,
@@ -52,7 +51,7 @@ from tq42.algorithm import (
 
 layers=[
     Layer(pqn_layer=
-          PQNLayer(in_features=20, 
+          EFQLayer(in_features=20, 
                    num_qubits=4, 
                    depth=4, 
                    measurement_mode = MeasurementModeProto.NONE,
