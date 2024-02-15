@@ -5,7 +5,7 @@ include = ["utils/text_files/*.txt", "utils/text_files/config.json", "tests/test
 
 [tool.poetry]
 name = "tq42"
-version = "0.5.8"
+version = "0.5.9"
 description = "tq42 sdk"
 readme = "README.md"
 authors = ["Terra Quantum AG"]
