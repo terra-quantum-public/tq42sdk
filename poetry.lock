@@ -734,13 +734,13 @@ files = [
 
 [[package]]
 name = "tq42-grpc-client"
-version = "1.0.57"
+version = "1.0.58"
 description = "gRPC client to call TQ42 endpoints"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "tq42-grpc-client-1.0.57.tar.gz", hash = "sha256:c61f0b8e807e7d4978ff44ea50ba8b07be3f7ab19ba87b6370fdc8abb8f9439f"},
-    {file = "tq42_grpc_client-1.0.57-py3-none-any.whl", hash = "sha256:6ac45e9785192b6650ad3569f1cb12a41083acc199b7996ba027d66665b77b6e"},
+    {file = "tq42-grpc-client-1.0.58.tar.gz", hash = "sha256:4e1fb2aa9e418dae1703323ac3899a6a7ed87c290f918e3e11870b11ab8da5b4"},
+    {file = "tq42_grpc_client-1.0.58-py3-none-any.whl", hash = "sha256:f82afc9d6ea9b175fa9aafa55feadc9420b78878ada3a959917523965ca0c7f3"},
 ]
 
 [package.dependencies]
@@ -795,4 +795,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "43cddd62b3eaf4b4c7c983074e4b1a91929c6d13088afc227fcf1e36c4fa167e"
+content-hash = "4265047f6036813222a23fd85c0fe64e80af7f5eb28a5caa0466e05bbd4bb800"
