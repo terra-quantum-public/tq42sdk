@@ -29,7 +29,7 @@ Available Layers
    layers/Classical_Dense_Layer.md
    layers/Classical_LSTM_Layer.md
    layers/Dropout_Layer.md
+   layers/Quantum_Depth-Infused_(QDI)_Layer.md
    layers/Parallel_Hybrid_Network_(PHN)_Layer.md
    layers/Parallel_Quantum_Network_(PQN)_Layer.md
    layers/Exponential_Fourier_Quantum_(EFQ)_Layer.md
-   layers/Quantum_Depth-Infused_(QDI)_Layer.md
