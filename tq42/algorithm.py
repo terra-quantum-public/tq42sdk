@@ -33,3 +33,4 @@ from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.pqn_pb2 im
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.efq_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.qdi_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.shared_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.qlstm_pb2 import *
