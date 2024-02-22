@@ -1,4 +1,4 @@
-# Quantum Long Short-Term Memory (LSTM) Layer
+# Quantum Long Short-Term Memory (QLSTM) Layer
 ## Introduction to Quantum Long Short-Term Memory (QLSTM)
 Long short-term memory is a type of recurrent neural network. It handles data that is sequential (e.g., temporal) and has applications in places such as natural language processing and time series prediction. The quantum analog of this recurrent neural network is more expressive, allowing one to find more complex patterns in the data, which leads to an increase in the accuracy of model predictions.
 
