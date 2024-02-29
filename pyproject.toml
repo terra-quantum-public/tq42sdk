@@ -19,13 +19,13 @@ tq42_grpc_client = { source="tq_gcp", version="1.0.66" }
 pytest = "^7.4.4"
 
 [[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[[tool.poetry.source]]
 name = "tq_gcp"
 url = "https://europe-python.pkg.dev/cryptic-hawk-387713/tq-core/simple"
 priority = "supplemental"
-
-[[tool.poetry.source]]
-name = "PyPI"
-priority = "default"
 
 [tool.poetry.scripts]
 tq42 = "tq42.__main__:main"
