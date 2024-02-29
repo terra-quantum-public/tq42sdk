@@ -137,13 +137,13 @@ jobs:
             --no-deps \
             --dest dist_grpc \
             --no-binary=:all: \
-            tq42-grpc-client==$(pip show tq42-grpc-client | sed -n -e 's/^.*Version: //p')
+            tq42-grpc-client==$(poetry run pip show tq42-grpc-client | sed -n -e 's/^.*Version: //p')
           
           poetry run pip download \
             --extra-index-url=https://europe-python.pkg.dev/cryptic-hawk-387713/tq-core/simple \
             --no-deps \
             --dest dist_grpc \
-            tq42-grpc-client==$(pip show tq42-grpc-client | sed -n -e 's/^.*Version: //p')
+            tq42-grpc-client==$(poetry run pip show tq42-grpc-client | sed -n -e 's/^.*Version: //p')
 
       - name: Publish grpc client via twine
         run: |
