@@ -130,7 +130,7 @@ jobs:
 
       - name: Get grpc client for publishing
         run: |
-          pip install keyrings.google-artifactregistry-auth
+          poetry run pip install keyrings.google-artifactregistry-auth
           
           poetry run pip download \
             --extra-index-url=https://europe-python.pkg.dev/cryptic-hawk-387713/tq-core/simple \
