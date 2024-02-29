@@ -148,7 +148,7 @@ jobs:
       - name: Publish grpc client via twine
         run: |
           poetry run pip install twine
-          TWINE_USERNAME=__token__ poetry run twine upload --skip-existing --non-interactive -r testpypi dist_grpc/*
+          poetry run twine upload --skip-existing --non-interactive -r testpypi dist_grpc/*
 
       - name: Publish package to PYPI test
         run: |
