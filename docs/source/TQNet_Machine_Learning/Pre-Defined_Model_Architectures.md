@@ -124,7 +124,7 @@ In supervised learning, the loss functions are classified into two classes accor
 ##### Regression
 A regression loss function predicts a continuous quantity  
   
-###### Mean Square Error (MSE)  
+###### Mean Squared Error (MSE)  
 The MSE measures the average square of the errors, namely the average difference between the target values and the predicted outputs.  
   
 $MSE= \frac{1}{N}\sum_{i=1} ^{N} (y_i-\hat{y_i})^2)$     
@@ -228,7 +228,7 @@ $F1 = 2*\frac{1}{\frac{1}{precision}+\frac{1}{recall}}$
 #### Regression   
 Regression models have a continuous output so the metrics are based on calculating some sort of distance between the prediction and the ground truth.  
   
-#### Mean Square Error  
+#### Mean Squared Error  
 The MSE indicates how to close a regression line to a set of test data values by taking the distances from the points to the regression line (these distances are the E errors) and squaring them.  
   
 #### Mean Absolute Error (MAE)  
