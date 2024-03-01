@@ -146,11 +146,16 @@ jobs:
             tq42-grpc-client==$(poetry run pip show tq42-grpc-client | sed -n -e 's/^.*Version: //p')
 
       - name: Publish grpc client via twine
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
         run: |
           poetry run pip install twine
           poetry run twine upload --skip-existing --non-interactive -r testpypi dist_grpc/*
 
       - name: Publish package to PYPI test
+        env:
+          POETRY_PYPI_TOKEN_TESTPYPI: ${{ secrets.POETRY_PYPI_TOKEN_TESTPYPI }}
         run: |
           poetry config repositories.testpypi https://test.pypi.org/legacy/
           poetry publish -r testpypi
