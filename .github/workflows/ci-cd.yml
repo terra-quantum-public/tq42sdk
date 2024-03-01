@@ -133,14 +133,14 @@ jobs:
           poetry run pip install keyrings.google-artifactregistry-auth
           
           poetry run pip download \
-            --extra-index-url=https://europe-python.pkg.dev/cryptic-hawk-387713/tq-core/simple \
+            --extra-index-url=${{ secrets.TQ_GCP_ARTIFACT_REGISTRY }} \
             --no-deps \
             --dest dist_grpc \
             --no-binary=:all: \
             tq42-grpc-client==$(poetry run pip show tq42-grpc-client | sed -n -e 's/^.*Version: //p')
           
           poetry run pip download \
-            --extra-index-url=https://europe-python.pkg.dev/cryptic-hawk-387713/tq-core/simple \
+            --extra-index-url=${{ secrets.TQ_GCP_ARTIFACT_REGISTRY }} \
             --no-deps \
             --dest dist_grpc \
             tq42-grpc-client==$(poetry run pip show tq42-grpc-client | sed -n -e 's/^.*Version: //p')
