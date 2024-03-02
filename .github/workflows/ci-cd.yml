@@ -95,7 +95,7 @@ jobs:
       contents: 'write'
       id-token: 'write'
 
-#    if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+    if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
 
     steps:
       - name: Set up Python 3.9
@@ -128,10 +128,14 @@ jobs:
       - name: Build lib for release
         run: poetry build
 
+      - name: Publish package to GCP artifact registry
+        run: |
+          poetry config repositories.gcp-registry ${{ secrets.TQ_GCP_ARTIFACT_REGISTRY_UPLOAD }}
+          poetry publish -r gcp-registry
+
       - name: Get grpc client for publishing
         run: |
           poetry run pip install keyrings.google-artifactregistry-auth
-          
           
           poetry run pip download \
             --extra-index-url=${{ secrets.TQ_GCP_ARTIFACT_REGISTRY }} \
@@ -149,14 +153,13 @@ jobs:
       - name: Publish grpc client via twine
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+          TWINE_PASSWORD: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
         run: |
           poetry run pip install twine
-          poetry run twine upload --skip-existing --non-interactive -r testpypi dist_grpc/*
+          poetry run twine upload --skip-existing --non-interactive dist_grpc/*
 
-      - name: Publish package to PYPI test
+      - name: Publish package to PYPI
         env:
-          POETRY_PYPI_TOKEN_TESTPYPI: ${{ secrets.POETRY_PYPI_TOKEN_TESTPYPI }}
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
         run: |
-          poetry config repositories.testpypi https://test.pypi.org/legacy/
-          poetry publish --skip-existing -r testpypi
+          poetry publish --skip-existing
