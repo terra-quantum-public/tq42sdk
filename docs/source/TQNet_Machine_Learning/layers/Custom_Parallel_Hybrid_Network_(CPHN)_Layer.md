@@ -4,7 +4,13 @@ The Custom Parallel Hybrid Network Layer represents a tunable version of the Par
 
 It supports the incorporation of a multilayer perceptron into the classical part. The multilayer perceptron, a fundamental component in artificial neural networks, can be customized according to user specifications regarding the number of layers and neurons within each layer.
 
+<<<<<<< HEAD
 ![CPHN layer architecture.png](../images/CPHN_layer_architecture.png)
+=======
+![CPHN layer architecture.png](../images/CPHN%20layer%20architecture.png)
+
+[Documentation](https://refactored-train-y27rprg.pages.github.io/autoapi/tqml/tqnet/layers/index.html#tqml.tqnet.layers.CPHN) and [source code](https://refactored-train-y27rprg.pages.github.io/_modules/tqml/tqnet/layers.html#CPHN).
+>>>>>>> 7baba81 (grpc update)
 
 ## Key Benefits
 - One of the most significant features of the Custom Parallel Hybrid Network is its ability to integrate any quantum layer from the TQnet library into its quantum part.
@@ -24,7 +30,11 @@ The following hyperparameters are included in the CPHN layer. These are not nece
 ## Quantum Circuit Representation
 This circuit diagram reflects some of the default settings listed above, plus 12 input features. To visualize a dynamic graph, please use the TQ42 web interface.
 
+<<<<<<< HEAD
 ![CPHN circuit diagram example.png](../images/CPHN_circuit_diagram_example.png)
+=======
+![CPHN circuit diagram example.png](../images/CPHN%20circuit%20diagram%20example.png)
+>>>>>>> 7baba81 (grpc update)
 
 ## Sample Python Code Block
 Here is an example of how to apply the CPHN layer within a custom model architecture in the SDK.
@@ -77,4 +87,8 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
     )
 ), preserving_proto_field_name=True)
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> 7baba81 (grpc update)

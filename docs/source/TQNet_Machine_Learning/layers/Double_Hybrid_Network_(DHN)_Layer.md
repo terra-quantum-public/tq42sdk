@@ -6,7 +6,13 @@ This capability offers a unique advantage, enabling the neural network to learn 
 
 Such an architecture is applicable in Physics-Informed Neural Networks (PINNs), which have demonstrated significant efficacy in solving differential equations.
 
+<<<<<<< HEAD
 ![DHN layer architecture.png](../images/DHN_layer_architecture.png)
+=======
+![DHN layer architecture.png](../images/DHN%20layer%20architecture.png)
+
+[Documentation](https://refactored-train-y27rprg.pages.github.io/autoapi/tqml/tqnet/layers/index.html#tqml.tqnet.layers.DHN) and [source code](https://refactored-train-y27rprg.pages.github.io/_modules/tqml/tqnet/layers.html#DHN).
+>>>>>>> 7baba81 (grpc update)
 
 ## Key Benefits
 - One of the standout features of the Double Hybrid Network is its ability to take in different parts of the original vector into the quantum and classical segments of the network.
@@ -27,7 +33,11 @@ The following hyperparameters are included in the DHN layer. These are not neces
 ## Quantum Circuit Representation
 This circuit diagram reflects some of the default settings listed above, plus 12 input features. To visualize a dynamic graph, please use the TQ42 web interface.
 
+<<<<<<< HEAD
 ![DHN Circuit example.png](../images/DHN_Circuit_example.png)
+=======
+![DHN Circuit example.png](../images/DHN%20Circuit%20example.png)
+>>>>>>> 7baba81 (grpc update)
 
 ## Sample Python Code Block
 Here is an example of how to apply the DHN layer within a custom model architecture in the SDK.
@@ -82,4 +92,8 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
     )
 ), preserving_proto_field_name=True)
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> 7baba81 (grpc update)
