@@ -6,7 +6,7 @@ This capability offers a unique advantage, enabling the neural network to learn 
 
 Such an architecture is applicable in Physics-Informed Neural Networks (PINNs), which have demonstrated significant efficacy in solving differential equations.
 
-![DHN layer architecture.png](../images/DHN%20layer%20architecture.png)
+![DHN layer architecture.png](../images/DHN_layer_architecture.png)
 
 [Documentation](https://refactored-train-y27rprg.pages.github.io/autoapi/tqml/tqnet/layers/index.html#tqml.tqnet.layers.DHN) and [source code](https://refactored-train-y27rprg.pages.github.io/_modules/tqml/tqnet/layers.html#DHN).
 
@@ -29,7 +29,7 @@ The following hyperparameters are included in the DHN layer. These are not neces
 ## Quantum Circuit Representation
 This circuit diagram reflects some of the default settings listed above, plus 12 input features. To visualize a dynamic graph, please use the TQ42 web interface.
 
-![DHN Circuit example.png](../images/DHN%20Circuit%20example.png)
+![DHN Circuit example.png](../images/DHN_Circuit_example.png)
 
 ## Sample Python Code Block
 Here is an example of how to apply the DHN layer within a custom model architecture in the SDK.
