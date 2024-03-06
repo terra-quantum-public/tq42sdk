@@ -1,8 +1,8 @@
-# Create and list Datasets
+# Create and List Datasets
 
 ## Create a Dataset
 
-hen you are ready to create a dataset, use the `Dataset` class and provide the following flags:
+When you are ready to create a dataset, use the `Dataset` class and provide the following flags:
 
 ```python
 from tq42.client import TQ42Client
@@ -52,7 +52,7 @@ with TQ42Client() as client:
 
 ## List Datasets
 
-fter you have created a dataset, the system will begin syncing the dataset. You can list all of your datasets by:
+After you have created a dataset, the system will begin syncing the dataset. You can list all of your datasets by:
 
 ```python
 from tq42.client import TQ42Client

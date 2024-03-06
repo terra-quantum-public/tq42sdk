@@ -17,7 +17,7 @@ Typically, these individual modules (e.g. `tq42.organization`) contain the follo
 - resource oriented class
 - `list_all` function returning a list of instances of the resource oriented class
 
-**Example command for creating ab ExperimentRun**
+**Example command for creating an ExperimentRun**
 
 ```python
 from tq42.client import TQ42Client

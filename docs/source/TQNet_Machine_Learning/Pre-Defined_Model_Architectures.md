@@ -114,3 +114,123 @@ The Hybrid Quantum Long Short-Term Memory (HQLSTM) is an advanced version of the
 - **optim:** String (Default: 'Adam') | Options: ['Adam', 'AdamW', 'SGD'] | The optimization algorithm used for training.
 - **loss_func:** String (Default: 'MSE') | Options: ['MSE', 'MAE'] | The loss function used to evaluate the performance of the model.
 - **target_column:** String (Default: 'Power, kW') | The target column that the model should learn.
+
+  
+### Loss functions  
+A loss function is a function that compares the output values predicted by the network with the target values provided by the user.   
+It estimates how well the neural network models the training data and during the training phase, the aim is to minimise the loss between the expected and predicted output values.  
+In supervised learning, the loss functions are classified into two classes according to the type of learning task: regression and classification loss functions  
+  
+##### Regression
+A regression loss function predicts a continuous quantity  
+  
+###### Mean Squared Error (MSE)  
+The MSE measures the average square of the errors, namely the average difference between the target values and the predicted outputs.  
+  
+$MSE= \frac{1}{N}\sum_{i=1} ^{N} (y_i-\hat{y_i})^2)$     
+where     
+- $y=TargetValue$      
+- $\hat{y}=PredictedOutput$  
+  
+It is sensitive to the outlier, which are the data point (i.e.: sample of the dataset) that stands out a lot from the other data points in a set  
+  
+###### Mean Absolute Error (MAE)
+The MAE measures the average of the absolute differences between the target values and the predicted outputs.  
+  
+$MAE= \frac{1}{N}\sum_{i=1} ^{N} |y_i-\hat{y_i}|)$    
+where     
+- $y=TargetValue$      
+- $\hat{y}=PredictedOutput$  
+  
+It is preferable to the MSE in cases where the training data have a large number of outliers to mitigate this problem, but in general terms the MAE is less preferable to the MSE  
+because when the mean distance approaches 0, the optimisation of the gradient descent will not work, since the derivative of the function at 0 is undefined (which will lead to an error).  
+
+##### Classification
+A classification loss function predicts a label   
+  
+###### Binary Cross-Entropy (BCE)  
+In general terms, cross entropy, or log loss, measures the performance of a classification model by calculating the difference between the probability distribution predicted by a classification model and the expected values.  
+  
+$BCELoss = -\frac{1}{N}\sum_{i=1} ^{N} y_i\log(p(y_i))+(1-y_i)\log(1-p(y_i))$  
+where   
+- $p(y_i)=ProbabilityOfTrue$      
+- $1-p(y_i)=ProbabilityOfFalse$  
+  
+The BCE is used in binary classification models, where the model has to classify a given input into one of two predefined categories. It is the negative average of the log of corrected predicted probabilities.  
+It compares the expected probability with the actual output of the class, which can be 0 or 1, and consequently calculates a score that penalises the probabilities according to their distance from the expected value.  
+  
+###### Categorical Cross-Entropy (CROSSENTROPY)
+The Categorical Cross-Entropy is used in multi-class classification tasks with more than two mutually exclusive classes.  
+  
+$CROSSENTROPYLoss = -\sum_{c=1} ^{C}q(y_c)\log(p(y_c)$    
+where   
+- $p(y)=TrueProbabilityDistribution$    
+- $q(y)=PredictedProbabilityDistribution$    
+  
+Similarly to the binary, this type of cross-entropy loss function quantifies the dissimilarity between the predicted probabilities and the true categorical labels.  
+  
+### Metrics  
+Metrics evaluate the model and depend on the model itself. Their choice influences how the performance of machine learning algorithms is measured and compared.    
+  
+#### Classification  
+In classification problems, the model is evaluated by measuring the degree to which an estimated category corresponds to the actual category.
+The following metrics refer to the binary case. Thus in the multiclass case they refer to a single class, so to obtain an overall measurement the user must calculate average values according to macro-averaging or micro-averaging formula
+
+##### True Positive (tp)  
+Cases where the classifier has associated an input with the correct class, so the input belongs to class A and the classifier has classified it as belonging to class A  
+  
+##### True Negative (tn)  
+Cases where the classifier has correctly associated an input to not belonging to a certain class, so the input does not belong to class A and the classifier has classified it as not belonging to class A  
+  
+##### False Positive (fp)  
+Cases where the classifier has wrongly associated an input with a class, so the input does not belong to class A and the classifier has classified it as belonging to class A.  
+  
+##### False Negative (fn)  
+Cases in which the classifier has wrongly associated an input to not belonging to a certain class, so the input belongs to class A and the classifier has classified it as not belonging to class A.  
+  
+##### Confusion matrix  
+The confusion matrix is not a metric in itself, but describes the complete performance of the model.  
+  
+$$  
+\left(\begin{array}{cc}   
+t_p & f_n\\  
+f_p & t_n  
+\end{array}\right)  
+$$   
+  
+##### Accuracy  
+Accuracy is the ratio of number of correct predictions to the total number of input samples. It works well only if the class are balanced, which means that there are the same number of samples in each class.  
+  
+$Accuracy = \frac{t_p+t_n}{t_p+t_n+f_p+f_n}$  
+  
+##### Precision  
+Precision is the number of correct positive results divided by the number of positive results predicted.  
+It indicates how precise is the classifier, namely how many instances it classifies correctly  
+  
+$Precision = \frac{t_p}{t_p+f_p}$  
+  
+##### Recall  
+Recall,also called sensitivity, is the number of correct positive results divided by the number of all samples that should have been identified as positive.   
+It indicates how robust is the classifier, namely it does not miss a significant number of instances  
+  
+$Recall = \frac{t_p}{t_p+f_n}$  
+  
+##### Specificity  
+Specificity is the number of predicted corrected negative results divided by the number of expected negative results  
+  
+$Specificity  = \frac{t_n}{t_n+f_p}$  
+  
+##### F1-score  
+F1 Score is the Harmonic Mean between precision and recall and indicates how precise and robust is the classifier  
+  
+$F1 = 2*\frac{1}{\frac{1}{precision}+\frac{1}{recall}}$  
+  
+#### Regression   
+Regression models have a continuous output so the metrics are based on calculating some sort of distance between the prediction and the ground truth.  
+  
+#### Mean Squared Error  
+The MSE indicates how to close a regression line to a set of test data values by taking the distances from the points to the regression line (these distances are the E errors) and squaring them.  
+  
+#### Mean Absolute Error (MAE)  
+The MAE measures the closeness of estimates to actual results. It corresponds to the average of all model errors, where a model error is the distance between the estimated and correct label value.   
+This estimation error is calculated for each element in the test data set. Finally, the mean value is calculated for all recorded absolute errors.
