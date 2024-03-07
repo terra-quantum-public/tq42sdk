@@ -36,7 +36,4 @@ from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.shared_pb2
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.qlstm_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.cphn_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.dhn_pb2 import *
-<<<<<<< HEAD
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.quantum_layer_pb2 import *
-=======
->>>>>>> 7baba81 (grpc update)
