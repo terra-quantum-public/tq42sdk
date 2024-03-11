@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Optional, List
 
 from google.protobuf.field_mask_pb2 import FieldMask
+from google.protobuf.timestamp_pb2 import Timestamp
 
 from tq42.exception_handling import handle_generic_sdk_errors
 from tq42.utils.utils_for_cache import (
@@ -136,10 +137,18 @@ class Project:
         Gets the default project for this user and organization_id based on the default_project field
         """
         project_list = list_all(client=client, organization_id=organization_id)
+        if len(project_list) == 0:
+            return None
+
         for proj in project_list:
             if proj.data.default_project and proj.data.default_project is True:
                 return proj
-        return None
+
+        def access_created_at(project: Project) -> Timestamp:
+            return project.data.created_at
+
+        projects_sorted = sorted(project_list, key=access_created_at)
+        return projects_sorted[0]
 
 
 @handle_generic_sdk_errors
