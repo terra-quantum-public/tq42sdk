@@ -34,3 +34,5 @@ Available Layers
    layers/Parallel_Hybrid_Network_(PHN)_Layer.md
    layers/Parallel_Quantum_Network_(PQN)_Layer.md
    layers/Exponential_Fourier_Quantum_(EFQ)_Layer.md
+   layers/Custom_Parallel_Hybrid_Network_(CPHN)_Layer.md
+   layers/Double_Hybrid_Network_(DHN)_Layer.md
