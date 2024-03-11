@@ -136,10 +136,15 @@ class Project:
         Gets the default project for this user and organization_id based on the default_project field
         """
         project_list = list_all(client=client, organization_id=organization_id)
+        if len(project_list) == 0:
+            return None
+
         for proj in project_list:
             if proj.data.default_project and proj.data.default_project is True:
                 return proj
-        return None
+
+        projects_sorted = sorted(project_list, key=lambda project: project.created_at)
+        return projects_sorted[0]
 
 
 @handle_generic_sdk_errors
