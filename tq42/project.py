@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from typing import Optional, List
+from typing import Optional, List, Callable
 
 from google.protobuf.field_mask_pb2 import FieldMask
+from google.protobuf.timestamp_pb2 import Timestamp
 
 from tq42.exception_handling import handle_generic_sdk_errors
 from tq42.utils.utils_for_cache import (
@@ -143,7 +144,11 @@ class Project:
             if proj.data.default_project and proj.data.default_project is True:
                 return proj
 
-        projects_sorted = sorted(project_list, key=lambda project: project.created_at)
+        # ruff: noqa: E731
+        created_at_access_fn: Callable[
+            [Project], Timestamp
+        ] = lambda project: project.data.created_at
+        projects_sorted = sorted(project_list, key=created_at_access_fn)
         return projects_sorted[0]
 
 
