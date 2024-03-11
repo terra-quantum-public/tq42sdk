@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, List, Callable
+from typing import Optional, List
 
 from google.protobuf.field_mask_pb2 import FieldMask
 from google.protobuf.timestamp_pb2 import Timestamp
@@ -144,11 +144,10 @@ class Project:
             if proj.data.default_project and proj.data.default_project is True:
                 return proj
 
-        # ruff: noqa: E731
-        created_at_access_fn: Callable[
-            [Project], Timestamp
-        ] = lambda project: project.data.created_at
-        projects_sorted = sorted(project_list, key=created_at_access_fn)
+        def access_created_at(project: Project) -> Timestamp:
+            return project.data.created_at
+
+        projects_sorted = sorted(project_list, key=access_created_at)
         return projects_sorted[0]
 
 
