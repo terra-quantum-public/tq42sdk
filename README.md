@@ -97,8 +97,7 @@ Importing the protobuf definitions of the metadata helps with typings and makes 
 The TQ42 Python SDK however expects you to pass in the metadata as a dictionary and so using the `MessageToDict` function
 is helpful to create the perfect matching dictionary while getting type hints.
 
-Note: You can find all metadata definitions under this import path and then the corresponding algorithm with the suffix `_pb2`
-e.g. `com.terraquantum.experiment.v1.experimentrun.algorithm.toy_pb2`.
+Note: You can find all types corresponding to the algorithms within `tq42.algorithm`.
 
 ```python
 from google.protobuf.json_format import MessageToDict
@@ -130,7 +129,7 @@ with TQ42Client() as client:
         # be sure to choose matching algorithm and parameters as this will be validated by our backend
         algorithm=AlgorithmProto.TOY,
         # pass in your experiment id here
-        experiment_id="ea854984-bd7b-4bda-a82c-7a4991478c56",
+        experiment_id=exp_id,
         # you can configure the hardware choice here via the supplied enum
         compute=HardwareProto.SMALL,
         # choose your dictionary here
@@ -139,5 +138,8 @@ with TQ42Client() as client:
 ```
 
 The experiment run can now be found via the UI and checked for its status.
+
+Alternatively, you can also use either the SDK or CLI to check on the experiment run.
+For more details om these two please take a look into the corresponding section of the documentation.
 
 For more details on specific algorithms please take a look at the individual sections.
