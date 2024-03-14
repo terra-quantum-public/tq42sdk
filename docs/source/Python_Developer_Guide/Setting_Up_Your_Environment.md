@@ -17,23 +17,16 @@ with TQ42Client() as client:
 
 ## List All Organizations
 
-To list all the organizations you have permission to view, type the `tq42.org.list()` command:
-```python
-org = Org(client)
-org.list()
-```
-
-The output is the following, where the system will return a list of orgs you have permission to view: 
-
-    `org="ORG_ID"`
-    
-    `org="ORG_ID"`
+To list all the organizations you have permission to view, use `list_all` provided by the `tq42.organization` module.
+The system will return a list of orgs you have permission to view.
 
 For example:
 ```python
-org.list()
-org="5bac0b60-48d0-45cd-bf0a-39505b058106"
-org="8b623343-1e0b-4a9e-a9fd-6dd6d0d1368c"
+from tq42.client import TQ42Client
+from tq42.organization import list_all
+
+with TQ42Client() as client:
+    list_all(client=client)
 ```
 
 
@@ -83,25 +76,21 @@ The system will return a list of ExperimentRun instances within the specified ex
 
 ## Changing Your Workspace to a Different Organization or Project
 
-To change the organization you are working within, type `tq42.org.set(org=ORG_ID)`: 
-```python
-org.set(org="ORG_ID")
-```
-
-The system will change the active organization and confirm the org ID. The system will also return the default project ID for that organization so you know which project you are currently working within by default:
-
-    `org="ORG_ID"`
-    
-    `proj="Friendly name" (proj_id)`
+To change the organization you are working within, use the `set` method on an `Organization` instance
+The system will change the active organization and confirm the org ID.
+The system will also return the default project ID for that organization,
+so you know which project you are currently working within by default.
 
 For example:
 ```python
-org.set(org="8b623343-1e0b-4a9e-a9fd-6dd6d0d1368c")
-org="8b623343-1e0b-4a9e-a9fd-6dd6d0d1368c"
-proj="Hitchhikers Routing Optimization" (7mvu9b58-51p7-42ae-eh0q-71305c413945)
+from tq42.client import TQ42Client
+from tq42.organization import Organization
+
+with TQ42Client() as client:
+    Organization(client=client, id="ORG_ID").set()
 ```
 
-To change the project, use:
+To change only the project, use:
 ```python
 from tq42.client import TQ42Client
 from tq42.project import Project
