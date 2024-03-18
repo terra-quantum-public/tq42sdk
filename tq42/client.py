@@ -32,10 +32,12 @@ class ConfigEnvironment:
     URLs determining environment
     """
 
-    def __init__(self, base_url, client_id, scope):
+    def __init__(self, base_url, client_id, scope, headless, client_secret):
         self.base_url = base_url
         self.client_id = client_id
         self.scope = scope
+        self.headless = headless
+        self.client_secret = client_secret
 
     @property
     def host(self):
@@ -79,6 +81,14 @@ class ConfigEnvironment:
             "client_id": self.client_id,
         }
 
+    def client_credentials_data(self, client_id, client_secret):
+        return {
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "grant_type": "client_credentials",
+            "audience": self.audience,
+        }
+
 
 class TQ42Client(object):
     """
@@ -114,7 +124,8 @@ class TQ42Client(object):
             config_data = json.load(f)
 
         environment = ConfigEnvironment(
-            config_data["base_url"], config_data["client_id"], config_data["scope"]
+            config_data["base_url"], config_data["client_id"], config_data["scope"], config_data["headless"],
+            config_data["client_secret"]
         )
 
         self.token_manager = TokenManager(environment, self.config_folder)
@@ -137,7 +148,39 @@ class TQ42Client(object):
         )
 
     @handle_generic_sdk_errors
+    def login_service(self):
+        client_id = self.environment.client_id
+        client_secret = self.environment.client_secret
+
+        response = requests.post(
+            self.environment.auth_url_token,
+            data=self.environment.client_credentials_data(client_id, client_secret),
+            headers= self.environment.headers,
+        )
+
+        json_response = response.json()
+        print(response.text)
+        access_token = json_response["access_token"]
+        file_handling.write_to_file(self.token_file_path, access_token)
+        print(
+            f"Authentication is successful, access token is saved in file: ",
+            self.token_file_path,
+        )
+
+        env_set = environment_default_set(client=self)
+        print(env_set)
+
+    @handle_generic_sdk_errors
     def login(self):
+        auth_client_id = os.getenv("AUTH_CLIENT_ID")
+        auth_client_secret = os.getenv("AUTH_CLIENT_SECRET")
+
+        if auth_client_id is not None and auth_client_secret is not None:
+            self.login_service()
+        else:
+            self.login_client()
+
+    def login_client(self):
         """
         This function will open a window in your browser where you must enter your TQ42 username and password to
         authenticate. To access TQ42 services with Python commands, you need a TQ42 account. When running TQ42 Python
@@ -147,7 +190,6 @@ class TQ42Client(object):
          https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/README.html#authentication
         """
         # Send the POST request and print the response
-
         response = requests.post(
             self.environment.auth_url_code,
             data=self.environment.code_data,
