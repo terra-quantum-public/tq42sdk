@@ -8,8 +8,6 @@ Such an architecture is applicable in Physics-Informed Neural Networks (PINNs), 
 
 ![DHN layer architecture.png](../images/DHN_layer_architecture.png)
 
-[Documentation](https://refactored-train-y27rprg.pages.github.io/autoapi/tqml/tqnet/layers/index.html#tqml.tqnet.layers.DHN) and [source code](https://refactored-train-y27rprg.pages.github.io/_modules/tqml/tqnet/layers.html#DHN).
-
 ## Key Benefits
 - One of the standout features of the Double Hybrid Network is its ability to take in different parts of the original vector into the quantum and classical segments of the network.
 - The user has the freedom to choose which segment of the vector goes where, enabling a customized blend of quantum and classical processing, optimizing the network's learning ability.
