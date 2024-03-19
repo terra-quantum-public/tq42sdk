@@ -127,7 +127,7 @@ A regression loss function predicts a continuous quantity
 ###### Mean Squared Error (MSE)  
 The MSE measures the average square of the errors, namely the average difference between the target values and the predicted outputs.  
 
-$$ \text{MSE}= \frac{1}{N}\sum_{i=1} ^{N} (y_i-\hat{y_i})^2) $$
+$$ \text{MSE}= \frac{1}{N}\sum_{i=1} ^{N} (y_i-\hat{y_i})^2 $$
 
 where     
 - $$ y=\text{Target Value} $$      
@@ -138,7 +138,7 @@ It is sensitive to the outlier, which are the data point (i.e.: sample of the da
 ###### Mean Absolute Error (MAE)
 The MAE measures the average of the absolute differences between the target values and the predicted outputs.  
 
-$$ \text{MAE}= \frac{1}{N}\sum_{i=1} ^{N} |y_i-\hat{y_i}|) $$    
+$$ \text{MAE}= \frac{1}{N}\sum_{i=1} ^{N} |y_i-\hat{y_i}| $$    
 where     
 - $$ y=\text{Target Value} $$      
 - $$ \hat{y}=\text{Predicted Output} $$  
