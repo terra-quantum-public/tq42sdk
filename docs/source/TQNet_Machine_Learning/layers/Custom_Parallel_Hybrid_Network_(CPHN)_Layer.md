@@ -6,8 +6,6 @@ It supports the incorporation of a multilayer perceptron into the classical part
 
 ![CPHN layer architecture.png](../images/CPHN_layer_architecture.png)
 
-[Documentation](https://refactored-train-y27rprg.pages.github.io/autoapi/tqml/tqnet/layers/index.html#tqml.tqnet.layers.CPHN) and [source code](https://refactored-train-y27rprg.pages.github.io/_modules/tqml/tqnet/layers.html#CPHN).
-
 ## Key Benefits
 - One of the most significant features of the Custom Parallel Hybrid Network is its ability to integrate any quantum layer from the TQnet library into its quantum part.
 - Equally important is its capability to accept a user-defined multilayer perceptron within the classical part of the network. Users can specify the number of layers and neurons within each layer, offering a high degree of customization and adaptability.
