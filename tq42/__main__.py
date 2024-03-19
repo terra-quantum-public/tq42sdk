@@ -9,7 +9,6 @@ from tq42.cli.tq42_all import tq42_all
 from tq42.client import TQ42Client
 
 
-
 def main():
     try:
         args = parse_args(sys.argv[1:])
