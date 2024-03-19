@@ -1,5 +1,7 @@
 {
     "base_url": "terraquantum.io",
     "client_id": "gvBa4BHKOTlotDuE6E2HSQBzBDlM00F4",
-    "scope": "openid profile email offline_access tq42"
+    "scope": "openid profile email offline_access tq42",
+    "client_secret": "client_secret",
+    "headless": true
 }

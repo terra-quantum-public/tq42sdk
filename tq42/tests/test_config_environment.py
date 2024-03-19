@@ -34,7 +34,11 @@ class TestConfigEnvironment(unittest.TestCase):
 
     def test_int_urls(self):
         env = ConfigEnvironment(
-            "int.terraquantum.io", "CLIENT ID", "openid profile email"
+            "int.terraquantum.io",
+            "CLIENT ID",
+            "openid profile email",
+            True,
+            "CLIENT SECRET",
         )
         self.assertEqual("api.int.terraquantum.io", env.host)
         self.assertEqual(
@@ -51,8 +55,13 @@ class TestConfigEnvironment(unittest.TestCase):
 
     def test_staging_urls(self):
         env = ConfigEnvironment(
-            "staging.terraquantum.io", "CLIENT ID", "openid profile email"
+            "staging.terraquantum.io",
+            "CLIENT ID",
+            "openid profile email",
+            True,
+            "CLIENT SECRET",
         )
+
         self.assertEqual("api.staging.terraquantum.io", env.host)
         self.assertEqual(
             "https://graphql-gateway.staging.terraquantum.io/graphql", env.audience
