@@ -2,6 +2,8 @@
     "auth": {
         "help": {
             "text": "Class to manage authentication",
+            "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/README.html#authentication",
+            "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/README.html#authentication",
             "level": "group"
         },
         "login": {
@@ -16,6 +18,8 @@
     "org": {
         "help": {
             "text": "Class to manage organization",
+            "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings",
+            "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings",
             "level": "group"
         },
         "list": {
@@ -39,27 +43,31 @@
         "dataset": {
             "help": {
                 "text": "Class to manage datasets.",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Create_and_list_Datasets.html#",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Create_and_list_Datasets.html#",
                 "level": "group"
             },
             "create": {
                 "help": {
                     "text": "Create an experiment dataset.",
                     "level": "command",
-                    "cli_url": "TODO",
-                    "python_url": "TODO"
+                    "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Create_and_list_Datasets.html#create-a-dataset",
+                    "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Create_and_list_Datasets.html#create-a-dataset"
                 }
             },
             "list": {
                 "help": {
                     "text": "List all experiment datasets.",
                     "level": "command",
-                    "cli_url": "TODO",
-                    "python_url": "TODO"
+                    "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Create_and_list_Datasets.html#list-datasets",
+                    "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Create_and_list_Datasets.html#list-datasets"
                 }
             }
         },
         "help": {
             "text": "Class to manage projects",
+            "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings",
+            "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings",
             "level": "group"
         },
         "show": {
@@ -99,6 +107,8 @@
         "run": {
             "help": {
                 "text": "Class to run experiments and view results",
+                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#",
+                "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#",
                 "level": "subgroup"
             },
             "cancel": {
@@ -144,6 +154,8 @@
         },
         "help": {
             "text": "Class to manage experiments",
+            "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#",
+            "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#",
             "level": "group"
         },
         "list": {
@@ -166,6 +178,8 @@
     "compute": {
         "help": {
             "text": "Class to show details about compute resources",
+            "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Selecting_Compute_Resources.html#",
+            "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Selecting_Compute_Resources.html#",
             "level": "group"
         },
         "list": {
