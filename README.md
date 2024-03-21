@@ -142,4 +142,4 @@ The experiment run can now be found via the UI and checked for its status.
 Alternatively, you can also use either the SDK or CLI to check on the experiment run.
 For more details om these two please take a look into the corresponding section of the documentation.
 
-For more details on specific algorithms please take a look at the individual sections.
+For more details on specific algorithms please take a look at the individual sections!
