@@ -19,4 +19,43 @@ Every problem will have a problem dimensionality determined by the domain of the
 |`precision` | string  | "float64" or "float32"                                                                                                                                                                                              | 
 |`point` | string  | "float64" or "float32"                                                                                                                                                                                              | 
 
+## Example
+```python
+from tq42.client import TQ42Client
+from tq42.experiment_run import ExperimentRun
+from tq42.compute import HardwareProto
+from tq42.algorithm import AlgorithmProto
 
+client = TQ42Client()
+client.login()
+
+parameters = {
+        "parameters": {
+            'dimensionality': 10,
+            'iteration_number': 4, 
+            'maximal_rank': 4, 
+            'points_number': 1, 
+            'quantization': False,
+            'tolerance':0.0010000000474974513, 
+            'lower_limits': [0,0,0,0,0,0,0,0,0,0], 
+            'upper_limits': [9,9,9,9,9,9,9,9,9,9], 
+            'grid': [10,10,10,10,10,10,10,10,10,10],
+            'objective_function':'http://34.32.169.11:8000/test_func_eval/Ackley/'
+             #optional arguments below
+    #          'start_points':[2,3,4,5,6,7],
+    #          'precision':'float64',
+    #          'point':'float64',
+    #          'device':'CPU',
+    #          'seed':2
+        },
+        "inputs": {}
+    }
+    
+    ExperimentRun.create(
+        client=client,
+        algorithm=AlgorithmProto.TETRA_OPT, 
+        experiment_id=exp_sample.id,
+        compute=HardwareProto.SMALL, 
+        parameters=parameters
+    )
+```

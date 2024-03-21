@@ -28,6 +28,56 @@ The Multilayer Perceptron (MLP) is a staple in the realm of artificial neural ne
 - **loss_func:** String (Default: 'MSE') | Options: ['MSE', 'MAE'] | The loss function used to evaluate the performance of the model.
 - **target_column:** String (Default: 'Power, kW') | The target column that the model should learn for this specific dataset.
 
+###### Example
+```python
+from tq42.client import TQ42Client
+from tq42.experiment_run import ExperimentRun
+from tq42.compute import HardwareProto
+from tq42.algorithm import (
+    AlgorithmProto, 
+    OptimProto, 
+    LossFuncProto, 
+    DatasetStorageInfoProto, 
+    MLTrainInputsProto,
+    TSMLPTrainMetadataProto, 
+    TSMLPTrainParametersProto,
+    ActFuncProto
+)
+from google.protobuf.json_format import MessageToDict
+
+client = TQ42Client()
+client.login()
+
+params = MessageToDict(TSMLPTrainMetadataProto(
+    parameters=TSMLPTrainParametersProto(
+    input_width=1,
+    label_width=1,
+    dim_list=[30, 45, 60],
+    act_func=ActFuncProto.SIGMOID,
+    dropout=True,
+    dropout_p=0.5,
+    bn=True,
+    num_epochs=20,
+    batch_size=32,
+    learning_rate=0.001,
+    loss_func=LossFuncProto.MAE,
+    optim=OptimProto.ADAM,
+    time_column="your_time_column",
+    target_column="your_target_column"
+        
+    ),
+    inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))), 
+    preserving_proto_field_name=True)
+            
+ExperimentRun.create(
+    client=client,
+    algorithm=AlgorithmProto.TS_MLP_TRAIN,
+    experiment_id="your_experiment_id",
+    compute=HardwareProto.SMALL,
+    parameters=params
+)
+```
+
 #### Classical Long Short-Term Memory (LSTM)
 
 The Long Short-Term Memory (LSTM) network is a type of recurrent neural network (RNN) specifically designed to remember information over extended periods. Unlike standard RNNs, LSTMs effectively combat the vanishing gradient problem, making them adept at learning from long sequences of data. An LSTM unit comprises three gates: the input gate, the forget gate, and the output gate. These gates regulate the flow of information, allowing the network to retain relevant data and discard irrelevant information. Classical LSTMs are particularly suitable for time series forecasting tasks, such as predicting PV power output, due to their ability to capture temporal dependencies and patterns over time.
@@ -50,6 +100,49 @@ The Long Short-Term Memory (LSTM) network is a type of recurrent neural network 
 - **optim:** String (Default: 'Adam') | Options: ['Adam', 'AdamW', 'SGD'] | The optimization algorithm used for training.
 - **loss_func:** String (Default: 'MSE') | Options: ['MSE', 'MAE'] | The loss function used to evaluate the performance of the model.
 - **target_column:** String (Default: 'Power, kW') | The target column that the model should learn.
+
+###### Example
+```python
+from tq42.client import TQ42Client
+from tq42.experiment_run import ExperimentRun
+from tq42.compute import HardwareProto
+from tq42.algorithm import (
+    AlgorithmProto, 
+    OptimProto, 
+    LossFuncProto, 
+    DatasetStorageInfoProto, 
+    TSLSTMTrainMetadataProto, 
+    TSLSTMTrainParametersProto,
+    MLTrainInputsProto
+)
+from google.protobuf.json_format import MessageToDict
+
+client = TQ42Client()
+client.login()
+
+params = MessageToDict(TSLSTMTrainMetadataProto(
+    parameters=TSLSTMTrainParametersProto(
+    input_width=20,
+    label_width=1,
+    hidden_size=5,
+    dropout_coef=0.4,
+    num_epochs=20,
+    batch_size=32,
+    learning_rate=0.001,
+    optim=OptimProto.ADAM,
+    loss_func=LossFuncProto.MAE
+    ),
+    inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))), 
+    preserving_proto_field_name=True)
+    
+ExperimentRun.create(
+    client=client,
+    algorithm=AlgorithmProto.TS_LSTM_TRAIN,
+    experiment_id="your_experiment_id",
+    compute=HardwareProto.SMALL,
+    parameters=params
+)
+```
 
 ### Hybrid Quantum Models
 
@@ -89,6 +182,69 @@ The Hybrid Quantum Multilayer Perceptron (HQMLP) represents an innovative leap f
 - **loss_func:** String (Default: 'MSE') | Options: ['MSE', 'MAE'] | The loss function used to evaluate the performance of the model.
 - **target_column:** String (Default: 'Power, kW') | The target column that the model should learn.
 
+###### Example
+```python
+from tq42.client import TQ42Client
+from tq42.experiment_run import ExperimentRun
+from tq42.compute import HardwareProto
+from tq42.algorithm import (
+    AlgorithmProto, 
+    ActFuncProto,
+    OptimProto, 
+    LossFuncProto, 
+    MeasurementModeProto,
+    MeasureProto,
+    EntanglingProto,
+    DiffMethodProto,
+    QubitTypeProto,
+    DatasetStorageInfoProto, 
+    MLTrainInputsProto,
+    TSHQMLPTrainMetadataProto, 
+    TSHQMLPTrainParametersProto
+)
+from google.protobuf.json_format import MessageToDict
+
+client = TQ42Client()
+client.login()
+
+params = MessageToDict(TSHQMLPTrainMetadataProto(
+    parameters=TSHQMLPTrainParametersProto(
+    input_width=1,
+    label_width=1,
+    hidden_size=17,
+    num_qubits=8,
+    depth=7,
+    measurement_mode=MeasurementModeProto.NONE,
+    rotation=MeasureProto.X,
+    entangling=EntanglingProto.BASIC,
+    measure=MeasureProto.Z,
+    diff_method=DiffMethodProto.ADJOINT,
+    qubit_type=QubitTypeProto.LIGHTNING_QUBIT,
+    act_func=ActFuncProto.SIGMOID,
+    dropout=True,
+    dropout_p=0.5,
+    bn=False,
+    num_epochs=20,
+    batch_size=32,
+    learning_rate=0.001,
+    loss_func=LossFuncProto.MAE,
+    optim=OptimProto.ADAM,
+    time_column="your_time_column",
+    target_column="your_target_column"
+        
+    ),
+    inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))), 
+    preserving_proto_field_name=True)
+            
+ExperimentRun.create(
+    client=client,
+    algorithm=AlgorithmProto.TS_HQMLP_TRAIN,
+    experiment_id="your_experiment_id",
+    compute=HardwareProto.SMALL,
+    parameters=params
+)
+```
+
 #### Hybrid Quantum Long Short-Term Memory (HQLSTM)
 
 The Hybrid Quantum Long Short-Term Memory (HQLSTM) is an advanced version of the classical LSTM, incorporating quantum layers into its structure. In HQLSTM, the quantum layers are embedded within the LSTM cells, enriching the model’s capability to process and remember information over time. By integrating quantum computing principles, the HQLSTM can achieve more complex and nuanced data representations. This hybrid approach combines the temporal learning prowess of LSTMs with the computational advantages of quantum layers, potentially leading to more accurate and efficient forecasts, especially in scenarios with intricate patterns and high data complexity.
@@ -115,6 +271,51 @@ The Hybrid Quantum Long Short-Term Memory (HQLSTM) is an advanced version of the
 - **loss_func:** String (Default: 'MSE') | Options: ['MSE', 'MAE'] | The loss function used to evaluate the performance of the model.
 - **target_column:** String (Default: 'Power, kW') | The target column that the model should learn.
 
+###### Example
+```python
+from tq42.client import TQ42Client
+from tq42.experiment_run import ExperimentRun
+from tq42.compute import HardwareProto
+from tq42.algorithm import (
+    AlgorithmProto, 
+    OptimProto, 
+    LossFuncProto, 
+    DatasetStorageInfoProto, 
+    TSHQLSTMTrainMetadataProto, 
+    TSHQLSTMTrainParametersProto,
+    MLTrainInputsProto
+)
+from google.protobuf.json_format import MessageToDict
+
+client = TQ42Client()
+client.login()
+
+params = MessageToDict(TSHQLSTMTrainMetadataProto(
+    parameters=TSHQLSTMTrainParametersProto(
+    input_width=20,
+    label_width=1,
+    hidden_size=5,
+    dropout_coef=0.4,
+    num_epochs=20,
+    batch_size=32,
+    learning_rate=0.001,
+    depth=2,
+    n_qlayers=2,
+    num_qubits=2,
+    optim=OptimProto.ADAM,
+    loss_func=LossFuncProto.MAE
+    ),
+    inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))), 
+    preserving_proto_field_name=True)
+    
+ExperimentRun.create(
+    client=client,
+    algorithm=AlgorithmProto.TS_HQLSTM_TRAIN,
+    experiment_id="your_experiment_id",
+    compute=HardwareProto.SMALL,
+    parameters=params
+)
+```
 
 ### Loss functions  
 A loss function is a function that compares the output values predicted by the network with the target values provided by the user.   
