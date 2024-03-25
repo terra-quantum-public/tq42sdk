@@ -26,10 +26,9 @@ from tq42.experiment_run import ExperimentRun
 from tq42.compute import HardwareProto
 from tq42.algorithm import AlgorithmProto
 
-client = TQ42Client()
-client.login()
+with TQ42Client() as client:
 
-parameters = {
+    parameters = {
         "parameters": {
             'dimensionality': 10,
             'iteration_number': 4, 
@@ -41,15 +40,15 @@ parameters = {
             'upper_limits': [9,9,9,9,9,9,9,9,9,9], 
             'grid': [10,10,10,10,10,10,10,10,10,10],
             'objective_function':'http://34.32.169.11:8000/test_func_eval/Ackley/'
-             #optional arguments below
-    #          'start_points':[2,3,4,5,6,7],
-    #          'precision':'float64',
-    #          'point':'float64',
-    #          'device':'CPU',
-    #          'seed':2
-        },
+            #optional arguments below
+            #'start_points':[2,3,4,5,6,7],
+            #'precision':'float64',
+            #'point':'float64',
+            #'device':'CPU',
+            #'seed':2
+            },
         "inputs": {}
-    }
+        }
     
     ExperimentRun.create(
         client=client,

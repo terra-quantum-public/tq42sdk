@@ -45,37 +45,34 @@ from tq42.algorithm import (
 )
 from google.protobuf.json_format import MessageToDict
 
-client = TQ42Client()
-client.login()
-
-params = MessageToDict(TSMLPTrainMetadataProto(
-    parameters=TSMLPTrainParametersProto(
-    input_width=1,
-    label_width=1,
-    dim_list=[30, 45, 60],
-    act_func=ActFuncProto.SIGMOID,
-    dropout=True,
-    dropout_p=0.5,
-    bn=True,
-    num_epochs=20,
-    batch_size=32,
-    learning_rate=0.001,
-    loss_func=LossFuncProto.MAE,
-    optim=OptimProto.ADAM,
-    time_column="your_time_column",
-    target_column="your_target_column"
-        
-    ),
-    inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))), 
-    preserving_proto_field_name=True)
-            
-ExperimentRun.create(
-    client=client,
-    algorithm=AlgorithmProto.TS_MLP_TRAIN,
-    experiment_id="your_experiment_id",
-    compute=HardwareProto.SMALL,
-    parameters=params
-)
+with TQ42Client() as client:
+    params = MessageToDict(TSMLPTrainMetadataProto(
+        parameters=TSMLPTrainParametersProto(
+            input_width=1,
+            label_width=1,
+            dim_list=[30, 45, 60],
+            act_func=ActFuncProto.SIGMOID,
+            dropout=True,
+            dropout_p=0.5,
+            bn=True,
+            num_epochs=20,
+            batch_size=32,
+            learning_rate=0.001,
+            loss_func=LossFuncProto.MAE,
+            optim=OptimProto.ADAM,
+            time_column="your_time_column",
+            target_column="your_target_column"
+        ),
+        inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))), 
+        preserving_proto_field_name=True)
+                
+    ExperimentRun.create(
+        client=client,
+        algorithm=AlgorithmProto.TS_MLP_TRAIN,
+        experiment_id="your_experiment_id",
+        compute=HardwareProto.SMALL,
+        parameters=params
+    )
 ```
 
 #### Classical Long Short-Term Memory (LSTM)
@@ -117,31 +114,29 @@ from tq42.algorithm import (
 )
 from google.protobuf.json_format import MessageToDict
 
-client = TQ42Client()
-client.login()
-
-params = MessageToDict(TSLSTMTrainMetadataProto(
-    parameters=TSLSTMTrainParametersProto(
-    input_width=20,
-    label_width=1,
-    hidden_size=5,
-    dropout_coef=0.4,
-    num_epochs=20,
-    batch_size=32,
-    learning_rate=0.001,
-    optim=OptimProto.ADAM,
-    loss_func=LossFuncProto.MAE
-    ),
-    inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))), 
-    preserving_proto_field_name=True)
-    
-ExperimentRun.create(
-    client=client,
-    algorithm=AlgorithmProto.TS_LSTM_TRAIN,
-    experiment_id="your_experiment_id",
-    compute=HardwareProto.SMALL,
-    parameters=params
-)
+with TQ42Client() as client:
+    params = MessageToDict(TSLSTMTrainMetadataProto(
+        parameters=TSLSTMTrainParametersProto(
+            input_width=20,
+            label_width=1,
+            hidden_size=5,
+            dropout_coef=0.4,
+            num_epochs=20,
+            batch_size=32,
+            learning_rate=0.001,
+            optim=OptimProto.ADAM,
+            loss_func=LossFuncProto.MAE
+            ),
+        inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))), 
+        preserving_proto_field_name=True)
+        
+    ExperimentRun.create(
+        client=client,
+        algorithm=AlgorithmProto.TS_LSTM_TRAIN,
+        experiment_id="your_experiment_id",
+        compute=HardwareProto.SMALL,
+        parameters=params
+    )
 ```
 
 ### Hybrid Quantum Models
@@ -204,45 +199,42 @@ from tq42.algorithm import (
 )
 from google.protobuf.json_format import MessageToDict
 
-client = TQ42Client()
-client.login()
-
-params = MessageToDict(TSHQMLPTrainMetadataProto(
-    parameters=TSHQMLPTrainParametersProto(
-    input_width=1,
-    label_width=1,
-    hidden_size=17,
-    num_qubits=8,
-    depth=7,
-    measurement_mode=MeasurementModeProto.NONE,
-    rotation=MeasureProto.X,
-    entangling=EntanglingProto.BASIC,
-    measure=MeasureProto.Z,
-    diff_method=DiffMethodProto.ADJOINT,
-    qubit_type=QubitTypeProto.LIGHTNING_QUBIT,
-    act_func=ActFuncProto.SIGMOID,
-    dropout=True,
-    dropout_p=0.5,
-    bn=False,
-    num_epochs=20,
-    batch_size=32,
-    learning_rate=0.001,
-    loss_func=LossFuncProto.MAE,
-    optim=OptimProto.ADAM,
-    time_column="your_time_column",
-    target_column="your_target_column"
-        
-    ),
-    inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))), 
-    preserving_proto_field_name=True)
-            
-ExperimentRun.create(
-    client=client,
-    algorithm=AlgorithmProto.TS_HQMLP_TRAIN,
-    experiment_id="your_experiment_id",
-    compute=HardwareProto.SMALL,
-    parameters=params
-)
+with TQ42Client() as client:
+    params = MessageToDict(TSHQMLPTrainMetadataProto(
+        parameters=TSHQMLPTrainParametersProto(
+            input_width=1,
+            label_width=1,
+            hidden_size=17,
+            num_qubits=8,
+            depth=7,
+            measurement_mode=MeasurementModeProto.NONE,
+            rotation=MeasureProto.X,
+            entangling=EntanglingProto.BASIC,
+            measure=MeasureProto.Z,
+            diff_method=DiffMethodProto.ADJOINT,
+            qubit_type=QubitTypeProto.LIGHTNING_QUBIT,
+            act_func=ActFuncProto.SIGMOID,
+            dropout=True,
+            dropout_p=0.5,
+            bn=False,
+            num_epochs=20,
+            batch_size=32,
+            learning_rate=0.001,
+            loss_func=LossFuncProto.MAE,
+            optim=OptimProto.ADAM,
+            time_column="your_time_column",
+            target_column="your_target_column"
+            ),
+        inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))), 
+        preserving_proto_field_name=True)
+                
+    ExperimentRun.create(
+        client=client,
+        algorithm=AlgorithmProto.TS_HQMLP_TRAIN,
+        experiment_id="your_experiment_id",
+        compute=HardwareProto.SMALL,
+        parameters=params
+    )
 ```
 
 #### Hybrid Quantum Long Short-Term Memory (HQLSTM)
@@ -287,34 +279,32 @@ from tq42.algorithm import (
 )
 from google.protobuf.json_format import MessageToDict
 
-client = TQ42Client()
-client.login()
+with TQ42Client() as client:
+    params = MessageToDict(TSHQLSTMTrainMetadataProto(
+        parameters=TSHQLSTMTrainParametersProto(
+            input_width=20,
+            label_width=1,
+            hidden_size=5,
+            dropout_coef=0.4,
+            num_epochs=20,
+            batch_size=32,
+            learning_rate=0.001,
+            depth=2,
+            n_qlayers=2,
+            num_qubits=2,
+            optim=OptimProto.ADAM,
+            loss_func=LossFuncProto.MAE
+            ),
+        inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))),
+        preserving_proto_field_name=True)
 
-params = MessageToDict(TSHQLSTMTrainMetadataProto(
-    parameters=TSHQLSTMTrainParametersProto(
-    input_width=20,
-    label_width=1,
-    hidden_size=5,
-    dropout_coef=0.4,
-    num_epochs=20,
-    batch_size=32,
-    learning_rate=0.001,
-    depth=2,
-    n_qlayers=2,
-    num_qubits=2,
-    optim=OptimProto.ADAM,
-    loss_func=LossFuncProto.MAE
-    ),
-    inputs=MLTrainInputsProto(data=DatasetStorageInfoProto(storage_id="your_storage_id"))), 
-    preserving_proto_field_name=True)
-    
-ExperimentRun.create(
-    client=client,
-    algorithm=AlgorithmProto.TS_HQLSTM_TRAIN,
-    experiment_id="your_experiment_id",
-    compute=HardwareProto.SMALL,
-    parameters=params
-)
+    ExperimentRun.create(
+        client=client,
+        algorithm=AlgorithmProto.TS_HQLSTM_TRAIN,
+        experiment_id="your_experiment_id",
+        compute=HardwareProto.SMALL,
+        parameters=params
+    )
 ```
 
 ### Loss functions  
