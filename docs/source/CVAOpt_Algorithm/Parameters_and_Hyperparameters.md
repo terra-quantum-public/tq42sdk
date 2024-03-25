@@ -46,40 +46,41 @@ The number of offsprings created in a iteration
 ```python
 from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun
-from tq42.algorithm import AlgorithmProto
 from tq42.compute import HardwareProto
+from tq42.algorithm import (
+    AlgorithmProto,
+    CvaOptMetadataProto,
+    CvaOptParametersProto,
+    CvaOptInputsProto
+)
+from google.protobuf.json_format import MessageToDict
+
+
+func_eval_worker_ip = '34.32.169.11'
+# single-objective optimization
+func_eval_worker_url_sphere = 'http://' + func_eval_worker_ip + ':8000/test_func_eval/Sphere'
+# multi-objective optimization
+func_eval_worker_url_zdt1 = 'http://' + func_eval_worker_ip + ':8000/test_func_eval/ZDT1'
+
 
 with TQ42Client() as client:
-  # set your function evaluation
-  func_eval_worker_ip = '34.32.169.11'
-  # single-objective optimization
-  func_eval_worker_url_sphere = 'http://' + func_eval_worker_ip + ':8000/test_func_eval/Sphere'
-  # multi-objective optimization
-  func_eval_worker_url_zdt1 = 'http://' + func_eval_worker_ip + ':8000/test_func_eval/ZDT1'
-  
-  # set your cva params
-  cva_params = {}
-  cva_params['objectives'] = [{'name': 'Sphere', 'aim_type':'MINIMIZE'}] 
-  # set optimisation vars
-  cva_params['variables'] = []
-  cva_params['variables'].append({'name': 'x1', 'info_real':{'lower_bound':-1.0, 'upper_bound':1.0}})
-  cva_params['variables'].append({'name': 'x2', 'info_real':{'lower_bound':-1.0, 'upper_bound':1.0}})
-  # set URL for evaluation function
-  cva_params['func_eval_worker_url'] = func_eval_worker_url_sphere
-  # set cva parameters
-  cva_params['parameters'] = {}
-  # set the number of generations (iterations)
-  cva_params['parameters']['max_generation'] = 250
-  # set the ES specific parameters mue and lambda
-  cva_params['parameters']['mue'] = 15
-  cva_params['parameters']['lambda'] = 100
-  
-  # run experiment
-  ExperimentRun.create(
-      client=client, 
-      algorithm=AlgorithmProto.CVA_OPT, 
-      experiment_id=experiment_id,
-      compute=HardwareProto.SMALL, 
-      parameters={'parameters': cva_params, 'inputs': {} }
-  )
+      params = MessageToDict(CvaOptMetadataProto(
+        parameters=CvaOptParametersProto(
+            objectives = [{'name': 'Sphere', 'aim_type': 'MINIMIZE'}],
+            variables = [{'name': 'x1', 'info_real': {'lower_bound': -1.0, 'upper_bound': 1.0}},
+                         {'name': 'x2', 'info_real': {'lower_bound': -1.0, 'upper_bound': 1.0}}],
+            func_eval_worker_url = func_eval_worker_url_sphere,
+            parameters = {'max_generation': 250, 'mue': 15, 'lambda' : 100},
+            ),
+        inputs=CvaOptInputsProto(),
+        ),
+        preserving_proto_field_name=True,
+    )
+
+    ExperimentRun.create(
+        client=client,
+        algorithm=AlgorithmProto.CVA_OPT,
+        experiment_id="your_experiment_id",
+        compute=HardwareProto.SMALL,
+        parameters=params,
 ```
