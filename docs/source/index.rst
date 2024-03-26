@@ -72,12 +72,11 @@ Welcome to TQ42SDK's Documentation
 
 .. toctree::
    :maxdepth: 4
-   :caption: Circuits on QPU Providers:
+   :caption: QuEnc Algorithm:
 
-   Evaluating_Circuits_on_Native_QPU_Providers/Introduction.md
-   Evaluating_Circuits_on_Native_QPU_Providers/Parameters_and_Hyperparameters.md
-   Evaluating_Circuits_on_Native_QPU_Providers/Output_Format.md
-
+   QuEnc_Algorithm/Introduction.md
+   QuEnc_Algorithm/Parameters_and_Hyperparameters.md
+   QuEnc_Algorithm/Output_Format.md
 
 .. toctree::
    :maxdepth: 4
