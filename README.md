@@ -1,4 +1,4 @@
-![](images/TQ42_Logo_Black_Teal.svg)
+![](images/TQ42_Logo_Black_Teal.svg) 
 
 # Introduction to TQ42
 The TQ42 Python SDK puts the power in your hands to accelerate delivery of custom, high-impact solutions. After installing the SDK and authenticating, access algorithms such as TetraOpt – a global optimization library based on tensor train (TT) decomposition. 
