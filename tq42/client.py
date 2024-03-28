@@ -197,7 +197,7 @@ class TQ42Client(object):
                 refresh_token = json_token["refresh_token"]
                 utils.save_token(
                     service_name="refresh_token",
-                    backup_save_path=self.token_file_path,
+                    backup_save_path=self.refresh_token_file_path,
                     token=refresh_token,
                 )
                 current_datetime = datetime.now()

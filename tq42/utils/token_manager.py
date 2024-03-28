@@ -51,10 +51,10 @@ class TokenManager:
         json_response = response.json()
         if "access_token" in json_response:
             access_token = json_response["access_token"]
-            current_datetime = datetime.now()
-            file_handling.write_to_file(self.timestamp_file_path, current_datetime)
             utils.save_token(
                 service_name="access_token",
-                backup_save_path=self.refresh_token_file_path,
+                backup_save_path=self.token_file_path,
                 token=access_token,
             )
+            current_datetime = datetime.now()
+            file_handling.write_to_file(self.timestamp_file_path, current_datetime)
