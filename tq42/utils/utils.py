@@ -1,6 +1,7 @@
 import importlib
 import json
 from typing import Union
+import keyring
 
 from com.terraquantum.experiment.v1.experimentrun import (
     create_experiment_run_request_pb2 as create_exp_run,
@@ -11,7 +12,9 @@ from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
 from com.terraquantum.experiment.v1.experimentrun.algorithm import shared_pb2
 
 import tq42.utils.dirs as dirs
+from tq42.utils import file_handling
 from tq42.exceptions import NoMatchingAttributeError
+from keyring.errors import InitError
 
 
 def get_id(input):
@@ -103,3 +106,26 @@ def dynamic_create_exp_run_request(
         **keyword_args,
     )
     return experiment_request
+
+
+def save_token(service_name: str, backup_save_path: str, token: str) -> None:
+    try:
+        keyring.set_password(
+            service_name=service_name,
+            username="username",
+            password=token,
+        )
+
+    except InitError:
+        file_handling.write_to_file(backup_save_path, token)
+
+
+def get_token(service_name: str, backup_save_path: str) -> str:
+    try:
+        return keyring.get_password(
+            service_name=service_name,
+            username="username",
+        )
+
+    except InitError:
+        return file_handling.read_file(backup_save_path)

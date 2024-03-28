@@ -1,7 +1,6 @@
-from tq42.utils import dirs, file_handling
+from tq42.utils import dirs, file_handling, utils
 from datetime import datetime
 import requests
-import keyring
 
 
 class TokenManager:
@@ -40,8 +39,8 @@ class TokenManager:
         return False
 
     def request_new_access_token(self):
-        refresh_token = keyring.get_password(
-            service_name="refresh_token", username="username"
+        refresh_token = utils.get_token(
+            service_name="refresh_token", backup_save_path=self.refresh_token_file_path
         )
         data = self.environment.refresh_token_data(refresh_token)
         response = requests.post(
@@ -54,6 +53,8 @@ class TokenManager:
             access_token = json_response["access_token"]
             current_datetime = datetime.now()
             file_handling.write_to_file(self.timestamp_file_path, current_datetime)
-            keyring.set_password(
-                service_name="access_token", username="username", password=access_token
+            utils.save_token(
+                service_name="access_token",
+                backup_save_path=self.refresh_token_file_path,
+                token=access_token,
             )

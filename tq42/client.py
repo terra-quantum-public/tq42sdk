@@ -4,11 +4,11 @@ import webbrowser
 from datetime import datetime
 import grpc
 import requests
-from tq42.utils import dirs, file_handling
+from tq42.utils import dirs, file_handling, utils
 from tq42.utils.token_manager import TokenManager
 from tq42.exception_handling import handle_generic_sdk_errors
 import time
-import keyring
+
 
 from com.terraquantum.experiment.v1.experiment import (
     experiment_service_pb2_grpc as pb2_exp_grpc,
@@ -182,21 +182,23 @@ class TQ42Client(object):
             # If we received an access token, print it and break out of the loop
             if "access_token" in json_token:
                 access_token = json_token["access_token"]
-                keyring.set_password(
+
+                utils.save_token(
                     service_name="access_token",
-                    username="username",
-                    password=access_token,
+                    backup_save_path=self.token_file_path,
+                    token=access_token,
                 )
+
                 print("Authentication is successful.")
                 env_set = environment_default_set(client=self)
                 print(env_set)
 
             if "refresh_token" in json_token:
                 refresh_token = json_token["refresh_token"]
-                keyring.set_password(
+                utils.save_token(
                     service_name="refresh_token",
-                    username="username",
-                    password=refresh_token,
+                    backup_save_path=self.token_file_path,
+                    token=refresh_token,
                 )
                 current_datetime = datetime.now()
                 file_handling.write_to_file(self.timestamp_file_path, current_datetime)
@@ -223,5 +225,7 @@ class TQ42Client(object):
     @property
     def metadata(self):
         self.token_manager.renew_expring_token()
-        token = keyring.get_password(service_name="access_token", username="username")
+        token = utils.get_token(
+            service_name="access_token", backup_save_path=self.token_file_path
+        )
         return (("authorization", "Bearer " + token),)
