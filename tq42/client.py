@@ -8,6 +8,7 @@ from tq42.utils import dirs, file_handling
 from tq42.utils.token_manager import TokenManager
 from tq42.exception_handling import handle_generic_sdk_errors
 import time
+import keyring
 
 from com.terraquantum.experiment.v1.experiment import (
     experiment_service_pb2_grpc as pb2_exp_grpc,
@@ -181,16 +182,22 @@ class TQ42Client(object):
             # If we received an access token, print it and break out of the loop
             if "access_token" in json_token:
                 access_token = json_token["access_token"]
-                file_handling.write_to_file(self.token_file_path, access_token)
-                print(
-                    f"Authentication is successful, access token is saved in file: {self.token_file_path}"
+                keyring.set_password(
+                    service_name="access_token",
+                    username="username",
+                    password=access_token,
                 )
+                print("Authentication is successful.")
                 env_set = environment_default_set(client=self)
                 print(env_set)
 
             if "refresh_token" in json_token:
                 refresh_token = json_token["refresh_token"]
-                file_handling.write_to_file(self.refresh_token_file_path, refresh_token)
+                keyring.set_password(
+                    service_name="refresh_token",
+                    username="username",
+                    password=refresh_token,
+                )
                 current_datetime = datetime.now()
                 file_handling.write_to_file(self.timestamp_file_path, current_datetime)
                 break
@@ -216,5 +223,5 @@ class TQ42Client(object):
     @property
     def metadata(self):
         self.token_manager.renew_expring_token()
-        token = file_handling.read_file(self.token_file_path)
+        token = keyring.get_password(service_name="access_token", username="username")
         return (("authorization", "Bearer " + token),)
