@@ -231,7 +231,7 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(res, "toy_metadata")
 
     def test_save_get_token_with_keyring_enabled(self):
-        token_file_path = os.path.join(dirs.testdata(), "config.json")
+        token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
         utils.save_token(
             service_name="access_token",
             backup_save_path=token_file_path,
@@ -247,7 +247,7 @@ class TestUtils(unittest.TestCase):
     def test_save_get_token_with_keyring_disabled(
         self, mock_set_password, mock_get_password
     ):
-        token_file_path = os.path.join(dirs.testdata(), "config.json")
+        token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
         mock_set_password.side_effect = InitError()
         mock_get_password.side_effect = InitError()
         utils.save_token(
@@ -258,4 +258,5 @@ class TestUtils(unittest.TestCase):
         token = utils.get_token(
             service_name="access_token", backup_save_path=token_file_path
         )
+        os.remove(token_file_path)
         self.assertEqual(token, "test_token")
