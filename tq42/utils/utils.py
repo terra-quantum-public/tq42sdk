@@ -14,7 +14,6 @@ from com.terraquantum.experiment.v1.experimentrun.algorithm import shared_pb2
 import tq42.utils.dirs as dirs
 from tq42.utils import file_handling
 from tq42.exceptions import NoMatchingAttributeError
-from keyring.errors import InitError
 
 
 def get_id(input):
@@ -116,7 +115,7 @@ def save_token(service_name: str, backup_save_path: str, token: str) -> None:
             password=token,
         )
 
-    except InitError:
+    except Exception:
         file_handling.write_to_file(backup_save_path, token)
 
 
@@ -127,5 +126,5 @@ def get_token(service_name: str, backup_save_path: str) -> str:
             username="username",
         )
 
-    except InitError:
+    except Exception:
         return file_handling.read_file(backup_save_path)
