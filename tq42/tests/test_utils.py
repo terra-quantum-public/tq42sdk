@@ -247,6 +247,8 @@ class TestUtils(unittest.TestCase):
     def test_save_get_token_with_keyring_disabled(
         self, mock_set_password, mock_get_password
     ):
+        # keyring is working on Mac Sonoma 14.4 and Windows 11
+        # keyring not working on Ubuntu 20.04.6LTS and causes InitError exception
         token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
         mock_set_password.side_effect = InitError()
         mock_get_password.side_effect = InitError()
