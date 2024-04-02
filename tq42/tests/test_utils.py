@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 from unittest import mock
-from keyring.errors import InitError
+from keyring.errors import InitError, NoKeyringError
 
 from tq42 import exceptions
 from tq42.utils import dirs, utils, file_handling
@@ -231,6 +231,7 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(res, "toy_metadata")
 
     def test_save_get_token_with_keyring_enabled(self):
+        # keyring is working on Mac Sonoma 14.4 and Windows 11
         token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
         utils.save_token(
             service_name="access_token",
@@ -244,14 +245,31 @@ class TestUtils(unittest.TestCase):
 
     @mock.patch("keyring.set_password")
     @mock.patch("keyring.get_password")
-    def test_save_get_token_with_keyring_disabled(
-        self, mock_set_password, mock_get_password
-    ):
-        # keyring is working on Mac Sonoma 14.4 and Windows 11
+    def test_save_get_token_has_InitError(self, mock_set_password, mock_get_password):
         # keyring not working on Ubuntu 20.04.6LTS and causes InitError exception
         token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
         mock_set_password.side_effect = InitError()
         mock_get_password.side_effect = InitError()
+        utils.save_token(
+            service_name="access_token",
+            backup_save_path=token_file_path,
+            token="test_token",
+        )
+        token = utils.get_token(
+            service_name="access_token", backup_save_path=token_file_path
+        )
+        os.remove(token_file_path)
+        self.assertEqual(token, "test_token")
+
+    @mock.patch("keyring.set_password")
+    @mock.patch("keyring.get_password")
+    def test_save_get_token_has_NoKeyringError(
+        self, mock_set_password, mock_get_password
+    ):
+        # keyring not working on Debian and Redhat, NoKeyringError is raised
+        token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
+        mock_set_password.side_effect = NoKeyringError()
+        mock_get_password.side_effect = NoKeyringError()
         utils.save_token(
             service_name="access_token",
             backup_save_path=token_file_path,
