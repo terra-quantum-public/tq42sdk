@@ -1,8 +1,10 @@
 import unittest
+import os
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 from unittest import mock
+from keyring.errors import InitError
 
 from tq42 import exceptions
 from tq42.utils import dirs, utils, file_handling
@@ -227,3 +229,33 @@ class TestUtils(unittest.TestCase):
     def test_find_oneof_field_name(self):
         res = utils.find_oneof_field_name("ToyMetadataProto")
         self.assertEqual(res, "toy_metadata")
+
+    def test_save_get_token_with_keyring_enabled(self):
+        token_file_path = os.path.join(dirs.testdata(), "config.json")
+        utils.save_token(
+            service_name="access_token",
+            backup_save_path=token_file_path,
+            token="test_token",
+        )
+        token = utils.get_token(
+            service_name="access_token", backup_save_path=token_file_path
+        )
+        self.assertEqual(token, "test_token")
+
+    @mock.patch("keyring.set_password")
+    @mock.patch("keyring.get_password")
+    def test_save_get_token_with_keyring_disabled(
+        self, mock_set_password, mock_get_password
+    ):
+        token_file_path = os.path.join(dirs.testdata(), "config.json")
+        mock_set_password.side_effect = InitError()
+        mock_get_password.side_effect = InitError()
+        utils.save_token(
+            service_name="access_token",
+            backup_save_path=token_file_path,
+            token="test_token",
+        )
+        token = utils.get_token(
+            service_name="access_token", backup_save_path=token_file_path
+        )
+        self.assertEqual(token, "test_token")
