@@ -9,7 +9,6 @@ from tq42.utils.token_manager import TokenManager
 from tq42.exception_handling import handle_generic_sdk_errors
 import time
 
-
 from com.terraquantum.experiment.v1.experiment import (
     experiment_service_pb2_grpc as pb2_exp_grpc,
 )
@@ -183,13 +182,16 @@ class TQ42Client(object):
             if "access_token" in json_token:
                 access_token = json_token["access_token"]
 
-                utils.save_token(
+                save_location = utils.save_token(
                     service_name="access_token",
                     backup_save_path=self.token_file_path,
                     token=access_token,
                 )
 
-                print("Authentication is successful.")
+                print(
+                    f"Authentication is successful, access token is saved in: {save_location}"
+                )
+
                 env_set = environment_default_set(client=self)
                 print(env_set)
 
