@@ -24,9 +24,7 @@ The following hyperparameters are included in the CPHN layer. These are not nece
 ## Quantum Circuit Representation
 This circuit diagram reflects some of the default settings listed above, plus 12 input features. To visualize a dynamic graph, please use the TQ42 web interface.
 
-
 ![CPHN circuit diagram example.png](../images/CPHN_circuit_diagram_example.png)
-
 
 ## Sample Python Code Block
 Here is an example of how to apply the CPHN layer within a custom model architecture in the SDK.
