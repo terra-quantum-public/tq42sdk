@@ -5,7 +5,7 @@ include = ["utils/text_files/*.txt", "utils/text_files/config.json", "tests/test
 
 [tool.poetry]
 name = "tq42"
-version = "0.5.16"
+version = "0.5.17"
 description = "tq42 sdk"
 readme = "README.md"
 authors = ["Terra Quantum AG"]
@@ -14,7 +14,6 @@ authors = ["Terra Quantum AG"]
 python = "^3.8"
 requests = "2.31.0"
 PyYAML = "^6.0.1"
-questionary = "^2.0.1"
 tq42_grpc_client = { source="tq_gcp", version="1.0.77" }
 pytest = "^7.4.4"
 

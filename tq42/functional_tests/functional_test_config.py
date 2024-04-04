@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from typing import Any
 
-import questionary
 from tq42.client import TQ42Client
 from tq42.organization import list_all as list_all_organizations
 from tq42.project import list_all as list_all_projects
@@ -87,13 +86,29 @@ class FunctionalTestConfig:
         return arguments
 
     @staticmethod
+    def custom_select(question: str, choices: list) -> str:
+        print(question)
+        for index, choice in enumerate(choices, start=1):
+            print(f"{index}. {choice}")
+
+        while True:
+            try:
+                choice_index = int(input("Enter the number of your choice: ")) - 1
+                if 0 <= choice_index < len(choices):
+                    return choices[choice_index]
+                else:
+                    print("Invalid choice. Please enter a valid number.")
+            except ValueError:
+                print("Invalid input. Please enter a number.")
+
+    @staticmethod
     def provide_choice_id(arg_type: str, choices: [str], auto_pick: bool) -> str:
         if auto_pick:
             return choices[0].split(" ")[0]
 
-        choice = questionary.select(
+        choice = FunctionalTestConfig.custom_select(
             "Which {} do you want to use?".format(arg_type), choices=choices
-        ).ask()
+        )
         return choice.split(" ")[0]
 
 
