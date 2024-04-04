@@ -86,7 +86,7 @@ class FunctionalTestConfig:
         return arguments
 
     @staticmethod
-    def custom_select(question, choices):
+    def custom_select(question: str, choices: list) -> str:
         print(question)
         for index, choice in enumerate(choices, start=1):
             print(f"{index}. {choice}")
