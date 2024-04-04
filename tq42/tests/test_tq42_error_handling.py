@@ -82,6 +82,28 @@ class TestTq42ErrorHandling(unittest.TestCase):
                 read_file(invalid_arguments_error_file).format(e.command, e.details),
             )
 
+    def test_decorator_grpc_status_not_found_error(self):
+        @handle_generic_sdk_errors
+        def raise_status_not_found_grpc():
+            raise InactiveRpcError(
+                RPCState(
+                    code=StatusCode.NOT_FOUND,
+                    details="no details",
+                    due=[],
+                    initial_metadata=[],
+                    trailing_metadata=[],
+                )
+            )
+
+        try:
+            raise_status_not_found_grpc()
+            self.fail_if_still_here()
+        except InvalidArgumentError as e:
+            self.assertEqual(
+                str(e),
+                read_file(invalid_arguments_error_file).format(e.command, e.details),
+            )
+
     def test_decorator_permission_denied_error(self):
         @handle_generic_sdk_errors
         def raise_permission_denied():

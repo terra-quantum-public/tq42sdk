@@ -4,9 +4,7 @@ The Parallel Quantum Network layer includes multiple independent variational qua
 
 ![PQN Layer Diagram](../images/PQN_Layer_Diagram.png)
 
-Reference: https://arxiv.org/abs/2304.09224
-
-[Documentation](https://refactored-train-y27rprg.pages.github.io/autoapi/tqml/tqnet/layers/index.html#tqml.tqnet.layers.PQN) and [source code](https://refactored-train-y27rprg.pages.github.io/_modules/tqml/tqnet/layers.html#PQN).
+[Reference](https://arxiv.org/abs/2304.09224)
 
 ## Key Benefits
 - Each quantum circuit within the parallel quantum network layer employs variational parameters exclusive to it, making the model more performant and adaptable across diverse datasets.
@@ -57,7 +55,7 @@ from tq42.algorithm import (
     MeasureProto,
     DiffMethodProto,
     QubitTypeProto,
-) 
+)
 from tq42.compute import HardwareProto
 
 from google.protobuf.json_format import MessageToDict
@@ -68,7 +66,7 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         # ... TODO: add the other parameters of your choice
         layers=[
             Layer(pqn_layer=PQNLayer(
-                in_features=20, 
+                in_features=20,
                 num_qubits=4,
                 depth=4,
                 measurement_mode = MeasurementModeProto.NONE,
@@ -90,11 +88,11 @@ with TQ42Client() as client:
     org = org_list[0]
     proj_list = list_all_projects(client=client, organization_id=org.id)
     proj = proj_list[0]
-    
+
     exp_list = list_all_experiments(client=client, project_id=proj.id)
-    
+
     print("running experiment for exp {}".format(exp_list[0]))
-    
+
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.GENERIC_ML_TRAIN,

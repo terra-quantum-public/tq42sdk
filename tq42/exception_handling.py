@@ -26,10 +26,14 @@ def handle_generic_sdk_errors(func: F) -> F:
             if status_code == StatusCode.UNAUTHENTICATED:
                 raise exceptions.UnauthenticatedError() from None
 
-            if status_code == StatusCode.INVALID_ARGUMENT:
+            if status_code in [StatusCode.INVALID_ARGUMENT, StatusCode.NOT_FOUND]:
+                # offending command will be second from the last
+                # last line is: traceback.extract_stack()
+                index = -2 if len(traceback.extract_stack()) > 1 else 0
                 raise exceptions.InvalidArgumentError(
-                    command=traceback.extract_stack()[0].line, details=e.details()
+                    command=traceback.extract_stack()[index].line, details=e.details()
                 ) from None
+
         except KeyError:
             raise exceptions.NoDefaultError(
                 command=traceback.extract_stack()[0].line
