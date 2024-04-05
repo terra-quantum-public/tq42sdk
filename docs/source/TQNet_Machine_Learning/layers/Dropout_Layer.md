@@ -52,7 +52,7 @@ from tq42.algorithm import (
     GenericMLTrainParametersProto,
     Layer,
     DropoutLayer,
-    MLTrainInputsProto
+    MLTrainInputsProto,
 )
 from tq42.compute import HardwareProto
 

@@ -53,7 +53,7 @@ from tq42.algorithm import (
     EntanglingProto,
     DiffMethodProto,
     QubitTypeProto,
-    MeasurementModeProto
+    MeasurementModeProto,
 )
 from tq42.compute import HardwareProto
 

@@ -44,7 +44,7 @@ from tq42.algorithm import (
     GenericMLTrainParametersProto,
     Layer,
     ClassicalDenseLayer,
-    MLTrainInputsProto
+    MLTrainInputsProto,
 )
 from tq42.compute import HardwareProto
 

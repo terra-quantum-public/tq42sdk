@@ -40,7 +40,7 @@ from tq42.algorithm import (
     GenericMLTrainParametersProto,
     Layer,
     QLSTMLayer,
-    MLTrainInputsProto
+    MLTrainInputsProto,
 )
 from tq42.compute import HardwareProto
 
