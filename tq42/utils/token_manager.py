@@ -1,4 +1,4 @@
-from tq42.utils import dirs, file_handling
+from tq42.utils import dirs, file_handling, utils
 from datetime import datetime
 import requests
 
@@ -39,7 +39,9 @@ class TokenManager:
         return False
 
     def request_new_access_token(self):
-        refresh_token = file_handling.read_file(self.refresh_token_file_path)
+        refresh_token = utils.get_token(
+            service_name="refresh_token", backup_save_path=self.refresh_token_file_path
+        )
         data = self.environment.refresh_token_data(refresh_token)
         response = requests.post(
             self.environment.auth_url_token,
@@ -49,6 +51,10 @@ class TokenManager:
         json_response = response.json()
         if "access_token" in json_response:
             access_token = json_response["access_token"]
-            file_handling.write_to_file(self.token_file_path, access_token)
+            utils.save_token(
+                service_name="access_token",
+                backup_save_path=self.token_file_path,
+                token=access_token,
+            )
             current_datetime = datetime.now()
             file_handling.write_to_file(self.timestamp_file_path, current_datetime)
