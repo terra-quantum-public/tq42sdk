@@ -61,7 +61,9 @@ from google.protobuf.json_format import MessageToDict
 
 params = MessageToDict(GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
-        # You may add and customize as many layers as you like
+        # Choose model type here
+        model_type=MLModelType.MLP,
+        # Add and customize and customize layers here
         layers=[
             Layer(dropout_layer=DropoutLayer(
                 value=0.5
@@ -69,7 +71,8 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         ],
     ),
     inputs=MLTrainInputsProto(
-        data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
+        # Provide the specific dataset storage ID of the data you uploaded to TQ42.
+        data=DatasetStorageInfoProto(storage_id="ENTER_DATASET_STORAGE_ID_HERE")
     )
 ), preserving_proto_field_name=True)
 

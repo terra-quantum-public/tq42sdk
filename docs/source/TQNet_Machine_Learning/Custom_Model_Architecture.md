@@ -29,7 +29,9 @@ from tq42.compute import HardwareProto
 
 metadata = GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
+        # Choose model type here
         model_type=MLModelType.MLP,
+        # Add and customize and customize layers here
         layers=[
             Layer(classical_dense_layer=ClassicalDenseLayer(hidden_size=4, bias=True)),
             Layer(classical_dense_layer=ClassicalDenseLayer(hidden_size=4, bias=True)),
@@ -48,15 +50,16 @@ metadata = GenericMLTrainMetadataProto(
         learning_rate=0.01,
         optim=OptimProto.ADAM,
         loss_func=LossFuncProto.MAE,
-        train_model_info=TrainModelInfoProto(
-            # TODO: fill to better identify the trained model later on
-            name="",
-            description="",
+        train_model_info = TrainModelInfoProto(
+            # Provide a unique name to identify your trained model.
+            name="ENTER_MODEL_NAME_HERE",
+            # Add a brief description to help users understand the purpose or functionality of this trained model.
+            description="ADD_DESCRIPTION_HERE",
         ),
     ),
-    inputs=MLTrainInputsProto(
-        # TODO: fill with your specific dataset storage id
-        data=DatasetStorageInfoProto(storage_id="")
+    inputs = MLTrainInputsProto(
+        # Provide the specific dataset storage ID of the data you uploaded to TQ42.
+        data=DatasetStorageInfoProto(storage_id="ENTER_DATASET_STORAGE_ID_HERE")
     ),
 )
 
@@ -64,8 +67,8 @@ with TQ42Client() as client:
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.GENERIC_ML_TRAIN,
-        # TODO: fill with your specific experiment id
-        experiment_id="",
+        # Fill in with the specific ID of the experiment you created in TQ42.
+        experiment_id="ENTER_EXPERIMENT_ID_HERE",
         compute=HardwareProto.SMALL,
         parameters=MessageToDict(metadata, preserving_proto_field_name=True)
     )
