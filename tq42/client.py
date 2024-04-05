@@ -189,7 +189,7 @@ class TQ42Client(object):
                 )
 
                 print(
-                    f"Authentication is successful, access token is saved in: {save_location}"
+                    f"Authentication is successful, access token is saved in: {save_location}."
                 )
 
                 env_set = environment_default_set(client=self)
