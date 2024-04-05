@@ -62,7 +62,7 @@ from google.protobuf.json_format import MessageToDict
 
 params = MessageToDict(GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
-        # ... TODO: add the other parameters of your choice
+        # You may add and customize as many layers as you like
         layers=[
             Layer(efq_layer=EFQLayer(in_features=20,
                num_qubits=4,

@@ -65,7 +65,7 @@ efq_layer = QuantumLayer(
 
 params = MessageToDict(GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
-        # ... TODO: add the other parameters of your choice
+        # You may add and customize as many layers as you like
         layers=[
             Layer(cphn_layer=CPHNLayer(
                   quantum_layer=efq_layer,

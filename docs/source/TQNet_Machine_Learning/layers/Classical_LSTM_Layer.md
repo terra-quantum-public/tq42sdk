@@ -42,7 +42,7 @@ from tq42.algorithm import (
     Layer,
     ClassicalLSTMLayer,
     MLTrainInputsProto
-) 
+)
 from tq42.compute import HardwareProto
 
 from google.protobuf.json_format import MessageToDict
@@ -50,7 +50,7 @@ from google.protobuf.json_format import MessageToDict
 
 params = MessageToDict(GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
-        # ... TODO: add the other parameters of your choice
+        # You may add and customize as many layers as you like
         layers=[
             Layer(classical_lstm_layer=ClassicalLSTMLayer(
                 hidden_size=17
@@ -67,11 +67,11 @@ with TQ42Client() as client:
     org = org_list[0]
     proj_list = list_all_projects(client=client, organization_id=org.id)
     proj = proj_list[0]
-    
+
     exp_list = list_all_experiments(client=client, project_id=proj.id)
-    
+
     print("running experiment for exp {}".format(exp_list[0]))
-    
+
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.GENERIC_ML_TRAIN,
