@@ -119,7 +119,6 @@ def save_token(service_name: str, backup_save_path: str, token: str) -> str:
         return save_location
 
     except (NoKeyringError, InitError):
-        print(f"Access token saving in keyring error. Saved to {backup_save_path}.")
         file_handling.write_to_file(backup_save_path, token)
         return backup_save_path
 
