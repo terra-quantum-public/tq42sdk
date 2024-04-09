@@ -40,8 +40,8 @@ from tq42.algorithm import (
     GenericMLTrainParametersProto,
     Layer,
     QLSTMLayer,
-    MLTrainInputsProto
-) 
+    MLTrainInputsProto,
+)
 from tq42.compute import HardwareProto
 
 from google.protobuf.json_format import MessageToDict
@@ -49,7 +49,9 @@ from google.protobuf.json_format import MessageToDict
 
 params = MessageToDict(GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
-        # ... TODO: add the other parameters of your choice
+        # Choose model type here
+        model_type=MLModelType.MLP,
+        # Add and customize and customize layers here
         layers=[
             Layer(qlstm_layer=QLSTMLayer(
                 hidden_size=17,
@@ -62,7 +64,8 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         ],
     ),
     inputs=MLTrainInputsProto(
-        data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
+        # Provide the specific dataset storage ID of the data you uploaded to TQ42.
+        data=DatasetStorageInfoProto(storage_id="ENTER_DATASET_STORAGE_ID_HERE")
     )
 ), preserving_proto_field_name=True)
 
@@ -71,11 +74,11 @@ with TQ42Client() as client:
     org = org_list[0]
     proj_list = list_all_projects(client=client, organization_id=org.id)
     proj = proj_list[0]
-    
+
     exp_list = list_all_experiments(client=client, project_id=proj.id)
-    
+
     print("running experiment for exp {}".format(exp_list[0]))
-    
+
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.GENERIC_ML_TRAIN,
