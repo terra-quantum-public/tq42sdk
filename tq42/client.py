@@ -56,6 +56,10 @@ class ConfigEnvironment:
         return "https://graphql-gateway.{}/graphql".format(self.base_url)
 
     @property
+    def client_credential_flow_audience(self):
+        return "https://api.{}".format(self.base_url)
+
+    @property
     def headers(self):
         return {"Content-Type": "application/x-www-form-urlencoded"}
 
@@ -81,12 +85,12 @@ class ConfigEnvironment:
             "client_id": self.client_id,
         }
 
-    def client_credentials_data(self, client_id, client_secret):
+    def client_credentials_data(self, client_id, client_secret, audience):
         return {
             "client_id": client_id,
             "client_secret": client_secret,
             "grant_type": "client_credentials",
-            "audience": self.audience,
+            "audience": audience,
         }
 
 
@@ -149,37 +153,30 @@ class TQ42Client(object):
         self.experiment_run_client = pb2_exp_run_grpc.ExperimentRunServiceStub(
             self.channel
         )
+        self.credential_flow_client_id = os.getenv("AUTH_CLIENT_ID")
+        self.credential_flow_client_secret = os.getenv("AUTH_CLIENT_SECRET")
 
     @handle_generic_sdk_errors
     def login_service(self):
-        client_id = self.environment.client_id
-        client_secret = self.environment.client_secret
-
         response = requests.post(
             self.environment.auth_url_token,
-            data=self.environment.client_credentials_data(client_id, client_secret),
+            data=self.environment.client_credentials_data(
+                client_id=self.credential_flow_client_id,
+                client_secret=self.credential_flow_client_secret,
+                audience=self.environment.client_credential_flow_audience,
+            ),
             headers=self.environment.headers,
         )
 
         json_response = response.json()
 
-        access_token = json_response["access_token"]
-        if access_token:
-            file_handling.write_to_file(self.token_file_path, access_token)
-            print(
-                f"Authentication successful. Access token saved in file: {self.token_file_path}"
-            )
-            env_set = environment_default_set(client=self)
-            print(env_set)
-        else:
+        if self.save_access_token(json_response) is False:
             print("Authentication failed.")
 
     @handle_generic_sdk_errors
     def login(self):
-        auth_client_id = os.getenv("AUTH_CLIENT_ID")
-        auth_client_secret = os.getenv("AUTH_CLIENT_SECRET")
-
-        if auth_client_id is not None and auth_client_secret is not None:
+        if self.credential_flow_client_id and self.credential_flow_client_secret:
+            print("Using Client Credential Flow.")
             self.login_service()
         else:
             self.login_client()
@@ -223,37 +220,50 @@ class TQ42Client(object):
                 data=data_token,
                 headers=self.environment.headers,
             )
-            json_token = response_token.json()
+            response_json = response_token.json()
             # If we received an access token, print it and break out of the loop
-            if "access_token" in json_token:
-                access_token = json_token["access_token"]
 
-                save_location = utils.save_token(
-                    service_name="access_token",
-                    backup_save_path=self.token_file_path,
-                    token=access_token,
-                )
-
-                print(
-                    f"Authentication is successful, access token is saved in: {save_location}."
-                )
-
-                env_set = environment_default_set(client=self)
-                print(env_set)
-
-            if "refresh_token" in json_token:
-                refresh_token = json_token["refresh_token"]
-                utils.save_token(
-                    service_name="refresh_token",
-                    backup_save_path=self.refresh_token_file_path,
-                    token=refresh_token,
-                )
-                current_datetime = datetime.now()
-                file_handling.write_to_file(self.timestamp_file_path, current_datetime)
+            if self.save_access_token(response_json) and self.save_refresh_token(
+                response_json
+            ):
                 break
 
             # Otherwise, wait for the specified interval before polling again
             time.sleep(interval)
+
+    def save_access_token(self, response: json):
+        if "access_token" in response:
+            access_token = response["access_token"]
+
+            save_location = utils.save_token(
+                service_name="access_token",
+                backup_save_path=self.token_file_path,
+                token=access_token,
+            )
+
+            print(
+                f"Authentication is successful, access token is saved in: {save_location}."
+            )
+
+            env_set = environment_default_set(client=self)
+            print(env_set)
+            return True
+
+        return False
+
+    def save_refresh_token(self, response: json):
+        if "refresh_token" in response:
+            refresh_token = response["refresh_token"]
+            utils.save_token(
+                service_name="refresh_token",
+                backup_save_path=self.refresh_token_file_path,
+                token=refresh_token,
+            )
+            current_datetime = datetime.now()
+            file_handling.write_to_file(self.timestamp_file_path, current_datetime)
+            return True
+
+        return False
 
     def is_config_filepath_default(self, config_file):
         return config_file == self.default_config_file
