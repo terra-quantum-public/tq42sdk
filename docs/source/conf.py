@@ -24,6 +24,7 @@ extensions = [
     "recommonmark",
     "sphinx_markdown_tables",
     "sphinx_copybutton",
+    "sphinx.ext.imgmath",
 ]
 
 source_suffix = {
@@ -51,6 +52,11 @@ html_theme_options = {
     "includehidden": True,
     "titles_only": False,
 }
+
+html_js_files = [
+    "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML",
+]
+
 html_title = "TQ42SDK Documentation"
 html_extra_path = ["extra_files"]
 # html_logo = “path/to/logo.png”

@@ -4,9 +4,7 @@ Fourier analysis enables general functions to be approximated by sums of trigono
 
 ![EFQ layer architecture](../images/EFQ_layer_architecture.png)
 
-Reference: https://arxiv.org/pdf/2212.00736.pdf
-
-[Documentation](https://refactored-train-y27rprg.pages.github.io/autoapi/tqml/tqnet/layers/index.html#tqml.tqnet.layers.EFQ) and [source code](https://refactored-train-y27rprg.pages.github.io/_modules/tqml/tqnet/layers.html#EFQ).
+[Reference](https://arxiv.org/pdf/2212.00736.pdf)
 
 ## Key Benefits
 - The main benefit of our exponential quantum encoding is that it creates a better Fourier estimator using fewer quantum gates.
@@ -55,8 +53,8 @@ from tq42.algorithm import (
     EntanglingProto,
     DiffMethodProto,
     QubitTypeProto,
-    MeasurementModeProto
-) 
+    MeasurementModeProto,
+)
 from tq42.compute import HardwareProto
 
 from google.protobuf.json_format import MessageToDict
@@ -64,11 +62,13 @@ from google.protobuf.json_format import MessageToDict
 
 params = MessageToDict(GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
-        # ... TODO: add the other parameters of your choice
+        # Choose model type here
+        model_type=MLModelType.MLP,
+        # Add and customize and customize layers here
         layers=[
-            Layer(efq_layer=EFQLayer(in_features=20, 
-               num_qubits=4, 
-               depth=4, 
+            Layer(efq_layer=EFQLayer(in_features=20,
+               num_qubits=4,
+               depth=4,
                measurement_mode = MeasurementModeProto.NONE,
                rotation=MeasureProto.Z,
                entangling=EntanglingProto.STRONG,
@@ -79,7 +79,8 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         ],
     ),
     inputs=MLTrainInputsProto(
-        data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
+        # Provide the specific dataset storage ID of the data you uploaded to TQ42.
+        data=DatasetStorageInfoProto(storage_id="ENTER_DATASET_STORAGE_ID_HERE")
     )
 ), preserving_proto_field_name=True)
 
@@ -88,11 +89,11 @@ with TQ42Client() as client:
     org = org_list[0]
     proj_list = list_all_projects(client=client, organization_id=org.id)
     proj = proj_list[0]
-    
+
     exp_list = list_all_experiments(client=client, project_id=proj.id)
-    
+
     print("running experiment for exp {}".format(exp_list[0]))
-    
+
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.GENERIC_ML_TRAIN,

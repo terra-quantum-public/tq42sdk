@@ -4,9 +4,7 @@ Rather than encoding each feature on a separate qubit, which would require an un
 
 ![QDI layer architecture](../images/QDI_layer_architecture.png)
 
-Reference: https://www.mdpi.com/2072-6694/15/10/2705
-
-[Documentation](https://refactored-train-y27rprg.pages.github.io/autoapi/tqml/tqnet/layers/index.html#tqml.tqnet.layers.QDI) and [source code](https://refactored-train-y27rprg.pages.github.io/_modules/tqml/tqnet/layers.html#QDI).
+[Reference](https://www.mdpi.com/2072-6694/15/10/2705)
 
 ## Key Benefits
 - The advantage of this approach is its efficient use of available qubits to handle a large amount of data, especially considering current technological constraints. By using a lattice structure and the data re-uploading method, one can encode a large number of features (for example, 256) into a manageable number of qubits (for example, 8).
@@ -56,8 +54,8 @@ from tq42.algorithm import (
     EntanglingProto,
     DiffMethodProto,
     QubitTypeProto,
-    MeasurementModeProto
-) 
+    MeasurementModeProto,
+)
 from tq42.compute import HardwareProto
 
 from google.protobuf.json_format import MessageToDict
@@ -65,11 +63,13 @@ from google.protobuf.json_format import MessageToDict
 
 params = MessageToDict(GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
-        # ... TODO: add the other parameters of your choice
+        # Choose model type here
+        model_type=MLModelType.MLP,
+        # Add and customize and customize layers here
         layers=[
-            Layer(qdi_layer=QDILayer(in_features=20, 
-               num_qubits=4, 
-               depth=4, 
+            Layer(qdi_layer=QDILayer(in_features=20,
+               num_qubits=4,
+               depth=4,
                measurement_mode = MeasurementModeProto.NONE,
                rotation=MeasureProto.Z,
                entangling=EntanglingProto.STRONG,
@@ -80,7 +80,8 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         ],
     ),
     inputs=MLTrainInputsProto(
-        data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
+        # Provide the specific dataset storage ID of the data you uploaded to TQ42.
+        data=DatasetStorageInfoProto(storage_id="ENTER_DATASET_STORAGE_ID_HERE")
     )
 ), preserving_proto_field_name=True)
 
@@ -89,11 +90,11 @@ with TQ42Client() as client:
     org = org_list[0]
     proj_list = list_all_projects(client=client, organization_id=org.id)
     proj = proj_list[0]
-    
+
     exp_list = list_all_experiments(client=client, project_id=proj.id)
-    
+
     print("running experiment for exp {}".format(exp_list[0]))
-    
+
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.GENERIC_ML_TRAIN,

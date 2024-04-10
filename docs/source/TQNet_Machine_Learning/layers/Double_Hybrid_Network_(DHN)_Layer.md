@@ -8,8 +8,6 @@ Such an architecture is applicable in Physics-Informed Neural Networks (PINNs), 
 
 ![DHN layer architecture.png](../images/DHN_layer_architecture.png)
 
-[Documentation](https://refactored-train-y27rprg.pages.github.io/autoapi/tqml/tqnet/layers/index.html#tqml.tqnet.layers.DHN) and [source code](https://refactored-train-y27rprg.pages.github.io/_modules/tqml/tqnet/layers.html#DHN).
-
 ## Key Benefits
 - One of the standout features of the Double Hybrid Network is its ability to take in different parts of the original vector into the quantum and classical segments of the network.
 - The user has the freedom to choose which segment of the vector goes where, enabling a customized blend of quantum and classical processing, optimizing the network's learning ability.
@@ -71,7 +69,9 @@ pqn_layer = QuantumLayer(
 
 params = MessageToDict(GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
-        # ... TODO: add the other parameters of your choice
+        # Choose model type here
+        model_type=MLModelType.MLP,
+        # Add and customize and customize layers here
         layers=[
             Layer(dhn_layer=DHNLayer(
                   quantum_layer=pqn_layer,
@@ -81,7 +81,8 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         ],
     ),
     inputs=MLTrainInputsProto(
-        data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
+        # Provide the specific dataset storage ID of the data you uploaded to TQ42.
+        data=DatasetStorageInfoProto(storage_id="ENTER_DATASET_STORAGE_ID_HERE")
     )
 ), preserving_proto_field_name=True)
 ```

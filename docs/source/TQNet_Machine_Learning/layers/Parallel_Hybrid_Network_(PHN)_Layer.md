@@ -2,7 +2,7 @@
 ## Introduction to PHN
 The Parallel Hybrid Network (PHN) layer consists of Quantum Depth Infused (QDI) and classical Linear layers. Due to the success of deep learning, where many layers of neurons are placed in a long sequence, the first attempts at designing hybrid neural networks involved arranging the quantum and classical layers sequentially. At Terra Quantum, we have pioneered the approach of putting the quantum layers in parallel with the classical ones.
 
-Reference: https://arxiv.org/pdf/2303.03227v1.pdf
+[Reference](https://arxiv.org/pdf/2303.03227v1.pdf)
 
 ## Key Benefits
 ![PHN_Key_Benefits.jpg](../images/PHN_Key_Benefits.jpg)
@@ -51,7 +51,7 @@ from tq42.algorithm import (
     EntanglingProto,
     DiffMethodProto,
     QubitTypeProto,
-) 
+)
 from tq42.compute import HardwareProto
 
 from google.protobuf.json_format import MessageToDict
@@ -59,13 +59,15 @@ from google.protobuf.json_format import MessageToDict
 
 params = MessageToDict(GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
-        # ... TODO: add the other parameters of your choice
+        # Choose model type here
+        model_type=MLModelType.MLP,
+        # Add and customize and customize layers here
         layers=[
             Layer(phn_layer=PHNLayer(
-                in_features=20, 
-                num_qubits=4, 
-                depth=4, 
-                hidden_size=40, 
+                in_features=20,
+                num_qubits=4,
+                depth=4,
+                hidden_size=40,
                 rotation=MeasureProto.Z,
                 entangling=EntanglingProto.STRONG,
                 measure=MeasureProto.Y,
@@ -75,7 +77,8 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         ],
     ),
     inputs=MLTrainInputsProto(
-        data=DatasetStorageInfoProto(storage_id="random-uuid-with-training-data-inside")
+        # Provide the specific dataset storage ID of the data you uploaded to TQ42.
+        data=DatasetStorageInfoProto(storage_id="ENTER_DATASET_STORAGE_ID_HERE")
     )
 ), preserving_proto_field_name=True)
 
@@ -84,11 +87,11 @@ with TQ42Client() as client:
     org = org_list[0]
     proj_list = list_all_projects(client=client, organization_id=org.id)
     proj = proj_list[0]
-    
+
     exp_list = list_all_experiments(client=client, project_id=proj.id)
-    
+
     print("running experiment for exp {}".format(exp_list[0]))
-    
+
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.GENERIC_ML_TRAIN,
