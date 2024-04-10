@@ -37,8 +37,6 @@ class TestConfigEnvironment(unittest.TestCase):
             "int.terraquantum.io",
             "CLIENT ID",
             "openid profile email",
-            True,
-            "CLIENT SECRET",
         )
         self.assertEqual("api.int.terraquantum.io", env.host)
         self.assertEqual(
@@ -58,8 +56,6 @@ class TestConfigEnvironment(unittest.TestCase):
             "staging.terraquantum.io",
             "CLIENT ID",
             "openid profile email",
-            True,
-            "CLIENT SECRET",
         )
 
         self.assertEqual("api.staging.terraquantum.io", env.host)

@@ -32,12 +32,10 @@ class ConfigEnvironment:
     URLs determining environment
     """
 
-    def __init__(self, base_url, client_id, scope, headless, client_secret):
+    def __init__(self, base_url, client_id, scope):
         self.base_url = base_url
         self.client_id = client_id
         self.scope = scope
-        self.headless = headless
-        self.client_secret = client_secret
 
     @property
     def host(self):
@@ -128,11 +126,7 @@ class TQ42Client(object):
             config_data = json.load(f)
 
         environment = ConfigEnvironment(
-            config_data["base_url"],
-            config_data["client_id"],
-            config_data["scope"],
-            config_data["headless"],
-            config_data["client_secret"],
+            config_data["base_url"], config_data["client_id"], config_data["scope"]
         )
 
         self.token_manager = TokenManager(environment, self.config_folder)

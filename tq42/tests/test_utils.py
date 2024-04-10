@@ -112,8 +112,6 @@ class TestUtils(unittest.TestCase):
             config_data["base_url"],
             config_data["client_id"],
             config_data["scope"],
-            config_data["headless"],
-            config_data["client_secret"],
         )
 
         token_manager = TokenManager(environment, None)
