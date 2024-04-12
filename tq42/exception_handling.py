@@ -43,6 +43,7 @@ def handle_generic_sdk_errors(func: F) -> F:
                 command=traceback.extract_stack()[0].line, details=e.details
             )
         except (
+            exceptions.AuthenticationError,
             exceptions.PermissionDeniedError,
             exceptions.UnauthenticatedError,
             exceptions.InvalidArgumentError,

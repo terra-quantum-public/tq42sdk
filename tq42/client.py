@@ -25,6 +25,7 @@ from com.terraquantum.experiment.v1.dataset import (
     dataset_service_pb2_grpc as pb2_data_grpc,
 )
 from tq42.utils.environment_utils import environment_default_set
+from tq42.exceptions import AuthenticationError
 
 
 class ConfigEnvironment:
@@ -163,12 +164,14 @@ class TQ42Client(object):
         )
 
         response_json = response.json()
-        access_token = utils.retrieve_specific_token("access_token", response_json)
+        access_token = response_json.get("access_token")
 
         if access_token:
             self.save_access_token(access_token)
         else:
-            print("Authentication failed.")
+            raise AuthenticationError(
+                "No access token can be retrieved from the response."
+            )
 
     @handle_generic_sdk_errors
     def login(self):
@@ -218,13 +221,11 @@ class TQ42Client(object):
                 headers=self.environment.headers,
             )
             response_json = response_token.json()
+
+            refresh_token = response_json.get("refresh_token")
+            access_token = response_json.get("access_token")
+
             # If we received an access token, print it and break out of the loop
-
-            refresh_token = utils.retrieve_specific_token(
-                "refresh_token", response_json
-            )
-            access_token = utils.retrieve_specific_token("access_token", response_json)
-
             if refresh_token and access_token:
                 self.save_access_token(access_token)
                 self.save_refresh_token(refresh_token)
@@ -248,9 +249,6 @@ class TQ42Client(object):
         print(env_set)
 
     def save_refresh_token(self, response: json):
-        if "refresh_token" not in response:
-            return False
-
         refresh_token = response["refresh_token"]
         utils.save_token(
             service_name="refresh_token",
@@ -259,7 +257,6 @@ class TQ42Client(object):
         )
         current_datetime = datetime.now()
         file_handling.write_to_file(self.timestamp_file_path, current_datetime)
-        return True
 
     def is_config_filepath_default(self, config_file):
         return config_file == self.default_config_file
