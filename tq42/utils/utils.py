@@ -132,3 +132,7 @@ def get_token(service_name: str, backup_save_path: str) -> str:
 
     except (NoKeyringError, InitError):
         return file_handling.read_file(backup_save_path)
+
+
+def retrieve_specific_token(specific_token: str, response: dict) -> str:
+    return response.get(specific_token, "")

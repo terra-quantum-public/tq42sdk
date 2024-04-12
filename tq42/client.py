@@ -151,7 +151,7 @@ class TQ42Client(object):
         self.credential_flow_client_secret = os.getenv("AUTH_CLIENT_SECRET")
 
     @handle_generic_sdk_errors
-    def login_service(self):
+    def login_without_user_interaction(self):
         response = requests.post(
             self.environment.auth_url_token,
             data=self.environment.client_credentials_data(
@@ -162,20 +162,23 @@ class TQ42Client(object):
             headers=self.environment.headers,
         )
 
-        json_response = response.json()
+        response_json = response.json()
+        access_token = utils.retrieve_specific_token("access_token", response_json)
 
-        if self.save_access_token(json_response) is False:
+        if access_token:
+            self.save_access_token(access_token)
+        else:
             print("Authentication failed.")
 
     @handle_generic_sdk_errors
     def login(self):
         if self.credential_flow_client_id and self.credential_flow_client_secret:
             print("Using Client Credential Flow.")
-            self.login_service()
+            self.login_without_user_interaction()
         else:
-            self.login_client()
+            self.login_with_user_interaction()
 
-    def login_client(self):
+    def login_with_user_interaction(self):
         """
         This function will open a window in your browser where you must enter your TQ42 username and password to
         authenticate. To access TQ42 services with Python commands, you need a TQ42 account. When running TQ42 Python
@@ -217,47 +220,46 @@ class TQ42Client(object):
             response_json = response_token.json()
             # If we received an access token, print it and break out of the loop
 
-            if self.save_access_token(response_json) and self.save_refresh_token(
-                response_json
-            ):
+            refresh_token = utils.retrieve_specific_token(
+                "refresh_token", response_json
+            )
+            access_token = utils.retrieve_specific_token("access_token", response_json)
+
+            if refresh_token and access_token:
+                self.save_access_token(access_token)
+                self.save_refresh_token(refresh_token)
                 break
 
             # Otherwise, wait for the specified interval before polling again
             time.sleep(interval)
 
-    def save_access_token(self, response: json):
-        if "access_token" in response:
-            access_token = response["access_token"]
+    def save_access_token(self, access_token: str):
+        save_location = utils.save_token(
+            service_name="access_token",
+            backup_save_path=self.token_file_path,
+            token=access_token,
+        )
 
-            save_location = utils.save_token(
-                service_name="access_token",
-                backup_save_path=self.token_file_path,
-                token=access_token,
-            )
+        print(
+            f"Authentication is successful, access token is saved in: {save_location}."
+        )
 
-            print(
-                f"Authentication is successful, access token is saved in: {save_location}."
-            )
-
-            env_set = environment_default_set(client=self)
-            print(env_set)
-            return True
-
-        return False
+        env_set = environment_default_set(client=self)
+        print(env_set)
 
     def save_refresh_token(self, response: json):
-        if "refresh_token" in response:
-            refresh_token = response["refresh_token"]
-            utils.save_token(
-                service_name="refresh_token",
-                backup_save_path=self.refresh_token_file_path,
-                token=refresh_token,
-            )
-            current_datetime = datetime.now()
-            file_handling.write_to_file(self.timestamp_file_path, current_datetime)
-            return True
+        if "refresh_token" not in response:
+            return False
 
-        return False
+        refresh_token = response["refresh_token"]
+        utils.save_token(
+            service_name="refresh_token",
+            backup_save_path=self.refresh_token_file_path,
+            token=refresh_token,
+        )
+        current_datetime = datetime.now()
+        file_handling.write_to_file(self.timestamp_file_path, current_datetime)
+        return True
 
     def is_config_filepath_default(self, config_file):
         return config_file == self.default_config_file
