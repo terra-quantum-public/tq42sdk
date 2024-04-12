@@ -1,7 +1,4 @@
-setup-auth:
-	poetry self add keyrings.google-artifactregistry-auth@latest
-
-setup: setup-auth
+setup:
 	pre-commit install
 
 lint:
