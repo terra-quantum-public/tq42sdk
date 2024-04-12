@@ -248,8 +248,7 @@ class TQ42Client(object):
         env_set = environment_default_set(client=self)
         print(env_set)
 
-    def save_refresh_token(self, response: json):
-        refresh_token = response["refresh_token"]
+    def save_refresh_token(self, refresh_token: str):
         utils.save_token(
             service_name="refresh_token",
             backup_save_path=self.refresh_token_file_path,
