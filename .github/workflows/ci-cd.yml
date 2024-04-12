@@ -62,21 +62,8 @@ jobs:
       - name: Check-out repository
         uses: actions/checkout@v4
 
-      - name: Authenticate with GCP
-        id: 'auth'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          token_format: access_token
-          workload_identity_provider: 'projects/812757215434/locations/global/workloadIdentityPools/identitypool-global/providers/provider-github'
-          service_account: 'serviceaccount-github-actions@cryptic-hawk-387713.iam.gserviceaccount.com'
-          access_token_lifetime: 300s
-          create_credentials_file: true
-
       - name: Install poetry
         uses: snok/install-poetry@v1
-
-      - name: Setup gcp-auth
-        run: make setup-auth
 
       - name: Install package
         run: poetry install
@@ -119,9 +106,6 @@ jobs:
       - name: Install poetry
         uses: snok/install-poetry@v1
 
-      - name: Setup gcp-auth
-        run: make setup-auth
-
       - name: Install package
         run: poetry install
 
@@ -130,33 +114,9 @@ jobs:
 
       - name: Publish package to GCP artifact registry
         run: |
+          poetry self add keyrings.google-artifactregistry-auth@latest
           poetry config repositories.gcp-registry ${{ secrets.TQ_GCP_ARTIFACT_REGISTRY_UPLOAD }}
           poetry publish -r gcp-registry
-
-      - name: Get grpc client for publishing
-        run: |
-          poetry run pip install keyrings.google-artifactregistry-auth
-          
-          poetry run pip download \
-            --extra-index-url=${{ secrets.TQ_GCP_ARTIFACT_REGISTRY }} \
-            --no-deps \
-            --dest dist_grpc \
-            --no-binary=:all: \
-            tq42-grpc-client==$(poetry run pip show tq42-grpc-client | sed -n -e 's/^.*Version: //p')
-          
-          poetry run pip download \
-            --extra-index-url=${{ secrets.TQ_GCP_ARTIFACT_REGISTRY }} \
-            --no-deps \
-            --dest dist_grpc \
-            tq42-grpc-client==$(poetry run pip show tq42-grpc-client | sed -n -e 's/^.*Version: //p')
-
-      - name: Publish grpc client via twine
-        env:
-          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
-        run: |
-          poetry run pip install twine
-          poetry run twine upload --skip-existing --non-interactive dist_grpc/*
 
       - name: Publish package to PYPI
         env:
