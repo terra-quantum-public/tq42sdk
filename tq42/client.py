@@ -148,7 +148,7 @@ class TQ42Client(object):
         self.experiment_run_client = pb2_exp_run_grpc.ExperimentRunServiceStub(
             self.channel
         )
-        self.credential_flow_client_id = os.getenv("TQ42_>D")
+        self.credential_flow_client_id = os.getenv("TQ42_AUTH_CLIENT_ID")
         self.credential_flow_client_secret = os.getenv("TQ42_AUTH_CLIENT_SECRET")
 
     @handle_generic_sdk_errors
