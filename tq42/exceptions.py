@@ -72,3 +72,9 @@ class LocalPermissionError(TQ42APIError):
 class ExperimentRunCancelError(TQ42APIError):
     def __str__(self):
         return "Cannot cancel a run that was already completed or cancelled."
+
+
+class AuthenticationError(TQ42APIError):
+    def __init__(self, message="Authentication error occurred."):
+        self.message = message
+        super().__init__(self.message)

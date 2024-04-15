@@ -25,6 +25,7 @@ from com.terraquantum.experiment.v1.dataset import (
     dataset_service_pb2_grpc as pb2_data_grpc,
 )
 from tq42.utils.environment_utils import environment_default_set
+from tq42.exceptions import AuthenticationError
 
 
 class ConfigEnvironment:
@@ -54,6 +55,10 @@ class ConfigEnvironment:
         return "https://graphql-gateway.{}/graphql".format(self.base_url)
 
     @property
+    def client_credential_flow_audience(self):
+        return "https://api.{}".format(self.base_url)
+
+    @property
     def headers(self):
         return {"Content-Type": "application/x-www-form-urlencoded"}
 
@@ -77,6 +82,14 @@ class ConfigEnvironment:
             "grant_type": "refresh_token",
             "refresh_token": refresh_token,
             "client_id": self.client_id,
+        }
+
+    def client_credentials_data(self, client_id, client_secret, audience):
+        return {
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "grant_type": "client_credentials",
+            "audience": audience,
         }
 
 
@@ -135,9 +148,39 @@ class TQ42Client(object):
         self.experiment_run_client = pb2_exp_run_grpc.ExperimentRunServiceStub(
             self.channel
         )
+        self.credential_flow_client_id = os.getenv("AUTH_CLIENT_ID")
+        self.credential_flow_client_secret = os.getenv("AUTH_CLIENT_SECRET")
+
+    @handle_generic_sdk_errors
+    def login_without_user_interaction(self):
+        response = requests.post(
+            self.environment.auth_url_token,
+            data=self.environment.client_credentials_data(
+                client_id=self.credential_flow_client_id,
+                client_secret=self.credential_flow_client_secret,
+                audience=self.environment.client_credential_flow_audience,
+            ),
+            headers=self.environment.headers,
+        )
+
+        response_json = response.json()
+        access_token = response_json.get("access_token")
+
+        if not access_token:
+            raise AuthenticationError(
+                "No access token can be retrieved from the response."
+            )
+
+        self.save_access_token(access_token)
 
     @handle_generic_sdk_errors
     def login(self):
+        if self.credential_flow_client_id and self.credential_flow_client_secret:
+            self.login_without_user_interaction()
+        else:
+            self.login_with_user_interaction()
+
+    def login_with_user_interaction(self):
         """
         This function will open a window in your browser where you must enter your TQ42 username and password to
         authenticate. To access TQ42 services with Python commands, you need a TQ42 account. When running TQ42 Python
@@ -147,7 +190,6 @@ class TQ42Client(object):
          https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/README.html#authentication
         """
         # Send the POST request and print the response
-
         response = requests.post(
             self.environment.auth_url_code,
             data=self.environment.code_data,
@@ -177,37 +219,42 @@ class TQ42Client(object):
                 data=data_token,
                 headers=self.environment.headers,
             )
-            json_token = response_token.json()
+            response_json = response_token.json()
+
+            refresh_token = response_json.get("refresh_token")
+            access_token = response_json.get("access_token")
+
             # If we received an access token, print it and break out of the loop
-            if "access_token" in json_token:
-                access_token = json_token["access_token"]
-
-                save_location = utils.save_token(
-                    service_name="access_token",
-                    backup_save_path=self.token_file_path,
-                    token=access_token,
-                )
-
-                print(
-                    f"Authentication is successful, access token is saved in: {save_location}."
-                )
-
-                env_set = environment_default_set(client=self)
-                print(env_set)
-
-            if "refresh_token" in json_token:
-                refresh_token = json_token["refresh_token"]
-                utils.save_token(
-                    service_name="refresh_token",
-                    backup_save_path=self.refresh_token_file_path,
-                    token=refresh_token,
-                )
-                current_datetime = datetime.now()
-                file_handling.write_to_file(self.timestamp_file_path, current_datetime)
+            if refresh_token and access_token:
+                self.save_access_token(access_token)
+                self.save_refresh_token(refresh_token)
                 break
 
             # Otherwise, wait for the specified interval before polling again
             time.sleep(interval)
+
+    def save_access_token(self, access_token: str):
+        save_location = utils.save_token(
+            service_name="access_token",
+            backup_save_path=self.token_file_path,
+            token=access_token,
+        )
+
+        print(
+            f"Authentication is successful, access token is saved in: {save_location}."
+        )
+
+        env_set = environment_default_set(client=self)
+        print(env_set)
+
+    def save_refresh_token(self, refresh_token: str):
+        utils.save_token(
+            service_name="refresh_token",
+            backup_save_path=self.refresh_token_file_path,
+            token=refresh_token,
+        )
+        current_datetime = datetime.now()
+        file_handling.write_to_file(self.timestamp_file_path, current_datetime)
 
     def is_config_filepath_default(self, config_file):
         return config_file == self.default_config_file

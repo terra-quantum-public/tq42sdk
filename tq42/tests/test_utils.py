@@ -109,7 +109,9 @@ class TestUtils(unittest.TestCase):
             config_data = json.load(f)
 
         environment = ConfigEnvironment(
-            config_data["base_url"], config_data["client_id"], config_data["scope"]
+            config_data["base_url"],
+            config_data["client_id"],
+            config_data["scope"],
         )
 
         token_manager = TokenManager(environment, None)
