@@ -148,8 +148,8 @@ class TQ42Client(object):
         self.experiment_run_client = pb2_exp_run_grpc.ExperimentRunServiceStub(
             self.channel
         )
-        self.credential_flow_client_id = os.getenv("AUTH_CLIENT_ID")
-        self.credential_flow_client_secret = os.getenv("AUTH_CLIENT_SECRET")
+        self.credential_flow_client_id = os.getenv("TQ42_AUTH_CLIENT_ID")
+        self.credential_flow_client_secret = os.getenv("TQ42_AUTH_CLIENT_SECRET")
 
     @handle_generic_sdk_errors
     def login_without_user_interaction(self):
