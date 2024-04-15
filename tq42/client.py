@@ -166,17 +166,16 @@ class TQ42Client(object):
         response_json = response.json()
         access_token = response_json.get("access_token")
 
-        if access_token:
-            self.save_access_token(access_token)
-        else:
+        if not access_token:
             raise AuthenticationError(
                 "No access token can be retrieved from the response."
             )
 
+        self.save_access_token(access_token)
+
     @handle_generic_sdk_errors
     def login(self):
         if self.credential_flow_client_id and self.credential_flow_client_secret:
-            print("Using Client Credential Flow.")
             self.login_without_user_interaction()
         else:
             self.login_with_user_interaction()
