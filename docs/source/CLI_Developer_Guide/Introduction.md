@@ -19,6 +19,10 @@ There are 2 ways to Authenticate,
     tq42 auth login
     ```
    
+    - This command will open a window in your browser where you must enter your TQ42 username and password to authenticate.
+    - The authentication validity will keep extending as long as you are using it within a 30 day period.
+   
+
    You will then see the result below if it is successful:
     ```bash
    Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn't available)].
@@ -26,9 +30,6 @@ There are 2 ways to Authenticate,
    proj:a_uuid_of_your_project
     ```
 
-    - This command will open a window in your browser where you must enter your TQ42 username and password to authenticate.
-    - The authentication validity will keep extending as long as you are using it within a 30 day period.
-   
 
 2. By using Client Credential Flow: 
     - Define TQ42_AUTH_CLIENT_ID and TQ42_AUTH_CLIENT_SECRET in the environment variables.
