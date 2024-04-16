@@ -24,11 +24,11 @@ There are 2 ways to Authenticate,
    
 
    You will then see the result below if it is successful:
-    ```bash
+```bash
    Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn't available)].
    org:a_uuid_of_your_org
    proj:a_uuid_of_your_project
-    ```
+```
 
 
 2. By using Client Credential Flow: 
@@ -48,10 +48,11 @@ There are 2 ways to Authenticate,
     ```
    
    You will then see the result below if it is successful:
-    ```bash
+
+```bash
    Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn't available)].
    org:a_uuid_of_your_org
    proj:a_uuid_of_your_project
-    ```
+```
 
    - The authentication validity can be set based on your requirements.

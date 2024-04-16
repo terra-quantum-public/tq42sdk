@@ -22,9 +22,10 @@ After installing TQ42, do the following in your jupyter notebook or python scrip
        client.login()
    ```
 
+
 - The authentication validity will keep extending as long as you are using it within a 30 day period.
 
-   You will then see the result below if it is successful:
+- You will then see the result below if it is successful:
 
 ```bash
    Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn't available)].
