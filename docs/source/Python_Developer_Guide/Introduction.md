@@ -13,9 +13,6 @@ There are 2 ways to Authenticate,
 1. By using your TQ42 User Account in https://terraquantum.io/:
     - This command will open a window in your browser where you must enter your TQ42 username and password to authenticate.
 
-   
-Procedure:
-
 After installing TQ42, do the following in your jupyter notebook or python script:
    
    ```python
@@ -39,8 +36,6 @@ After installing TQ42, do the following in your jupyter notebook or python scrip
     - Define TQ42_AUTH_CLIENT_ID and TQ42_AUTH_CLIENT_SECRET in the environment variables.
     - This authentication doesn't require user interaction.
     - After defining the environment variables, you can authenticate in the same way:
-
-Procedure:
 
 Add the environment variables below to where tq42 was installed. Use the corresponding values that were provided.
 ```bash
