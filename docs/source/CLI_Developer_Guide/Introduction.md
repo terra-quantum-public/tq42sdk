@@ -21,7 +21,9 @@ There are 2 ways to Authenticate,
     
     - This command will open a window in your browser where you must enter your TQ42 username and password to authenticate.
     
-    - If you have previously authenticated and your credentials are still valid, you will be automatically authenticated. However, if your credentials have expired, you will see a prompt to authenticate and can re-authenticate using the command above.
+    - If you have previously authenticated and your credentials are still valid, you will be automatically authenticated. However, if your credentials have expired, you will see a prompt to authenticate and can do so using the command above again.
+
+   - The authentication validity will keep extending as long as you are using it within a 30 day period.
    
 
 2. By defining TQ42_AUTH_CLIENT_ID and TQ42_AUTH_CLIENT_SECRET in the environment variables.
@@ -45,3 +47,5 @@ There are 2 ways to Authenticate,
    org:a_uuid_of_your_org
    proj:a_uuid_of_your_project
     ```
+
+   - The authentication validity can be set based on your requirements.

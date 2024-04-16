@@ -15,6 +15,7 @@ There are 2 ways to Authenticate,
 1. By using your TQ42 account in https://terraquantum.io/. 
     - This command will open a window in your browser where you must enter your TQ42 username and password to authenticate.
 
+   
 Procedure:
 
 After installing TQ42, authenticate by typing `client.login()`.
@@ -26,7 +27,8 @@ After installing TQ42, authenticate by typing `client.login()`.
        client.login()
    ```
 
-If you have previously authenticated and your credentials are still valid, you will be automatically authenticated. However, if your credentials have expired, you will see a prompt to authenticate and can do so using the command above.
+- If you have previously authenticated and your credentials are still valid, you will be automatically authenticated. However, if your credentials have expired, you will see a prompt to authenticate and can do so using the command above.
+- The authentication validity will keep extending as long as you are using it within a 30 day period.
 
 2. By defining AUTH_CLIENT_ID and AUTH_CLIENT_SECRET in the environment variables.
     - This authentication doesn't require user interaction.
@@ -43,9 +45,9 @@ Procedure:
        client.login()
    ```
 
-Note: Currently, TQ42_AUTH_CLIENT_ID and TQ42_AUTH_CLIENT_SECRET needs to me manually requested. You can request one from: support@terraquantum.swiss.
+   - Note: Currently, TQ42_AUTH_CLIENT_ID and TQ42_AUTH_CLIENT_SECRET needs to me manually requested. You can request one from: support@terraquantum.swiss.
 
-
+   - The authentication validity can be set based on your requirements.
 
 
 
