@@ -34,7 +34,7 @@ There are 2 ways to Authenticate,
 2. By using Client Credential Flow: 
     - Define TQ42_AUTH_CLIENT_ID and TQ42_AUTH_CLIENT_SECRET in the environment variables.
     - This authentication doesn't require user interaction. 
-    - Add the following environment variables in the command line.
+    - Add the following environment variables in the command line. Use the corresponding values that were provided.
    
     ```bash
    export TQ42_AUTH_CLIENT_ID=your_auth_client_id

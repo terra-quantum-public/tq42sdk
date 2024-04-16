@@ -42,7 +42,7 @@ After installing TQ42, do the following in your jupyter notebook or python scrip
 
 Procedure:
 
-Add the environment variables below to where tq42 was installed. Use the corresponding values that was provided.
+Add the environment variables below to where tq42 was installed. Use the corresponding values that were provided.
 ```bash
    export TQ42_AUTH_CLIENT_ID=your_auth_client_id
    export TQ42_AUTH_CLIENT_SECRET=your_auth_client_secret
