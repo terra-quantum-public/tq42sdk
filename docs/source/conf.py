@@ -59,5 +59,11 @@ html_js_files = [
 
 html_title = "TQ42SDK Documentation"
 html_extra_path = ["extra_files"]
+
+# Add any paths that contain custom static files (such as style sheets) here,
+# relative to this directory. They are copied after the builtin static files,
+# so a file named "default.css" will overwrite the builtin "default.css".
+html_static_path = ['_static']
+
 # html_logo = “path/to/logo.png”
 # html_favicon = “path/to/favicon.ico”
