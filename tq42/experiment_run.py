@@ -48,6 +48,9 @@ class ExperimentRun:
         else:
             self.data = self._get_data()
 
+    def __str__(self):
+        return str(self.data)
+
     @handle_generic_sdk_errors
     def _get_data(self) -> ExperimentRunProto:
         """
