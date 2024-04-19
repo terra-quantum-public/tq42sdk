@@ -120,6 +120,7 @@ To set a friendly name for an experiment, so it is easier to reference than the 
 ```python
 from tq42.client import TQ42Client
 from tq42.experiment import Experiment
+
 with TQ42Client() as client:
     Experiment(client=client, id="EXP_ID").set_friendly_name(friendly_name="friendly name")
 ```
@@ -131,6 +132,7 @@ The system will change the friendly name for that experiment and return the expe
 You can create a dataset for an experiment 
 
 The API call to create a dataset needs the following arguments:
+        client: TQ42Client,
         project_id: str,
         name: str,
         description: str,
@@ -138,9 +140,11 @@ The API call to create a dataset needs the following arguments:
         sensitivity: str,
 
 ```python
+from tq42.client import TQ42Client
 from tq42.dataset import Dataset, DatasetSensitivityProto
 
-Dataset.create(proj="PROJ_ID", name="Dataset Name", description="Dataset description", url="https://dataset.url/data", sensitivity=DatasetSensitivityProto.CONFIDENTIAL),
+with TQ42Client() as client:
+    Dataset.create(client=client, project_id="PROJ_ID", name="Dataset Name", description="Dataset description", url="https://dataset.url/data", sensitivity=DatasetSensitivityProto.CONFIDENTIAL),
 ```
 You can list all datasets for a project by running:
 
