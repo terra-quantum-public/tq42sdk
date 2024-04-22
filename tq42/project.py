@@ -169,8 +169,14 @@ def list_all(
         organization_id = get_current_value("org")
 
     create_list_proj_request = ListProjectsRequest(organization_id=organization_id)
-
-    res: ListProjectsResponse = client.project_client.ListProjects(
-        request=create_list_proj_request, metadata=client.metadata
-    )
+    try:
+        res: ListProjectsResponse = client.project_client.ListProjects(
+            request=create_list_proj_request, metadata=client.metadata
+        )
+    except Exception as ex:
+        if ex.args[0].code.name == "INVALID_ARGUMENT":
+            print(
+                f"ERROR {ex.args[0].code.name }: organization ID '{organization_id}' not found"
+            )
+            return list()
     return [Project.from_proto(client=client, msg=data) for data in res.projects]
