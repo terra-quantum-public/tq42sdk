@@ -112,9 +112,17 @@ def list_all(client: TQ42Client, project_id: Optional[str] = None) -> List[Exper
         project_id = get_current_value("proj")
 
     list_experiments_request = ListExperimentsRequest(project_id=project_id)
-    res: ListExperimentsResponse = client.experiment_client.ListExperiments(
-        request=list_experiments_request, metadata=client.metadata
-    )
+
+    try:
+        res: ListExperimentsResponse = client.experiment_client.ListExperiments(
+            request=list_experiments_request, metadata=client.metadata
+        )
+
+    except Exception as ex:
+        if ex.args[0].code.name == "INVALID_ARGUMENT":
+            print(f"ERROR {ex.args[0].code.name }: project ID '{project_id}' not found")
+            return list()
+
     return [
         Experiment.from_proto(client=client, msg=experiment_run)
         for experiment_run in res.experiments
