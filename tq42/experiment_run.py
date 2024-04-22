@@ -166,10 +166,19 @@ def list_all(client: TQ42Client, experiment_id: str) -> List[ExperimentRun]:
     https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-runs-within-an-experiment
     """
     list_exp_run_request = ListExperimentRunsRequest(experiment_id=experiment_id)
+    try:
+        res: ListExperimentRunsResponse = (
+            client.experiment_run_client.ListExperimentRuns(
+                request=list_exp_run_request, metadata=client.metadata
+            )
+        )
+    except Exception as ex:
+        if ex.args[0].code.name == "INVALID_ARGUMENT":
+            print(
+                f"ERROR {ex.args[0].code.name }: experiment ID '{experiment_id}' not found"
+            )
+            return list()
 
-    res: ListExperimentRunsResponse = client.experiment_run_client.ListExperimentRuns(
-        request=list_exp_run_request, metadata=client.metadata
-    )
     # TODO: It seems like currently the API returns `experiment_runs` instead of `experimentRuns` as in the protobufs
     return [
         ExperimentRun.from_proto(client=client, msg=experiment_run)
