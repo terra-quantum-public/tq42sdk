@@ -36,6 +36,9 @@ class Compute:
             gpu=configuration.get("GPU", ""),
         )
 
+    def __str__(self):
+        return str(self.show_details())
+
     @staticmethod
     def _find_matching_hardware(hardware_name) -> Dict[str, str]:
         data = get_hw_configurations()
