@@ -53,6 +53,9 @@ class Project:
         else:
             self.data = self._get()
 
+    def __str__(self):
+        return str(self.data)
+
     @handle_generic_sdk_errors
     def _get(self) -> ProjectProto:
         """
