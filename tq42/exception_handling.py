@@ -21,18 +21,24 @@ def handle_generic_sdk_errors(func: F) -> F:
         except InactiveRpcError as e:
             status_code = e.code()
             if status_code == StatusCode.PERMISSION_DENIED:
-                raise exceptions.PermissionDeniedError() from None
+                print(exceptions.PermissionDeniedError())
+                return list()
 
             if status_code == StatusCode.UNAUTHENTICATED:
-                raise exceptions.UnauthenticatedError() from None
+                print(exceptions.UnauthenticatedError())
+                return list()
 
             if status_code in [StatusCode.INVALID_ARGUMENT, StatusCode.NOT_FOUND]:
                 # offending command will be second from the last
                 # last line is: traceback.extract_stack()
                 index = -2 if len(traceback.extract_stack()) > 1 else 0
-                raise exceptions.InvalidArgumentError(
-                    command=traceback.extract_stack()[index].line, details=e.details()
-                ) from None
+                print(
+                    exceptions.InvalidArgumentError(
+                        command=traceback.extract_stack()[index].line,
+                        details=e.details(),
+                    )
+                )
+                return list()
 
         except KeyError:
             raise exceptions.NoDefaultError(
