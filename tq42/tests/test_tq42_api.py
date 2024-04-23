@@ -2,8 +2,6 @@ import unittest
 from unittest.mock import MagicMock, patch
 from google.protobuf.json_format import ParseDict
 from google.protobuf.timestamp_pb2 import Timestamp
-from grpc import StatusCode
-from grpc._channel import _InactiveRpcError as InactiveRpcError, _RPCState as RPCState
 
 from com.terraquantum.project.v1.project import (
     project_pb2 as proj_def,
@@ -16,7 +14,7 @@ from com.terraquantum.organization.v1.organization import (
 from tq42.client import TQ42Client
 from tq42.organization import Organization
 from tq42.project import Project
-from tq42.exceptions import NoDefaultError, InvalidArgumentError
+from tq42.exceptions import NoDefaultError
 
 
 class TestAPI(unittest.TestCase):
@@ -112,24 +110,8 @@ class TestAPI(unittest.TestCase):
         )
 
     def test_project_not_found(self):
-        get_project_mock = MagicMock()
-        get_project_mock.side_effect = InactiveRpcError(
-            RPCState(
-                code=StatusCode.INVALID_ARGUMENT,
-                details="no details",
-                due=[],
-                initial_metadata=[],
-                trailing_metadata=[],
-            )
-        )
-
-        self.client.project_client.GetProject = get_project_mock
-        self.assertRaises(
-            InvalidArgumentError,
-            Project,
-            client=self.client,
-            id="this-project-id-is-impossible-to-find",
-        )
+        pjr = Project(client=self.client, id="this-org-id-is-impossible-to-find")
+        self.assertEqual([], pjr.data)
 
     @patch("tq42.project.write_key_value_to_cache")
     @patch("tq42.project.clear_cache")
@@ -190,22 +172,5 @@ class TestAPI(unittest.TestCase):
         self.assertDictEqual(cache, expected)
 
     def test_org_not_found(self):
-        get_org_mock = MagicMock()
-        get_org_mock.side_effect = InactiveRpcError(
-            RPCState(
-                code=StatusCode.INVALID_ARGUMENT,
-                details="no details",
-                due=[],
-                initial_metadata=[],
-                trailing_metadata=[],
-            )
-        )
-
-        self.client.organization_client.GetOrganization = get_org_mock
-
-        self.assertRaises(
-            InvalidArgumentError,
-            Organization,
-            client=self.client,
-            id="this-org-id-is-impossible-to-find",
-        )
+        org = Organization(client=self.client, id="this-org-id-is-impossible-to-find")
+        self.assertEqual([], org.data)
