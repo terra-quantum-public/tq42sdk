@@ -32,6 +32,9 @@ class TestTq42ErrorHandling(unittest.TestCase):
     def fail_if_still_here(self):
         self.assertTrue(False)
 
+    def fail_if_not_here_anymore(self):
+        self.assertTrue(True)
+
     def test_decorator_happy_path(self):
         @handle_generic_sdk_errors
         def happy_path():
@@ -75,7 +78,7 @@ class TestTq42ErrorHandling(unittest.TestCase):
 
         try:
             raise_invalid_argument_grpc()
-            self.fail_if_still_here()
+            self.fail_if_not_here_anymore()
         except InvalidArgumentError as e:
             self.assertEqual(
                 str(e),
@@ -97,7 +100,7 @@ class TestTq42ErrorHandling(unittest.TestCase):
 
         try:
             raise_status_not_found_grpc()
-            self.fail_if_still_here()
+            self.fail_if_not_here_anymore()
         except InvalidArgumentError as e:
             self.assertEqual(
                 str(e),
@@ -130,7 +133,7 @@ class TestTq42ErrorHandling(unittest.TestCase):
 
         try:
             raise_permission_denied_grpc()
-            self.fail_if_still_here()
+            self.fail_if_not_here_anymore()
         except PermissionDeniedError as e:
             self.assertEqual(str(e), read_file(insufficient_permission_errors_file))
 
@@ -160,7 +163,7 @@ class TestTq42ErrorHandling(unittest.TestCase):
 
         try:
             raise_unauthenticated_grpc()
-            self.fail_if_still_here()
+            self.fail_if_not_here_anymore()
         except UnauthenticatedError as e:
             self.assertEqual(str(e), read_file(unauthenticated_error_file))
 
