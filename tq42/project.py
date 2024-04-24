@@ -110,9 +110,7 @@ class Project:
         https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments
         """
         self.update(name=friendly_name)
-        print(
-            f"Set the friendly name '{ friendly_name   }' for the project id '{ self.id   }'"
-        )
+        print(f"Set the friendly name '{friendly_name}' for the project id '{self.id}'")
         return self
 
     @staticmethod
