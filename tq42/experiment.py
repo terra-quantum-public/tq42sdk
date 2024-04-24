@@ -97,7 +97,11 @@ class Experiment:
 
         For details, see https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments
         """
-        return self.update(name=friendly_name)
+        self.update(name=friendly_name)
+        print(
+            f"Set the friendly name '{friendly_name}' for the experiment id '{self.id}'"
+        )
+        return self
 
 
 @handle_generic_sdk_errors
