@@ -39,6 +39,10 @@ class Dataset:
         else:
             self.data = self._get()
 
+    def __repr__(self):
+        created_at = str(self.data.created_at).replace("\n", " ")
+        return f"(Dataset ID: { self.data.id}, Name: { self.data.name}, Project ID: { self.data.project_id}, Sensitivity: { self.data.sensitivity}, Created by: { self.data.created_by}, Created at: {created_at })"
+
     def __str__(self):
         return str(self.data)
 

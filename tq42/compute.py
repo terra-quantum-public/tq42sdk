@@ -36,6 +36,9 @@ class Compute:
             gpu=configuration.get("GPU", ""),
         )
 
+    def __repr__(self):
+        return f"(Hardware name: { self.config.name}, Cpu: { self.config.cpu}, Gpu: { self.config.gpu}, Memory: { self.config.memory}, Storage: { self.config.storage})"
+
     def __str__(self):
         return str(self.show_details())
 
