@@ -48,6 +48,9 @@ class Experiment:
         else:
             self.data = self._get_data()
 
+    def __repr__(self):
+        return f"(ID: { self.data.id}, Name: { self.data.name})"
+
     def __str__(self):
         return str(self.data)
 
