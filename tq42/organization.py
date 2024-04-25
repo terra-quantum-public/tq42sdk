@@ -43,7 +43,7 @@ class Organization:
             self.data = self._get()
 
     def __repr__(self):
-        return f"(ID: { self.data.id}, Name: { self.data.name})"
+        return f"(Organization ID: { self.data.id}, Name: { self.data.name})"
 
     def __str__(self):
         return str(self.data)
