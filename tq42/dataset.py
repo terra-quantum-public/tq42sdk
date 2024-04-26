@@ -40,11 +40,7 @@ class Dataset:
             self.data = self._get()
 
     def __repr__(self):
-        return "\nDATASET: " + " ".join(
-            k + ": " + str(getattr(self, k)).replace("\n", " ")
-            for k in self.__dict__.keys()
-            if k != "client"
-        )
+        return f"(Dataset ID: { self.data.id}, Name: { self.data.name})"
 
     def __str__(self):
         return str(self.data)

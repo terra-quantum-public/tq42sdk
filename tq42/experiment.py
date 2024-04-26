@@ -49,11 +49,7 @@ class Experiment:
             self.data = self._get_data()
 
     def __repr__(self):
-        return "\nEXPERIMENT: " + " ".join(
-            k + ": " + str(getattr(self, k)).replace("\n", " ")
-            for k in self.__dict__.keys()
-            if k != "_client"
-        )
+        return f"(Experiment ID: { self.data.id}, Name: { self.data.name})"
 
     def __str__(self):
         return str(self.data)

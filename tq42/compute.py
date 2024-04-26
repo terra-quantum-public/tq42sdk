@@ -37,10 +37,7 @@ class Compute:
         )
 
     def __repr__(self):
-        return "\nHARDWARE: " + " ".join(
-            k + ": " + str(getattr(self, k)).replace("\n", " ")
-            for k in self.__dict__.keys()
-        )
+        return str(self.show_details())
 
     def __str__(self):
         return str(self.show_details())
