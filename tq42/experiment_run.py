@@ -54,7 +54,6 @@ class ExperimentRun:
         return str(self.data)
 
     def __repr__(self):
-        print("LUCA")
         parameters = MessageToDict(self.data, preserving_proto_field_name=True)
         return f"(Experiment run ID: { self.data.id}, Status: { parameters['status']}, Algorithm: { parameters['algorithm']}, Hardware: { parameters['hardware']})"
 
