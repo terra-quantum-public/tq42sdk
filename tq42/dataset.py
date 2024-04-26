@@ -40,8 +40,11 @@ class Dataset:
             self.data = self._get()
 
     def __repr__(self):
-        created_at = str(self.data.created_at).replace("\n", " ")
-        return f"(Dataset ID: { self.data.id}, Name: { self.data.name}, Project ID: { self.data.project_id}, Sensitivity: { self.data.sensitivity}, Created by: { self.data.created_by}, Created at: {created_at })"
+        return "\nDATASET: " + " ".join(
+            k + ": " + str(getattr(self, k)).replace("\n", " ")
+            for k in self.__dict__.keys()
+            if k != "client"
+        )
 
     def __str__(self):
         return str(self.data)

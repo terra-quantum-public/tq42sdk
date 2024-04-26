@@ -43,7 +43,11 @@ class Organization:
             self.data = self._get()
 
     def __repr__(self):
-        return f"(Organization ID: { self.data.id}, Name: { self.data.name})"
+        return "\nORGANIZATION: " + " ".join(
+            k + ": " + str(getattr(self, k)).replace("\n", " ")
+            for k in self.__dict__.keys()
+            if k != "client"
+        )
 
     def __str__(self):
         return str(self.data)

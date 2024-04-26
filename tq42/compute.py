@@ -37,7 +37,10 @@ class Compute:
         )
 
     def __repr__(self):
-        return f"(Hardware name: { self.config.name}, Cpu: { self.config.cpu}, Gpu: { self.config.gpu}, Memory: { self.config.memory}, Storage: { self.config.storage})"
+        return "\nHARDWARE: " + " ".join(
+            k + ": " + str(getattr(self, k)).replace("\n", " ")
+            for k in self.__dict__.keys()
+        )
 
     def __str__(self):
         return str(self.show_details())

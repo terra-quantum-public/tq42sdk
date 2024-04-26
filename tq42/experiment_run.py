@@ -51,6 +51,14 @@ class ExperimentRun:
     def __str__(self):
         return str(self.data)
 
+    # todo leggi https://googleapis.dev/python/protobuf/latest/google/protobuf/json_format.html per determinare nomi invece di numeri in self.data.algorithm
+    def __repr__(self):
+        return "\nEXPERIMENT RUN: " + " ".join(
+            k + ": " + str(getattr(self, k)).replace("\n", " ")
+            for k in self.__dict__.keys()
+            if k != "client"
+        )
+
     @handle_generic_sdk_errors
     def _get_data(self) -> ExperimentRunProto:
         """

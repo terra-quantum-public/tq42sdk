@@ -54,7 +54,11 @@ class Project:
             self.data = self._get()
 
     def __repr__(self):
-        return f"(Project ID: { self.data.id}, Name: { self.data.name})"
+        return "\nPROJECT: " + " ".join(
+            k + ": " + str(getattr(self, k)).replace("\n", " ")
+            for k in self.__dict__.keys()
+            if k != "client"
+        )
 
     def __str__(self):
         return str(self.data)
