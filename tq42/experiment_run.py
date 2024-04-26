@@ -53,7 +53,6 @@ class ExperimentRun:
     def __str__(self):
         return str(self.data)
 
-    # todo leggi https://googleapis.dev/python/protobuf/latest/google/protobuf/json_format.html per determinare nomi invece di numeri in self.data.algorithm
     def __repr__(self):
         print("LUCA")
         parameters = MessageToDict(self.data, preserving_proto_field_name=True)
