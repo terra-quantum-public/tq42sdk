@@ -27,6 +27,8 @@ from com.terraquantum.experiment.v1.experimentrun.list_experiment_runs_response_
     ListExperimentRunsResponse,
 )
 
+from google.protobuf.json_format import MessageToDict
+
 
 class ExperimentRun:
     id: str
@@ -53,11 +55,9 @@ class ExperimentRun:
 
     # todo leggi https://googleapis.dev/python/protobuf/latest/google/protobuf/json_format.html per determinare nomi invece di numeri in self.data.algorithm
     def __repr__(self):
-        return "\nEXPERIMENT RUN: " + " ".join(
-            k + ": " + str(getattr(self, k)).replace("\n", " ")
-            for k in self.__dict__.keys()
-            if k != "client"
-        )
+        print("LUCA")
+        parameters = MessageToDict(self.data, preserving_proto_field_name=True)
+        return f"(Experiment run ID: { self.data.id}, Status: { parameters['status']}, Algorithm: { parameters['algorithm']}, Hardware: { parameters['hardware']})"
 
     @handle_generic_sdk_errors
     def _get_data(self) -> ExperimentRunProto:
