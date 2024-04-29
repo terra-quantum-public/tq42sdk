@@ -205,8 +205,6 @@ class TQ42Client(object):
 
         # Print the message to the user
         print(
-            f"This command will open a window in your browser where you must enter your TQ42 username and password to authenticate. \n"
-            f"The authentication validity will keep extending as long as you are using it within a 30 day period. \n"
             f"If a browser does not open, please access this URL: {verification_uri_complete} to login. Also check the code: {user_code}"
         )
 
