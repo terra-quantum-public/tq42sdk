@@ -8,7 +8,7 @@
         },
         "login": {
             "help": {
-                "text": "This command will open a window in your browser where you must confirm the MFA code, then enter your TQ42 username and password to authenticate. To access TQ42 services with Python commands, you need a TQ42 account. When running TQ42 Python commands, your environment needs to have access to your TQ42 account credentials.",
+                "text": "This function will open a window in your browser where you must confirm the MFA code, then enter your TQ42 username and password to authenticate. To access TQ42 services with Python commands, you need a TQ42 account. When running TQ42 Python commands, your environment needs to have access to your TQ42 account credentials.",
                 "level": "command",
                 "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/README.html#authentication",
                 "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#"
