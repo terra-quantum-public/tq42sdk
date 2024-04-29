@@ -60,7 +60,6 @@ Welcome to TQ42SDK's Documentation
    TetraOpt_Algorithm/Parameters_and_Hyperparameters.md
    TetraOpt_Algorithm/Output_Format.md
    TetraOpt_Algorithm/Assumptions_Limitations.md
-   TetraOpt_Algorithm/Best_Use_Cases_Applicability.md
 
 .. toctree::
    :maxdepth: 4
