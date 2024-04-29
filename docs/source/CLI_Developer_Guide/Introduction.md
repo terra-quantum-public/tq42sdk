@@ -19,7 +19,7 @@ There are 2 ways to Authenticate,
     tq42 auth login
     ```
    
-    - This command will open a window in your browser where you must enter your TQ42 username and password to authenticate.
+    - This command will open a window in your browser where you must confirm the MFA code, then enter your TQ42 username and password to authenticate.
     - The authentication validity will keep extending as long as you are using it within a 30 day period.
    
 

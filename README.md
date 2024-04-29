@@ -57,9 +57,9 @@ with TQ42Client() as client:
     client.login()
 ```
 
-This command will open a window in your browser where you must enter your TQ42 username and password to authenticate.
+This API call will open a window in your browser where you must confirm the MFA code, then enter your TQ42 username and password to authenticate.
 
-If you have previously authenticated and your credentials are still valid, you will be automatically authenticated. However, if your credentials have expired, you will see a prompt to authenticate and can re-authenticate using the command above.
+The authentication validity will keep extending as long as you are using it within a 30 day period.
 
 ## Create an exemplary experiment run
 
