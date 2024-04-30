@@ -182,9 +182,10 @@ class TQ42Client(object):
 
     def login_with_user_interaction(self):
         """
-        This function will open a window in your browser where you must enter your TQ42 username and password to
-        authenticate. To access TQ42 services with Python commands, you need a TQ42 account. When running TQ42 Python
-        commands, your environment needs to have access to your TQ42 account credentials.
+        This command will open a window in your browser where you must confirm the MFA code, then enter your TQ42
+        username and password to authenticate. The authentication validity will keep extending as long as you are
+        using it within a 30 day period. To access TQ42 services with Python commands, you need a TQ42 account.
+        When running TQ42 Python commands, your environment needs to have access to your TQ42 account credentials.
 
         For details, see
          https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/README.html#authentication
