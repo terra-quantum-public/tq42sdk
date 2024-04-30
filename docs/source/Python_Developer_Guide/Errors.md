@@ -1,5 +1,5 @@
 # Errors
-This page contains common errors you may encounter when using TQ42. If you need further assistance, please visit https://tq42.com/help or contact our support team at support@terraquantum.swiss.
+This page contains common errors you may encounter when using TQ42. If you need further assistance, please visit [TQ42 Help](https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/) or contact our support team at support@terraquantum.swiss.
 
 ## Authentication Expired
 `User Not Logged In: Authentication Required`
@@ -8,7 +8,7 @@ You are not currently logged in. Please log in or authenticate to access this fe
 
 To log in with your username and password or stored token, type `tq42.auth.login()`.
 
-If you don't have an account, sign up by visiting our website at https://tq42.com/signup.
+If you don't have an account, sign up by visiting our [website](https://tq42.com).
 
 If you need further assistance, please contact our support team at support@terraquantum.swiss.
 
@@ -40,7 +40,7 @@ Please check your internet connection and try again. If the problem persists, co
 
 The command you entered, `[variable]`, is not recognized. Please check the spelling and syntax of the command and try again.
 
-For a list of available commands, type `help` or consult the documentation at https://tq42.com/help. For help with a specific command, type `help("command")`. For example, `help(Experiment)`.
+For a list of available commands, type `help` or consult the documentation at [TQ42 Help](https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/). For help with a specific command, type `help("command")`. For example, `help(Experiment)`.
 
 ## Resource Unavailable
 

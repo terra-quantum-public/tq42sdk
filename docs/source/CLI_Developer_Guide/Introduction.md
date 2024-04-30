@@ -4,19 +4,18 @@ The TQ42 Command Line Interface (TQ42 CLI) enables you to interact with TQ42 ser
 
 ## Prerequisites
 
-For information about how to get started with the TQ42 SDK and its underlying dependencies, see the SDK README file here:  
-https://github.com/terra-quantum-io/tq42sdk
+For information about how to get started with the TQ42 SDK and its underlying dependencies, see the SDK [README](https://github.com/terra-quantum-public/tq42sdk).
 
 ## Authentication
 
 To access TQ42 services with the TQ42 CLI, you need a TQ42 account. When running TQ42 CLI commands, the TQ42 CLI needs to have access to your TQ42 account credentials.
 
 There are 2 ways to Authenticate, 
-1. By using your TQ42 account in https://terraquantum.io/: 
+1. By using your TQ42 [account](https://terraquantum.io/): 
     - Authenticate by typing the CLI command:
 
     ```bash
-    tq42 auth login
+       tq42 auth login
     ```
    
     - This command will open a window in your browser where you must confirm the MFA code, then enter your TQ42 username and password to authenticate.
@@ -25,7 +24,7 @@ There are 2 ways to Authenticate,
 
    You will then see the result below if it is successful:
 ```bash
-   Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn't available)].
+   Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn\'t available)].
    org:a_uuid_of_your_org
    proj:a_uuid_of_your_project
 ```
@@ -37,20 +36,20 @@ There are 2 ways to Authenticate,
     - Add the following environment variables in the command line. Use the corresponding values that were provided.
    
     ```bash
-   export TQ42_AUTH_CLIENT_ID=your_auth_client_id
-   export TQ42_AUTH_CLIENT_SECRET=your_auth_client_secret
+       export TQ42_AUTH_CLIENT_ID=your_auth_client_id
+       export TQ42_AUTH_CLIENT_SECRET=your_auth_client_secret
     ```
 
       - Then do the same as above:
 
     ```bash
-    tq42 auth login
+       tq42 auth login
     ```
    
    You will then see the result below if it is successful:
 
 ```bash
-   Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn't available)].
+   Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn\'t available)].
    org:a_uuid_of_your_org
    proj:a_uuid_of_your_project
 ```
