@@ -10,8 +10,8 @@ https://github.com/terra-quantum-io/tq42sdk.
 ## Authentication
 There are 2 ways to Authenticate, 
 
-1. By using your TQ42 User Account in https://terraquantum.io/:
-    - This command will open a window in your browser where you must enter your TQ42 username and password to authenticate.
+A) By using your TQ42 User Account in https://terraquantum.io/:
+    - This API call will open a window in your browser where you must confirm the MFA code, then enter your TQ42 username and password to authenticate.
 
 After installing TQ42, do the following in your jupyter notebook or python script:
    
@@ -33,7 +33,7 @@ After installing TQ42, do the following in your jupyter notebook or python scrip
    proj:a_uuid_of_your_project
 ```
 
-2. By using Client Credential Flow: 
+B) By using Client Credential Flow: 
     - Define TQ42_AUTH_CLIENT_ID and TQ42_AUTH_CLIENT_SECRET in the environment variables.
     - This authentication doesn't require user interaction.
     - After defining the environment variables, you can authenticate in the same way:
