@@ -5,7 +5,7 @@ The algorithm will output a two-part object with:
 2. The point at which the minimum value is found, “x”
 
 For example,
-```json
+```bash
 {
   “y”: 0.3,
   “x”: [1, 2, 3]

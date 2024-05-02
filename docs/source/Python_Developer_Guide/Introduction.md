@@ -4,13 +4,12 @@ Interact with TQ42 services using Python commands. With minimal configuration, T
 
 ## Prerequisites
 
-For information about how to get started with the TQ42 SDK and its underlying dependencies, see the SDK README file here:  
-https://github.com/terra-quantum-io/tq42sdk.
+For information about how to get started with the TQ42 SDK and its underlying dependencies, see the SDK [README](https://github.com/terra-quantum-public/tq42sdk).
 
 ## Authentication
 There are 2 ways to Authenticate, 
 
-A) By using your TQ42 User Account in https://terraquantum.io/:
+A) By using your TQ42 User [Account](https://terraquantum.io/):
     - This API call will open a window in your browser where you must confirm the MFA code, then enter your TQ42 username and password to authenticate.
 
 After installing TQ42, do the following in your jupyter notebook or python script:
@@ -28,7 +27,7 @@ After installing TQ42, do the following in your jupyter notebook or python scrip
 - You will then see the result below if it is successful:
 
 ```bash
-   Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn't available)].
+   Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn\'t available)].
    org:a_uuid_of_your_org
    proj:a_uuid_of_your_project
 ```
@@ -58,11 +57,11 @@ Add the environment variables below to where tq42 was installed. Use the corresp
    You will then see the result below if it is successful:
 
 ```bash
-   Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn't available)].
+   Authentication is successful, access token is saved in: [keyring or filepath(when system keyring isn\'t available)].
    org:a_uuid_of_your_org
    proj:a_uuid_of_your_project
 ```
 
 ## Working with Jupyter
 
-Some of our examples include work we’ve performed in Jupyter. Visit https://jupyter.org/install to learn more and optionally install Jupyter.
+Some of our examples include work we’ve performed in Jupyter. Visit [Jupyter](https://jupyter.org/install) to learn more and optionally install Jupyter.
