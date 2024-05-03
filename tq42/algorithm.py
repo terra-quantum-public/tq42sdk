@@ -9,6 +9,7 @@
 # TODO: Revisit this to make it dynamic with working type hints
 
 from com.terraquantum.experiment.v1.experimentrun.algorithm.shared_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.data_processing_shared_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.circuit_run_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_shared_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ts_mlp_train_pb2 import *
