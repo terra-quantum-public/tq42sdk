@@ -6,7 +6,7 @@ This page contains common errors you may encounter when using TQ42. If you need 
 
 You are not currently logged in. Please log in or authenticate to access this feature or command.
 
-To log in with your username and password or stored token, type `tq42.auth.login()`.
+To log in with your username and password or stored token, use `TQ42Client().login()`.
 
 If you don't have an account, sign up by visiting our [website](https://tq42.com).
 

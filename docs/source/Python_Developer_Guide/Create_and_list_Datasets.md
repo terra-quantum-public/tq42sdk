@@ -59,15 +59,6 @@ from tq42.client import TQ42Client
 from tq42.dataset import list_all
 
 with TQ42Client() as client:
-    datasets = list_all(client=client, project_id="PROJECT_ID")
-```
-
-For example:
-
-```python
-from tq42.client import TQ42Client
-from tq42.dataset import list_all
-
-with TQ42Client() as client:
-    datasets = list_all(client=client, project_id="cbbc8b76-146c-45b1-b70c-1a18eab29a07")
+    datasets = list_all(client=client, project_id="<YOUR_PROJECT_ID>")
+    print(datasets)
 ```

@@ -11,13 +11,14 @@ from tq42.experiment_run import ExperimentRun
 with TQ42Client() as client:
     client.login()
 
-    ExperimentRun.create(
+    experiment_run = ExperimentRun.create(
         client=client,
-        experiment_id="EXP_ID",
-        compute="COMPUTE",
-        algorithm="ALGORITHM",
-        parameters="PARAMETERS_JSON"
+        experiment_id="<YOUR_EXP_ID>",
+        compute="<COMPUTE>",
+        algorithm="<ALGORITHM>",
+        parameters="<PARAMETERS_JSON>"
     )
+    print(experiment_run)
 ```
 
 The preceding command consists of the following elements:
@@ -59,10 +60,11 @@ with TQ42Client() as client:
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.TETRA_OPT,
-        experiment_id="ff573d1a-b759-4ca5-8fc6-43ed42567420",
+        experiment_id="<YOUR_EXP_ID>",
         compute=HardwareProto.SMALL,
         parameters=params
     )
+    print(run)
 ```
 
 ## Monitoring an Experiment Run
@@ -76,17 +78,8 @@ from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun
 
 with TQ42Client() as client:
-    ExperimentRun(client=client, id="EXP_RUN_ID").poll()
-```
-
-For example:
-
-```python
-from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
-
-with TQ42Client() as client:
-    ExperimentRun(client=client, id="2852d0c7-2c5a-4d24-9e1e-f859c0dc6f81").poll()
+    run = ExperimentRun(client=client, id="<YOUR_EXP_RUN_ID>").poll()
+    print(run)
 ```
 
 Alternatively, you can check on the status of a run at any time by using the `check`
@@ -96,20 +89,11 @@ from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun
 
 with TQ42Client() as client:
-    ExperimentRun(client=client, id="EXP_RUN_ID").check()
+    run = ExperimentRun(client=client, id="<YOUR_EXP_RUN_ID>").check()
+    print(run)
 ```
 
 The system will return the instance itself with updated data.
-
-For example:
-
-```python
-from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
-
-with TQ42Client() as client:
-    ExperimentRun(client=client, id="2852d0c7-2c5a-4d24-9e1e-f859c0dc6f81").check()
-```
 
 
 ## Cancelling an Experiment Run
@@ -121,18 +105,12 @@ from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun
 
 with TQ42Client() as client:
-    ExperimentRun(client=client, id="EXP_RUN_ID").cancel()
+    run = ExperimentRun(client=client, id="<YOUR_EXP_RUN_ID>").cancel()
+    print(run)
 ```
 
 If the run has not completed when the cancellation request is submitted, the run will move into `CANCELLED_PENDING` status.
 
-If the run has been fully cancelled, it will move into `CANCELLED` status; however, if the result comes before the run was `CANCELLED` or `CANCELLED_PENDING`, then the run will complete and the status will show `COMPLETED`.
-
-For example:
-```python
-from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
-
-with TQ42Client() as client:
-    ExperimentRun(client=client, id="2852d0c7-2c5a-4d24-9e1e-f859c0dc6f81").cancel()
-```
+If the run has been fully cancelled, it will move into `CANCELLED` status;
+however, if the result comes before the run was `CANCELLED` or `CANCELLED_PENDING`,
+then the run will complete and the status will show `COMPLETED`.

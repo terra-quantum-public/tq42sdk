@@ -2,110 +2,36 @@
 
 ## Selecting Compute Resources for Your Experiment Run
 
-TQ42 offers several configurations for compute resources to accommodate a variety of experiment run sizes. To prepare your experiment run for submission, indicate a pre-configured compute resource. The options are:
-
-- `compute="small"`
-- `compute="medium"`
-- `compute="large"`
-- `compute="small_gpu"`
-- `compute="medium_gpu"`
-- `compute="large_gpu"`
-
-One of these compute references must be included in your run command as a _flag_. For example, 
-```bash
-compute=COMPUTE_NAME
-```
-
-
-For more information on how to include this flag in your run command, see **Submitting and Monitoring a Run**. 
+TQ42 offers several configurations for compute resources to accommodate a variety of experiment run sizes.
+To prepare your experiment run for submission, indicate a pre-configured compute resource.
 
 ## Viewing Available Compute Resources and Configuration Details
 
-For a list of the available compute resources, type `compute.list()`:
+For a list of the available compute resources, use the `list_all` function provided by the `tq42.compute` module.
 
 ```python
 from tq42.compute import list_all
 
 compute_options = list_all()
+print(compute_options)
 ```
 
-The system will return the results:
-```bash
-SMALL
-MEDIUM
-LARGE
-SMALL_GPU
-MEDIUM_GPU
-LARGE_GPU
-```
+The function will return a list of compute instances.
 
-
-If you need more details on what each of the compute configurations includes, type `tq42.compute.show_details()`: 
+If you need more details on what each of the compute configurations includes, use `show_details` function on this instance: 
 ```python
-    compute.show_details()
+from tq42.compute import list_all
+
+compute = list_all()[0]
+print(compute.show_details())
 ```
 
-The system will return information about the configurations:
-```bash
-SMALL
-CPUs = (#)
-Memory = (#)
-Storage = (enter text)
-GPU = (N/A)
-
-MEDIUM
-CPUs = (#)
-Memory = (#)
-Storage = (enter text)
-GPU = (N/A)
-
-LARGE
-CPUs = (#)
-Memory = (#)
-Storage = (enter text)
-GPU = (N/A)
-
-SMALL_GPU
-CPUs = (#)
-Memory = (#)
-Storage = (enter text)
-GPU = (details about type)
-
-MEDIUM_GPU
-CPUs = (#)
-Memory = (#)
-Storage = (enter text)
-GPU = (details about type)
-
-LARGE_GPU
-CPUs = (#)
-Memory = (#)
-Storage = (enter text)
-GPU = (details about type)
-```
-
-Optionally, you may append the `compute=COMPUTE_NAME` flag for the specific compute type to view the details only for that configuration.
+Optionally, you may use the `HardwareProto` to specify a specific compute configuration to initialize the instance.
 
 ```python
-from tq42.compute import Compute
+from tq42.compute import Compute, HardwareProto
 
-compute = Compute(hardware=HARDWARE_NAME)
+compute = Compute(hardware=HardwareProto.SMALL)
 details = compute.show_details()
-```
-
-For example:
-```python
-from tq42.compute import Compute
-
-Compute(hardware="SMALL").show_details()
-```
-
-Will result in the following output:
-
-```bash
-name = SMALL
-cpu = (#)
-memory = (#)
-storage = (enter text)
-gpu = (N/A)
+print(details)
 ```
