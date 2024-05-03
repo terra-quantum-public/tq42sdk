@@ -137,7 +137,8 @@ from tq42.client import TQ42Client
 from tq42.experiment import Experiment
 
 with TQ42Client() as client:
-    Experiment(client=client, id="<YOUR_EXP_ID>").set_friendly_name(friendly_name="friendly name")
+    experiment = Experiment(client=client, id="<YOUR_EXP_ID>").set_friendly_name(friendly_name="friendly name")
+    print(experiment)
 ```
 
 The system will change the friendly name for that experiment and return the updated experiment instance itself.
