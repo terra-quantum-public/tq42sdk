@@ -49,7 +49,7 @@ class Experiment:
             self.data = self._get_data()
 
     def __repr__(self) -> str:
-        return f"<Experiment Id={self.id}>"
+        return f"<Experiment Id={self.id} Name={self.data.name}>"
 
     def __str__(self) -> str:
         return str(self.data)

@@ -37,7 +37,7 @@ class Compute:
         )
 
     def __repr__(self) -> str:
-        return f"<Compute Id={self.hardware}>"
+        return f"<Compute Id={self.hardware} Name={HardwareProto.Name(self.hardware)}>"
 
     def __str__(self) -> str:
         return str(self.show_details())

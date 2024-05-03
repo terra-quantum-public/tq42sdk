@@ -43,7 +43,7 @@ class Organization:
             self.data = self._get()
 
     def __repr__(self) -> str:
-        return f"<Organization Id={self.id}>"
+        return f"<Organization Id={self.id} Name={self.data.name}>"
 
     def __str__(self) -> str:
         return str(self.data)
