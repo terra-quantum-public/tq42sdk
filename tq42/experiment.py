@@ -48,7 +48,10 @@ class Experiment:
         else:
             self.data = self._get_data()
 
-    def __str__(self):
+    def __repr__(self) -> str:
+        return f"<Experiment Id={self.id} Name={self.data.name}>"
+
+    def __str__(self) -> str:
         return str(self.data)
 
     @handle_generic_sdk_errors
