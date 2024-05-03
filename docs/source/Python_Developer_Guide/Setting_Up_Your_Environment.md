@@ -40,7 +40,7 @@ from tq42.client import TQ42Client
 from tq42.project import list_all
 
 with TQ42Client() as client:
-    projects = list_all(client=client, organization_id="ORG_ID")
+    projects = list_all(client=client, organization_id="<YOUR_ORG_ID>")
     print(projects)
 ```
 
@@ -56,7 +56,7 @@ from tq42.experiment import list_all
 from tq42.client import TQ42Client
 
 with TQ42Client() as client:
-    experiments = list_all(client=client, project_id="PROJ_ID")
+    experiments = list_all(client=client, project_id="<YOUR_PROJ_ID>")
     print(experiments)
 ```
 
@@ -73,7 +73,7 @@ from tq42.experiment_run import list_all
 from tq42.client import TQ42Client
 
 with TQ42Client() as client:
-    experiment_runs = list_all(client=client, experiment_id="EXP_ID")
+    experiment_runs = list_all(client=client, experiment_id="<YOUR_EXP_ID>")
     print(experiment_runs)
 ```
 
