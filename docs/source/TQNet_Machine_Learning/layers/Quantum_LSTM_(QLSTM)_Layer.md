@@ -19,7 +19,7 @@ The following hyperparameters are included in the Quantum LSTM layer. These are 
 | depth          | Number of variational layers inside one quantum circuit.                                                                                                        | int    | 1 to 30         | 1       |
 | batch_first    | If ``True``, then the input and output tensors are provided as `(batch, seq, feature)` instead of `(seq, batch, feature)`.                                      | bool   | `true` `false`  | `false` |
 | bidirectional  | If ``True``, becomes a bidirectional QLSTM.                                                                                                                     | bool   | `true` `false`  | `false` |
-| inversward     | N/A                                                                                                                                                             | bool   | `true` `false`  | `false` |
+| inversward     | If True, then the sequence of input data is read by the QLSTM layer in inverse order.                                                                           | bool   | `true` `false`  | `false` |
 
 
 ## Sample Python Code Block

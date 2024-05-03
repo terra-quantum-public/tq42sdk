@@ -66,7 +66,7 @@ The system will return a list of available experiments instances.
 ## List All Runs within an Experiment
 
 To list all the runs within an experiment you have permission to view,
-use the list_all function in `tq42.experiment_run`:
+use the `list_all` function in `tq42.experiment_run`:
 
 ```python
 from tq42.experiment_run import list_all
