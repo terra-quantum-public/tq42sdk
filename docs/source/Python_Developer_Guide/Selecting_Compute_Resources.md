@@ -2,25 +2,12 @@
 
 ## Selecting Compute Resources for Your Experiment Run
 
-TQ42 offers several configurations for compute resources to accommodate a variety of experiment run sizes. To prepare your experiment run for submission, indicate a pre-configured compute resource. The options are:
-
-- `compute="small"`
-- `compute="medium"`
-- `compute="large"`
-- `compute="small_gpu"`
-- `compute="medium_gpu"`
-- `compute="large_gpu"`
-
-One of these compute references must be included in your run command as a _flag_. For example, 
-```bash
-compute=COMPUTE_NAME
-```
-
-For more information on how to include this flag in your run command, see **Submitting and Monitoring a Run**. 
+TQ42 offers several configurations for compute resources to accommodate a variety of experiment run sizes.
+To prepare your experiment run for submission, indicate a pre-configured compute resource.
 
 ## Viewing Available Compute Resources and Configuration Details
 
-For a list of the available compute resources, type `compute.list()`:
+For a list of the available compute resources, use the `list_all` function provided by the `tq42.compute` module.
 
 ```python
 from tq42.compute import list_all
