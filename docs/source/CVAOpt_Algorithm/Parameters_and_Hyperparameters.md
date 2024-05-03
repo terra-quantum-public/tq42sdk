@@ -64,7 +64,7 @@ func_eval_worker_url_zdt1 = 'http://' + func_eval_worker_ip + ':8000/test_func_e
 
 
 with TQ42Client() as client:
-      params = MessageToDict(CvaOptMetadataProto(
+    params = MessageToDict(CvaOptMetadataProto(
         parameters=CvaOptParametersProto(
             objectives = [{'name': 'Sphere', 'aim_type': 'MINIMIZE'}],
             variables = [{'name': 'x1', 'info_real': {'lower_bound': -1.0, 'upper_bound': 1.0}},
@@ -73,9 +73,7 @@ with TQ42Client() as client:
             parameters = {'max_generation': 250, 'mue': 15, 'lambda' : 100},
             ),
         inputs=CvaOptInputsProto(),
-        ),
-        preserving_proto_field_name=True,
-    )
+    ), preserving_proto_field_name=True)
 
     ExperimentRun.create(
         client=client,
@@ -83,4 +81,5 @@ with TQ42Client() as client:
         experiment_id="your_experiment_id",
         compute=HardwareProto.SMALL,
         parameters=params,
+    )
 ```
