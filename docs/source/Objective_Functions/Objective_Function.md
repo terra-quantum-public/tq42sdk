@@ -1,6 +1,10 @@
-# Creating an Objective Function for TQ42
+# Creating an Objective Function or Local Optimization Function for TQ42
 
 An objective function serves as a foundational component for optimization algorithms, guiding the computation towards an optimal solution. It is a precise mathematical expression defining the criteria for the "best" outcome, which could include minimizing costs, maximizing revenue, finding the most efficient route, or other objectives. In cases of multi-objective optimization([1]), additional functions are added to accommodate several objectives simultaneously, balancing trade-offs and providing a set of optimal solutions known as the Pareto front.([2]) This approach allows the algorithm to evaluate potential solutions against a spectrum of criteria and converge on the one that best satisfies the composite set of predefined goals.
+
+The TetraOpt algorithm can optionally accept a local optimization function to refine optimization estimates. This is 
+equivalent to running the TetraOpt optimization by itself, but following up each iteration with a second optimization 
+algorithm. 
 
 [1]: https://www.egr.msu.edu/~kdeb/papers/k2011003.pdf
 [2]: https://en.wikipedia.org/wiki/Pareto_front
@@ -11,6 +15,9 @@ A TQ42 optimization algorithm must be provided with one or more real-valued func
 The endpoint will have two API calls:
 1. `eval`
 2. `task_status`
+
+A local optimization function can be specified using endpoint with the same API calls and payloads as an objective 
+function endpoint. The difference will be in the results of the `task_status` call, as explained later. 
 
 ## 1. `eval` API Call
 The TQ42 optimization algorithms use pandas data frames internally and the `eval` endpoint will receive a json string containing a dictionary which is transformable to a pandas data frame and vice versa. The keys of the dictionary are the columns of the data frame, which are also the names of the input variables. The `eval` endpoint uses the `POST` verb for HTTP to evaluate these candidate solutions and return the same dictionary extended with the objective(s) as new key(s), e.g.
@@ -43,7 +50,7 @@ response = requests.post(url, json=data)
 
 The result of this API call will be a task id, such as:
 
-```python
+```json
 {
   "task_id": "f5611b6e-4d1f-4247-b7de-252049efc2c9"
 }
@@ -71,29 +78,57 @@ response = requests.post(url, json=data)
 ```
 
 Response:
-`task_status` will return a status and possible result, such as:
-```python
+`task_status` for an objective function will return a status and possible result, such as:
+```json
 {
     "status": "SUCCESS",
     "result": {
         "x1": [
             1.0,
             2.1,
-            3.4,
+            3.4
         ],
         "x2": [
             4.8,
             5.7,
-            6.6,
+            6.6
         ],
         "y": [
             5.8,
-            7.8,
-            10.0,
+            7.8
         ]
     }   
 }
 ```
+
+Here the values of `"y"`, `5.8` and `7.8` are the objective function evaluated at `"x1"` and `"x2"`.
+
+
+The API results for a successful call to a local optimization function will have a similar structure, such as
+```json
+{
+    "status": "SUCCESS",
+    "result": {
+        "x1": [
+            1.0,
+            2.1,
+            3.4
+        ],
+        "x2": [
+            4.8,
+            5.7,
+            6.6
+        ],
+        "y": [
+            [5.8, [1.1, 2.0, 3.5]],
+            [7.8, [4.9, 5.6, 6.5]]
+        ]
+    }   
+}
+```
+
+Here the values of `"y"` represent local minimum close to the original points. For example, close to `"x1"`, there is a 
+local minimum at `[1.1, 2.0, 3.5]` where the objective function takes value `5.8`.
 
 The status field will include `FAILURE`,`PENDING`,`RECEIVED`,`RETRY`,`REVOKED`,`STARTED` or `SUCCESS`.
 
@@ -107,11 +142,9 @@ Your exposed endpoint should satisfy these two functions.
 
 #### Function 1: Task generation
 
-```python
-URL: http://[IP_ADDRESS]:8000/endpoint_name/eval
-Example Argument:  {"x1":[10, 0.3, 9, 0.4], "x2":[4, 0.3, 9, 0.4]}
-Sample Result: {"task_id": "017cdd63-be37-49e6-8463-0e8491349d8f"}
-```
+- URL: `http://[IP_ADDRESS]:8000/endpoint_name/eval`
+- Example Argument:  `{"x1":[10, 0.3, 9, 0.4], "x2":[4, 0.3, 9, 0.4]}`
+- Sample Result: `{"task_id": "017cdd63-be37-49e6-8463-0e8491349d8f"}`
 
 ##### Description
 This function takes a JSON object containing all parameters as keys as input and returns a UUID (Universal Unique Identifier) corresponding to that task.
@@ -124,11 +157,9 @@ This function takes a JSON object containing all parameters as keys as input and
 
 #### Function 2: Solution retrieval
 
-```python
-URL: http://[IP_ADDRESS]:8000/endpoint_name/task_status
-Example Argument:  {"task_id": "017cdd63-be37-49e6-8463-0e8491349d8f"}
-Sample Result:{"status": "SUCCESS","result": { "x1": [10, 0.3], "x2": [4, 0.3], "y": [0.19878316, 0.33940784] }}
-```
+- URL: `http://[IP_ADDRESS]:8000/endpoint_name/task_status`
+- Example Argument: `{"task_id": "017cdd63-be37-49e6-8463-0e8491349d8f"}`
+- Sample Result: `{"status": "SUCCESS","result": { "x1": [10, 0.3], "x2": [4, 0.3], "y": [0.19878316, 0.33940784] }}`
 
 ##### Description
 This function takes a UUID and retrieves the task solution as a array of floating-point numbers. It provides a status update to indicate the progress of the task.
@@ -146,9 +177,6 @@ This function takes a UUID and retrieves the task solution as a array of floatin
   - `REVOKED` - Task was revoked.
   - `STARTED` -  Task was started by a worker.
   - `SUCCESS` - Task succeeded.
-
-
-
 
 ##### Usage
 The `status` output can be queried periodically to monitor the progress of the asynchronous task. This function is critical for scenarios where immediate execution is not possible, and the task is subject to processing time.
