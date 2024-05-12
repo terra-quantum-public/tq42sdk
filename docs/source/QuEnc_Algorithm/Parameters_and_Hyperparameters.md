@@ -11,7 +11,7 @@ QuEnc returns a binary vector where the same values of the vector mean the verti
 
 We can create a Quantum Circuit using QuEnc and run it on different Quantum Processing Unit (QPU) providers.
 
-To obtain a solution, we must first create a circuit using QuEnc and then run that circuit using an IONQ or IBM QPU.  
+To obtain a solution, we must first create a circuit using QuEnc and then run that circuit using an IONQ, IBM or a CIRQ_SIMULATOR QPU.  
 
 # Parameters
 The following parameters are required for the TQ42 QuEnc Algorithm to create a circuit:
@@ -80,9 +80,9 @@ For the parameters required for the CIRCUIT_RUN Algorithm:
 - shots: int  
 
 - backend: string   
-('IBM', 'IONQ')
+('IBM', 'IONQ', 'CIRQ_SIMULATOR')
 
-Currently we can run on either an IBM or IONQ backend. To choose, we need to specify it using the "backend" parameters:  
+Currently we can run on either an IBM, IONQ or CIRQ_SIMULATOR backend. To choose, we need to specify it using the "backend" parameters:  
 
 ## Using the CLI:
 
