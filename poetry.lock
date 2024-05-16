@@ -624,13 +624,13 @@ files = [
 
 [[package]]
 name = "keyring"
-version = "25.2.0"
+version = "25.2.1"
 description = "Store and access your passwords safely."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "keyring-25.2.0-py3-none-any.whl", hash = "sha256:19f17d40335444aab84b19a0d16a77ec0758a9c384e3446ae2ed8bd6d53b67a5"},
-    {file = "keyring-25.2.0.tar.gz", hash = "sha256:7045f367268ce42dba44745050164b431e46f6e92f99ef2937dfadaef368d8cf"},
+    {file = "keyring-25.2.1-py3-none-any.whl", hash = "sha256:2458681cdefc0dbc0b7eb6cf75d0b98e59f9ad9b2d4edd319d18f68bdca95e50"},
+    {file = "keyring-25.2.1.tar.gz", hash = "sha256:daaffd42dbda25ddafb1ad5fec4024e5bbcfe424597ca1ca452b299861e49f1b"},
 ]
 
 [package.dependencies]
@@ -710,13 +710,13 @@ files = [
 
 [[package]]
 name = "platformdirs"
-version = "4.2.1"
+version = "4.2.2"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a `user data dir`."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "platformdirs-4.2.1-py3-none-any.whl", hash = "sha256:17d5a1161b3fd67b390023cb2d3b026bbd40abde6fdb052dfbd3a29c3ba22ee1"},
-    {file = "platformdirs-4.2.1.tar.gz", hash = "sha256:031cd18d4ec63ec53e82dceaac0417d218a6863f7745dfcc9efe7793b7039bdf"},
+    {file = "platformdirs-4.2.2-py3-none-any.whl", hash = "sha256:2d7a1657e36a80ea911db832a8a6ece5ee53d8de21edd5cc5879af6530b1bfee"},
+    {file = "platformdirs-4.2.2.tar.gz", hash = "sha256:38b7b51f512eed9e84a22788b4bce1de17c0adb134d6becb09836e37d8654cd3"},
 ]
 
 [package.extras]
@@ -1005,13 +1005,13 @@ files = [
 
 [[package]]
 name = "tq42-grpc-client"
-version = "1.0.116"
+version = "1.0.120"
 description = "gRPC client to call TQ42 endpoints"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "tq42_grpc_client-1.0.116-py3-none-any.whl", hash = "sha256:b808d1c815573687df7d157ff7d819ea55652ad77672832bef6173d5df20408d"},
-    {file = "tq42_grpc_client-1.0.116.tar.gz", hash = "sha256:d6e55b5cbbc99a876fd7c008c31c5a622e3a43f8318484b09bcaf542220683b6"},
+    {file = "tq42_grpc_client-1.0.120-py3-none-any.whl", hash = "sha256:eee3769d926d4c216746b259b7e25a5e7aafe1f953db8bd7c028ce15187c2ca5"},
+    {file = "tq42_grpc_client-1.0.120.tar.gz", hash = "sha256:ac99bcbef16088643f152e60a2fb8336f43814abb1464ccb342a164f0155094e"},
 ]
 
 [package.dependencies]
@@ -1049,20 +1049,20 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "zipp"
-version = "3.18.1"
+version = "3.18.2"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "zipp-3.18.1-py3-none-any.whl", hash = "sha256:206f5a15f2af3dbaee80769fb7dc6f249695e940acca08dfb2a4769fe61e538b"},
-    {file = "zipp-3.18.1.tar.gz", hash = "sha256:2884ed22e7d8961de1c9a05142eb69a247f120291bc0206a00a7642f09b5b715"},
+    {file = "zipp-3.18.2-py3-none-any.whl", hash = "sha256:dce197b859eb796242b0622af1b8beb0a722d52aa2f57133ead08edd5bf5374e"},
+    {file = "zipp-3.18.2.tar.gz", hash = "sha256:6278d9ddbcfb1f1089a88fde84481528b07b0e10474e09dcfe53dad4069fa059"},
 ]
 
 [package.extras]
 docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
-testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy", "pytest-ruff (>=0.2.1)"]
+testing = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more-itertools", "pytest (>=6,!=8.1.*)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy", "pytest-ruff (>=0.2.1)"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "bbf6605048d0e688cd56b935fe5660693bc440d4e93cb3871c3a4bce3f3c2046"
+content-hash = "54722e8530390314cc7a41369434e1b74f128c3b264b40f03d42bd426c255b09"
