@@ -34,9 +34,6 @@ class TestDirs(unittest.TestCase):
             os.path.isfile(dirs.full_path(dirs.text_files_dir(), "tq42_commands.txt"))
         )
         self.assertTrue(
-            os.path.isfile(dirs.full_path(dirs.text_files_dir(), "cpu_configs.json"))
-        )
-        self.assertTrue(
             os.path.isfile(
                 dirs.full_path(dirs.text_files_dir(), "unauthenticated_error.txt")
             )
