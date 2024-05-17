@@ -11,19 +11,21 @@ from tq42.exceptions import ExperimentRunCancelError, ExceedRetriesError
 from tq42.utils import utils
 
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
-    ExperimentRunProto,
     ExperimentRunStatusProto,
 )
-from com.terraquantum.experiment.v1.experimentrun.cancel_experiment_run_request_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experimentrun.experiment_run_pb2 import (
+    ExperimentRunProto,
+)
+from com.terraquantum.experiment.v3alpha1.experimentrun.cancel_experiment_run_request_pb2 import (
     CancelExperimentRunRequest,
 )
-from com.terraquantum.experiment.v1.experimentrun.get_experiment_run_request_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experimentrun.get_experiment_run_request_pb2 import (
     GetExperimentRunRequest,
 )
-from com.terraquantum.experiment.v1.experimentrun.list_experiment_runs_request_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experimentrun.list_experiment_runs_pb2 import (
     ListExperimentRunsRequest,
 )
-from com.terraquantum.experiment.v1.experimentrun.list_experiment_runs_response_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experimentrun.list_experiment_runs_pb2 import (
     ListExperimentRunsResponse,
 )
 
