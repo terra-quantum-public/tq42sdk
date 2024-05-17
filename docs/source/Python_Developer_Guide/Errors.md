@@ -8,8 +8,6 @@ You are not currently logged in. Please log in or authenticate to access this fe
 
 To log in with your username and password or stored token, use `TQ42Client().login()`.
 
-If you don't have an account, sign up by visiting our [website](https://tq42.com).
-
 If you need further assistance, please contact our support team at support@terraquantum.swiss.
 
 ## Unauthorized
