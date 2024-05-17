@@ -10,17 +10,16 @@ The Parallel Hybrid Network (PHN) layer consists of Quantum Depth Infused (QDI) 
 ## Hyperparameters and Default Settings
 The following hyperparameters are included in the PHN layer. These are not necessarily the recommended settings for every application or use case; they may require tuning to find the optimal values for your specific use case.
 
-| Hyperparameter | Description                                                                                                                                                     | Syntax | Range                             | Default           |
-|----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|-----------------------------------|-------------------|
-| in_features    | Number of features in the data.                                                                                                                                 | int    | 1 to INT MAX                      |                   |
-| n_qubits       | Number of qubits in each quantum circuit. <br/>Note that `in_features` must be divisible by `n_qubits`. For best results, formulate `n_qubits` as a power of 2. | int    | 2 to 8                            | 4                 |
-| depth          | Number of variational layers inside one quantum circuit.                                                                                                        | int    | 1 to 8                            | 7                 |
-| hidden_size    | Size of the hidden classical vector.                                                                                                                            | int    | 1 to 1000                         | 17                |
-| rotation       | Type of embedding rotations used. Can be `X`, `Y` or `Z`.                                                                                                       | str    | `X` `Y` `Z`                       | `Z`               |
-| entangling     | Type of entangling layer used. Can be `strong` or `basic`.                                                                                                      | str    | `strong` `basic`                  | `strong`          |
-| measure        | Pauli measurement that will be used at the end of each circuit. Can be `X`, `Y` or `Z`.                                                                         | str    | `X` `Y` `Z`                       | `Y`               |
-| diff_method    | Defines method for calculating gradients for quantum circuit. Must be either `adjoint` or `parameter-shift`.                                                    | str    | `adjoint` `parameter-shift`       | `adjoint`         |
-| qubit_type     | Defines qubit device for simulating a quantum circuit. Must be either `lightning.qubit` or `lightning.gpu`.                                                     | str    | `lightning.qubit` `lightning.gpu` | `lightning.qubit` |
+| Hyperparameter | Description                                                                                                  | Syntax | Range                             | Default           |
+|----------------|--------------------------------------------------------------------------------------------------------------|--------|-----------------------------------|-------------------|
+| n_qubits       | Number of qubits in each quantum circuit. <br/>For best results, formulate `n_qubits` as a power of 2.       | int    | 2 to 8                            | 4                 |
+| depth          | Number of variational layers inside one quantum circuit.                                                     | int    | 1 to 8                            | 7                 |
+| hidden_size    | Size of the hidden classical vector.                                                                         | int    | 1 to 1000                         | 17                |
+| rotation       | Type of embedding rotations used. Can be `X`, `Y` or `Z`.                                                    | str    | `X` `Y` `Z`                       | `Z`               |
+| entangling     | Type of entangling layer used. Can be `strong` or `basic`.                                                   | str    | `strong` `basic`                  | `strong`          |
+| measure        | Pauli measurement that will be used at the end of each circuit. Can be `X`, `Y` or `Z`.                      | str    | `X` `Y` `Z`                       | `Y`               |
+| diff_method    | Defines method for calculating gradients for quantum circuit. Must be either `adjoint` or `parameter-shift`. | str    | `adjoint` `parameter-shift`       | `adjoint`         |
+| qubit_type     | Defines qubit device for simulating a quantum circuit. Must be either `lightning.qubit` or `lightning.gpu`.  | str    | `lightning.qubit` `lightning.gpu` | `lightning.qubit` |
 
 
 ## Quantum Circuit Representation
@@ -64,7 +63,6 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         # Add and customize and customize layers here
         layers=[
             Layer(phn_layer=PHNLayer(
-                in_features=20,
                 num_qubits=4,
                 depth=4,
                 hidden_size=40,
