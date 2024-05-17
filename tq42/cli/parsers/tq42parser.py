@@ -17,6 +17,9 @@ def parse_args(args):
     config_flag = tq42_help.default_help_flags["config"]
     config_flag.add_argument(parser)
 
+    proxy_flag = tq42_help.default_help_flags["proxy"]
+    proxy_flag.add_argument(parser)
+
     version_flag = tq42_help.default_help_flags["version"]
     parser.add_argument(
         version_flag.short_flag,

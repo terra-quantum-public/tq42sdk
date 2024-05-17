@@ -2,6 +2,8 @@ import json
 import os
 import webbrowser
 from datetime import datetime
+from typing import Optional
+
 import grpc
 import requests
 from tq42.utils import dirs, file_handling, utils
@@ -107,7 +109,9 @@ class TQ42Client(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
 
-    def __init__(self, alt_config_file=None):
+    def __init__(
+        self, alt_config_file: Optional[str] = None, proxy_url: Optional[str] = None
+    ):
         # check whether "alt_config_file" is the default filepath, if it is, token.json resides
         # in ~/.tqsdk/ and config.json inside utils/text_files/, if not using default,
         # config.json and token.json will reside in the same path
@@ -116,6 +120,8 @@ class TQ42Client(object):
         self.default_config_file = dirs.text_files_dir("config.json")
         self.config_file = self.default_config_file
         self.config_folder = dirs.get_config_folder_path()
+
+        self.proxy_url = proxy_url
 
         if alt_config_file is not None and not self.is_config_filepath_default(
             alt_config_file
@@ -138,7 +144,16 @@ class TQ42Client(object):
 
         self.exp_run_id = None
         # instantiate a channel
-        self.channel = grpc.secure_channel(self.host, grpc.ssl_channel_credentials())
+
+        # /** Channel arg to set http proxy per channel. If set, the channel arg
+        #  *  value will be preferred over the environment variable settings. */
+        # #define GRPC_ARG_HTTP_PROXY "grpc.http_proxy"
+        channel_options = []
+        if proxy_url:
+            channel_options.append(("grpc.http_proxy", proxy_url))
+        self.channel = grpc.secure_channel(
+            self.host, grpc.ssl_channel_credentials(), channel_options
+        )
 
         # bind the client and the server
         self.organization_client = pb2_org_grpc.OrganizationServiceStub(self.channel)
@@ -153,6 +168,9 @@ class TQ42Client(object):
 
     @handle_generic_sdk_errors
     def login_without_user_interaction(self):
+        proxies = {}
+        if self.proxy_url:
+            proxies = {"http": self.proxy_url, "https": self.proxy_url}
         response = requests.post(
             self.environment.auth_url_token,
             data=self.environment.client_credentials_data(
@@ -160,6 +178,7 @@ class TQ42Client(object):
                 client_secret=self.credential_flow_client_secret,
                 audience=self.environment.client_credential_flow_audience,
             ),
+            proxies=proxies,
             headers=self.environment.headers,
         )
 
@@ -191,9 +210,13 @@ class TQ42Client(object):
          https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/README.html#authentication
         """
         # Send the POST request and print the response
+        proxies = {}
+        if self.proxy_url:
+            proxies = {"http": self.proxy_url, "https": self.proxy_url}
         response = requests.post(
             self.environment.auth_url_code,
             data=self.environment.code_data,
+            proxies=proxies,
             headers=self.environment.headers,
         )
 
@@ -206,7 +229,8 @@ class TQ42Client(object):
 
         # Print the message to the user
         print(
-            f"If a browser does not open, please access this URL: {verification_uri_complete} to login. Also check the code: {user_code}"
+            f"If a browser does not open, please access this URL: {verification_uri_complete} to login."
+            f"Also check the code: {user_code}"
         )
 
         webbrowser.open(verification_uri_complete)
@@ -230,6 +254,14 @@ class TQ42Client(object):
                 self.save_access_token(access_token)
                 self.save_refresh_token(refresh_token)
                 break
+
+            if (
+                response_token.status_code != 403
+                or response_json.get("error") != "authorization_pending"
+            ):
+                raise AuthenticationError(
+                    message=response_json.get("error_description")
+                )
 
             # Otherwise, wait for the specified interval before polling again
             time.sleep(interval)

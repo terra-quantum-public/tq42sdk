@@ -82,5 +82,10 @@
     {
         "text": "Set path to alternate configuration file location",
         "flag": "--config"
+    },
+    {
+        "text": "Set proxy explicitly (experimental feature)",
+        "flag": "--proxy",
+        "short_flag": "-P"
     }
 ]

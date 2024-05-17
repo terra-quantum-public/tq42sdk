@@ -13,7 +13,8 @@ def main():
     try:
         args = parse_args(sys.argv[1:])
         env_config_file = args.config
-        with TQ42Client(env_config_file) as client:
+        proxy = args.proxy
+        with TQ42Client(alt_config_file=env_config_file, proxy_url=proxy) as client:
             res = tq42_all(client, args)
             if res is not None:
                 print(res)
