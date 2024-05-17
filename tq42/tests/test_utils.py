@@ -114,7 +114,7 @@ class TestUtils(unittest.TestCase):
             config_data["scope"],
         )
 
-        token_manager = TokenManager(environment, None)
+        token_manager = TokenManager(environment, None, None)
 
         success = token_manager.renew_expring_token()
         # old token timestamp should renew token

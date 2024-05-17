@@ -4,9 +4,10 @@ import requests
 
 
 class TokenManager:
-    def __init__(self, environment, alt_config_folder):
+    def __init__(self, environment, alt_config_folder, proxy_url):
         self.alt_config_folder = alt_config_folder
         self.environment = environment
+        self.proxy_url = proxy_url
 
     @property
     def token_file_path(self):
@@ -43,9 +44,13 @@ class TokenManager:
             service_name="refresh_token", backup_save_path=self.refresh_token_file_path
         )
         data = self.environment.refresh_token_data(refresh_token)
+        proxies = {}
+        if self.proxy_url:
+            proxies = {"http": self.proxy_url, "https": self.proxy_url}
         response = requests.post(
             self.environment.auth_url_token,
             data=data,
+            proxies=proxies,
             headers=self.environment.headers,
         )
         json_response = response.json()

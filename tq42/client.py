@@ -136,7 +136,7 @@ class TQ42Client(object):
             config_data["base_url"], config_data["client_id"], config_data["scope"]
         )
 
-        self.token_manager = TokenManager(environment, self.config_folder)
+        self.token_manager = TokenManager(environment, self.config_folder, proxy_url)
 
         self.environment = environment
         self.host = environment.host
@@ -237,11 +237,13 @@ class TQ42Client(object):
 
         data_token = self.environment.token_data(device_code)
 
+        accumulated_time = 0
         while True:
             # Send the POST request to get access token and extract the JSON response
             response_token = requests.post(
                 self.environment.auth_url_token,
                 data=data_token,
+                proxies=proxies,
                 headers=self.environment.headers,
             )
             response_json = response_token.json()
@@ -258,13 +260,14 @@ class TQ42Client(object):
             if (
                 response_token.status_code != 403
                 or response_json.get("error") != "authorization_pending"
-            ):
+            ) or accumulated_time >= 300:
                 raise AuthenticationError(
                     message=response_json.get("error_description")
                 )
 
             # Otherwise, wait for the specified interval before polling again
             time.sleep(interval)
+            accumulated_time += interval
 
     def save_access_token(self, access_token: str):
         save_location = utils.save_token(
