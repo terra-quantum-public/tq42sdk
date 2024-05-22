@@ -9,10 +9,10 @@ from tq42.utils.token_manager import TokenManager
 from tq42.exception_handling import handle_generic_sdk_errors
 import time
 
-from com.terraquantum.experiment.v1.experiment import (
+from com.terraquantum.experiment.v3alpha1.experiment import (
     experiment_service_pb2_grpc as pb2_exp_grpc,
 )
-from com.terraquantum.experiment.v2.experimentrun import (
+from com.terraquantum.experiment.v3alpha1.experimentrun import (
     experiment_run_service_pb2_grpc as pb2_exp_run_grpc,
 )
 from com.terraquantum.organization.v1.organization import (
@@ -21,9 +21,7 @@ from com.terraquantum.organization.v1.organization import (
 from com.terraquantum.project.v1.project import (
     project_service_pb2_grpc as pb2_proj_grpc,
 )
-from com.terraquantum.experiment.v1.dataset import (
-    dataset_service_pb2_grpc as pb2_data_grpc,
-)
+from com.terraquantum.storage.v1alpha1 import storage_service_pb2_grpc as pb2_data_grpc
 from tq42.utils.environment_utils import environment_default_set
 from tq42.exceptions import AuthenticationError
 
@@ -144,7 +142,7 @@ class TQ42Client(object):
         self.organization_client = pb2_org_grpc.OrganizationServiceStub(self.channel)
         self.project_client = pb2_proj_grpc.ProjectServiceStub(self.channel)
         self.experiment_client = pb2_exp_grpc.ExperimentServiceStub(self.channel)
-        self.dataset_client = pb2_data_grpc.DatasetServiceStub(self.channel)
+        self.storage_client = pb2_data_grpc.StorageServiceStub(self.channel)
         self.experiment_run_client = pb2_exp_run_grpc.ExperimentRunServiceStub(
             self.channel
         )

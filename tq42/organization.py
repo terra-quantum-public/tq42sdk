@@ -54,8 +54,10 @@ class Organization:
         Gets the information about the provided organization
         """
         get_org_request = GetOrganizationRequest(id=self.id)
-        res: OrganizationProto = self.client.organization_client.GetOrganization(
-            request=get_org_request, metadata=self.client.metadata
+        res: OrganizationProto = (
+            self.client.organization_client.ListAssignedOrganizations(
+                request=get_org_request, metadata=self.client.metadata
+            )
         )
         return res
 

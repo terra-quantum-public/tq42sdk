@@ -6,16 +6,16 @@ from tq42.client import TQ42Client
 from tq42.exception_handling import handle_generic_sdk_errors
 
 # This is important to re-export it!
-from com.terraquantum.experiment.v1.dataset.dataset_pb2 import (
+from com.terraquantum.storage.v1alpha1.storage_pb2 import (
     DatasetSensitivityProto,
-    DatasetProto,
 )
-from com.terraquantum.experiment.v1.dataset.create_dataset_request_pb2 import (
-    CreateDatasetRequest,
+from com.terraquantum.storage.v1alpha1.storage_pb2 import StorageProto
+from com.terraquantum.storage.v1alpha1.create_storage_from_external_pb2 import (
+    CreateStorageFromExternalBucketRequest,
 )
-from com.terraquantum.experiment.v1.dataset.list_datasets_pb2 import (
-    ListDatasetsRequest,
-    ListDatasetsResponse,
+from com.terraquantum.storage.v1alpha1.list_storages_pb2 import (
+    ListStoragesRequest,
+    ListStoragesResponse,
 )
 
 
@@ -25,11 +25,11 @@ class Dataset:
     """
 
     id: str
-    data: DatasetProto
+    data: StorageProto
     client: TQ42Client
 
     def __init__(
-        self, client: TQ42Client, id: str, data: Optional[DatasetProto] = None
+        self, client: TQ42Client, id: str, data: Optional[StorageProto] = None
     ):
         self.client = client
         self.id = id
@@ -46,13 +46,13 @@ class Dataset:
         return str(self.data)
 
     @handle_generic_sdk_errors
-    def _get(self) -> DatasetProto:
+    def _get(self) -> StorageProto:
         raise NotImplementedError(
             "there is no currently no way to get a specific dataset via the API"
         )
 
     @staticmethod
-    def from_proto(client: TQ42Client, msg: DatasetProto) -> Dataset:
+    def from_proto(client: TQ42Client, msg: StorageProto) -> Dataset:
         """
         Creates Dataset instance from a protobuf message.
         """
@@ -73,8 +73,7 @@ class Dataset:
 
         For details, see (TODO: update link once a new documentation URL is created)
         """
-        create_dataset_request = CreateDatasetRequest(
-            request_id=None,
+        create_dataset_request = CreateStorageFromExternalBucketRequest(
             project_id=project_id,
             name=name,
             description=description,
@@ -82,7 +81,7 @@ class Dataset:
             sensitivity=sensitivity,
         )
 
-        res: DatasetProto = client.dataset_client.CreateDataset(
+        res: StorageProto = client.storage_client.CreateStorageFromExternalBucket(
             request=create_dataset_request, metadata=client.metadata
         )
 
@@ -96,8 +95,8 @@ def list_all(client: TQ42Client, project_id: str) -> List[Dataset]:
 
     For details, see (TODO: update link once a new documentation URL is created)
     """
-    list_datasets_request = ListDatasetsRequest(project_id=project_id)
-    res: ListDatasetsResponse = client.dataset_client.ListDatasets(
+    list_datasets_request = ListStoragesRequest(project_id=project_id)
+    res: ListStoragesResponse = client.storage_client.ListStorages(
         request=list_datasets_request, metadata=client.metadata
     )
-    return [Dataset.from_proto(client=client, msg=dataset) for dataset in res.datasets]
+    return [Dataset.from_proto(client=client, msg=dataset) for dataset in res.storages]
