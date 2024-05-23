@@ -11,15 +11,15 @@ Long short-term memory is a type of recurrent neural network. It handles data th
 ## Hyperparameters and Default Settings
 The following hyperparameters are included in the Quantum LSTM layer. These are not necessarily the recommended settings for every application or use case; they may require tuning to find the optimal values for your specific use case.
 
-| Hyperparameter | Description                                                                                                                                                     | Syntax | Range           | Default |
-|----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|-----------------|---------|
-| hidden_size    | This is the number of features in the hidden state h.                                                                                                           | int    | 10 to 1000      | 17      |
-| n_qubits       | Number of qubits in each quantum circuit. <br/>Note that `in_features` must be divisible by `n_qubits`. For best results, formulate `n_qubits` as a power of 2. | int    | 1 to 25         | 4       |
-| n_qlayers      | Number of entangling layers repetitions.                                                                                                                        | int    | 1 to 5          | 1       |
-| depth          | Number of variational layers inside one quantum circuit.                                                                                                        | int    | 1 to 30         | 1       |
-| batch_first    | If ``True``, then the input and output tensors are provided as `(batch, seq, feature)` instead of `(seq, batch, feature)`.                                      | bool   | `true` `false`  | `false` |
-| bidirectional  | If ``True``, becomes a bidirectional QLSTM.                                                                                                                     | bool   | `true` `false`  | `false` |
-| inversward     | If True, then the sequence of input data is read by the QLSTM layer in inverse order.                                                                           | bool   | `true` `false`  | `false` |
+| Hyperparameter | Description                                                                                                                | Syntax | Range           | Default |
+|----------------|----------------------------------------------------------------------------------------------------------------------------|--------|-----------------|---------|
+| hidden_size    | This is the number of features in the hidden state h.                                                                      | int    | 10 to 1000      | 17      |
+| n_qubits       | Number of qubits in each quantum circuit. <br/>For best results, formulate `n_qubits` as a power of 2.                     | int    | 1 to 25         | 4       |
+| n_qlayers      | Number of entangling layers repetitions.                                                                                   | int    | 1 to 5          | 1       |
+| depth          | Number of variational layers inside one quantum circuit.                                                                   | int    | 1 to 30         | 1       |
+| batch_first    | If ``True``, then the input and output tensors are provided as `(batch, seq, feature)` instead of `(seq, batch, feature)`. | bool   | `true` `false`  | `false` |
+| bidirectional  | If ``True``, becomes a bidirectional QLSTM.                                                                                | bool   | `true` `false`  | `false` |
+| inversward     | If True, then the sequence of input data is read by the QLSTM layer in inverse order.                                      | bool   | `true` `false`  | `false` |
 
 
 ## Sample Python Code Block

@@ -18,7 +18,7 @@ The following hyperparameters are included in the DHN layer. These are not neces
 | Hyperparameter | Description                                                                                                                                                                                        | Syntax | Range    | Default  |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|----------|
 | q_part         | This is the Quantum Layer that will represent Quantum part of Double layer. `q_part` should have `CertainLayer` parent class. For example, `l = layers.DHN(30, layers.QDI(12, 4, 3), [10, 12], 4)` | int    | [12,4,3] | [12,4,3] |
-| n_qubits       | Number of qubits in each quantum circuit. <br/>Note that `in_features` must be divisible by `n_qubits`. For best results, formulate `n_qubits` as a power of 2.                                    | int    | 1 to 25  | 5        |
+| n_qubits       | Number of qubits in each quantum circuit. <br/>For best results, formulate `n_qubits` as a power of 2.                                                                                             | int    | 1 to 25  | 5        |
 | depth          | Number of variational layers inside one quantum circuit.                                                                                                                                           | int    | 1 to 30  | 4        |
 | hidden_dim     | List of classical linear part dimensions. Note, that it should also include last dimension as it is not defined from the Quantum part in contrast with `CPHN`.                                     | int    | [16]     | 16       |
 | from_classic   | Starting index for sublist that goes to the classical part.                                                                                                                                        | int    | 2 to 20  | 4        |
@@ -55,7 +55,6 @@ from google.protobuf.json_format import MessageToDict
 
 pqn_layer = QuantumLayer(
     pqn_layer=PQNLayer(
-        in_features=8,
         num_qubits=2,
         depth=1,
         measurement_mode=MeasurementModeProto.Name(MeasurementModeProto.EVEN),

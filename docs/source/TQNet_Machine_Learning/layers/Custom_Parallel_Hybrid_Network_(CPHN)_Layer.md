@@ -13,12 +13,12 @@ It supports the incorporation of a multilayer perceptron into the classical part
 ## Hyperparameters and Default Settings
 The following hyperparameters are included in the CPHN layer. These are not necessarily the recommended settings for every application or use case; they may require tuning to find the optimal values for your specific use case.
 
-| Hyperparameter | Description                                                                                                                                                     | Syntax | Range    | Default  |
-|----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|----------|
-| q_part         | This is the Quantum Layer that will represent Quantum part of the layer. For example, `l = layers.DHN(30, layers.QDI(12, 4, 3), [10, 12], 4)`                   | int    | [12,4,3] | [12,4,3] |
-| n_qubits       | Number of qubits in each quantum circuit. <br/>Note that `in_features` must be divisible by `n_qubits`. For best results, formulate `n_qubits` as a power of 2. | int    | 1 to 25  | 5        |
-| depth          | Number of variational layers inside one quantum circuit.                                                                                                        | int    | 1 to 30  | 4        |
-| hidden_dim     | List of classical linear part dimensions.                                                                                                                       | int    | [4, 16]  | [4, 16]  |
+| Hyperparameter | Description                                                                                                                                   | Syntax | Range    | Default  |
+|----------------|-----------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|----------|
+| q_part         | This is the Quantum Layer that will represent Quantum part of the layer. For example, `l = layers.DHN(30, layers.QDI(12, 4, 3), [10, 12], 4)` | int    | [12,4,3] | [12,4,3] |
+| n_qubits       | Number of qubits in each quantum circuit. <br/>For best results, formulate `n_qubits` as a power of 2.                                        | int    | 1 to 25  | 5        |
+| depth          | Number of variational layers inside one quantum circuit.                                                                                      | int    | 1 to 30  | 4        |
+| hidden_dim     | List of classical linear part dimensions.                                                                                                     | int    | [4, 16]  | [4, 16]  |
 
 
 ## Quantum Circuit Representation
@@ -51,7 +51,6 @@ from google.protobuf.json_format import MessageToDict
 
 efq_layer = QuantumLayer(
     efq_layer=EFQLayer(
-        in_features=8,
         num_qubits=2,
         depth=1,
         measurement_mode=MeasurementModeProto.Name(MeasurementModeProto.EVEN),
