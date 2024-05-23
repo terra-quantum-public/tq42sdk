@@ -21,7 +21,9 @@ from com.terraquantum.organization.v1.organization import (
 from com.terraquantum.project.v1.project import (
     project_service_pb2_grpc as pb2_proj_grpc,
 )
-from com.terraquantum.storage.v1alpha1 import storage_service_pb2_grpc as pb2_data_grpc
+from com.terraquantum.storage.v1alpha1 import (
+    storage_service_pb2_grpc as pb2_data_grpc,
+)
 from tq42.utils.environment_utils import environment_default_set
 from tq42.exceptions import AuthenticationError
 
