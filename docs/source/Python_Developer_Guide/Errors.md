@@ -61,7 +61,7 @@ Suggestions:
 Unable to Execute: `[command]`
 
 We were unable to find the default org and/or proj ID required to run this command.
-For a list of available commands, type `tq42 --help` or consult the documentation at tq42.com/help.
+For a list of available commands, type `tq42 --help` or consult the documentation at [TQ42 Help](https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/).
 
 ## Invalid Argument
 
