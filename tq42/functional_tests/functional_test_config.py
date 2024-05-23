@@ -93,7 +93,7 @@ class FunctionalTestConfig:
 
         while True:
             try:
-                choice_index = 0  # int(input("Enter the number of your choice: ")) - 1
+                choice_index = int(input("Enter the number of your choice: ")) - 1
                 if 0 <= choice_index < len(choices):
                     return choices[choice_index]
                 else:
