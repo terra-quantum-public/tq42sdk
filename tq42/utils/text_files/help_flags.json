@@ -82,5 +82,10 @@
     {
         "text": "Set path to alternate configuration file location",
         "flag": "--config"
+    },
+    {
+        "text": "DATASET or MODEL",
+        "flag": "--type",
+        "short_flag": "-t"
     }
 ]

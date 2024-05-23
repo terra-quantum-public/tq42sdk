@@ -8,8 +8,9 @@ from tq42.exception_handling import handle_generic_sdk_errors
 # This is important to re-export it!
 from com.terraquantum.storage.v1alpha1.storage_pb2 import (
     DatasetSensitivityProto,
+    StorageProto,
+    StorageType,
 )
-from com.terraquantum.storage.v1alpha1.storage_pb2 import StorageProto
 from com.terraquantum.storage.v1alpha1.create_storage_from_external_pb2 import (
     CreateStorageFromExternalBucketRequest,
 )
@@ -89,14 +90,18 @@ class Dataset:
 
 
 @handle_generic_sdk_errors
-def list_all(client: TQ42Client, project_id: str) -> List[Dataset]:
+def list_all(
+    client: TQ42Client, project_id: str, storage_type: StorageType = None
+) -> List[Dataset]:
     """
     List all datasets for a project.
 
     For details, see (TODO: update link once a new documentation URL is created)
     """
-    list_datasets_request = ListStoragesRequest(project_id=project_id)
+    list_datasets_request = ListStoragesRequest(
+        project_id=project_id, type=storage_type
+    )
     res: ListStoragesResponse = client.storage_client.ListStorages(
         request=list_datasets_request, metadata=client.metadata
     )
-    return [Dataset.from_proto(client=client, msg=dataset) for dataset in res.storages]
+    return [Dataset.from_proto(client=client, msg=data) for data in res.storages]

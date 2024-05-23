@@ -12,7 +12,12 @@ def project_dataset_group(client, args):
 
 def proj_dataset_list(client, args):
     check_params("proj dataset list", args)
-    return [dataset.data for dataset in list_all(client=client, project_id=args.proj)]
+    return [
+        dataset.data
+        for dataset in list_all(
+            client=client, project_id=args.proj, storage_type=args.type
+        )
+    ]
 
 
 def proj_dataset_create(client, args):

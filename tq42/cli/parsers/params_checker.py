@@ -47,5 +47,5 @@ def check_params(command, args):
 
     elif command == "proj dataset list":
         if args.proj is None:
-            example_command = "Example usage: tq42 proj dataset list --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01\n"
+            example_command = "Example usage: tq42 proj dataset list --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01 --type DATASET\n"
             raise SystemExit(InvalidInputCliError(msg=example_command))
