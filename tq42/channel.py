@@ -69,7 +69,9 @@ class Channel:
 
         finish_callback()
 
-    def _listen_stream(self, callback: Callable[[ChannelMessage], ChannelMessage]):
+    def _listen_stream(
+        self, callback: Callable[[ChannelMessage], ChannelMessage]
+    ) -> None:
         incoming_messages = queue.Queue()
 
         # establish the connection
