@@ -1,11 +1,14 @@
 from __future__ import annotations
 
-from typing import List, Callable
+import multiprocessing
+import queue
+from typing import List, Callable, Iterator
 
 from google.protobuf import empty_pb2
 
 from tq42.exception_handling import handle_generic_sdk_errors
 from com.terraquantum.channel.v1alpha1.create_channel_pb2 import CreateChannelResponse
+from com.terraquantum.channel.v1alpha1.channel_message_pb2 import ChannelMessage
 
 from typing import TYPE_CHECKING
 
@@ -44,12 +47,50 @@ class Channel:
     @handle_generic_sdk_errors
     def connect(
         self,
-        callback: Callable,
+        callback: Callable[[ChannelMessage], ChannelMessage],
         finish_callback: Callable,
-        timeout: int,
         max_duration_in_sec: int,
-    ) -> Channel:
-        self.client.channel_client.ConnectChannelCustomer()
+    ) -> None:
+        # Start listener as a process
+        listen_process = multiprocessing.Process(
+            target=self._listen_stream, args=(callback,)
+        )
+        listen_process.start()
+        listen_process.join(max_duration_in_sec)
+
+        # If thread is active
+        if listen_process.is_alive():
+            print(
+                "Listen process is still running and exceeded the max_duration_in_sec timeout, killing..."
+            )
+            # Terminate process
+            listen_process.terminate()
+            listen_process.join()
+
+        finish_callback()
+
+    def _listen_stream(self, callback: Callable[[ChannelMessage], ChannelMessage]):
+        incoming_messages = queue.Queue()
+
+        # establish the connection
+        response_stream = self.client.channel_client.ConnectChannelCustomer(
+            self._handle_messages(
+                incoming_msg_queue=incoming_messages, callback=callback
+            )
+        )
+        for msg in response_stream:
+            incoming_messages.put(msg)
+
+    @staticmethod
+    def _handle_messages(
+        incoming_msg_queue: queue.Queue,
+        callback: Callable[[ChannelMessage], ChannelMessage],
+    ) -> Iterator[ChannelMessage]:
+        while True:
+            incoming_msg: ChannelMessage = incoming_msg_queue.get()
+            outgoing_msg: ChannelMessage = callback(incoming_msg)
+            incoming_msg_queue.task_done()
+            yield outgoing_msg
 
 
 @handle_generic_sdk_errors
