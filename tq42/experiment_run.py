@@ -151,11 +151,11 @@ class ExperimentRun:
         https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#cancelling-an-experiment-run
         """
         try:
-            list_exp_runs_response = CancelExperimentRunRequest(
+            cancel_exp_runs_response = CancelExperimentRunRequest(
                 experiment_run_id=self.id
             )
             self.client.experiment_run_client.CancelExperimentRun(
-                request=list_exp_runs_response, metadata=self.client.metadata
+                request=cancel_exp_runs_response, metadata=self.client.metadata
             )
             return self
         except Exception:
