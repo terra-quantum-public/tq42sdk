@@ -152,7 +152,7 @@ class ExperimentRun:
         """
         try:
             list_exp_runs_response = CancelExperimentRunRequest(
-                experiment_run_id=self.id, request_id=None
+                experiment_run_id=self.id
             )
             self.client.experiment_run_client.CancelExperimentRun(
                 request=list_exp_runs_response, metadata=self.client.metadata
