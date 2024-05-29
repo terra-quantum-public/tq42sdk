@@ -91,7 +91,6 @@ def add_proj_dataset_parser(proj_subparser):
     list_help = tq42_help.Help.lookup_help("proj dataset list".split())
     list_help.add_parser(cmd_parser)
     list_help.add_flag("proj")
-    list_help.add_flag("type")
 
 
 def add_org_parser(group_parser):

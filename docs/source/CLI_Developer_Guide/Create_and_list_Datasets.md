@@ -51,12 +51,12 @@ tq42 proj dataset create \
 After you have created a dataset, the system will begin syncing the dataset. You can list all of your datasets by: 
 
 ```bash
-tq42 proj dataset list --proj="PROJECT_ID" --type [DATASET] or [MODEL]
+tq42 proj dataset list --proj="PROJECT_ID"
 ```
 
 For example:
 ```bash
-tq42 proj dataset list --proj="5fd0f2cd-aa75-4ecb-924c-07270ed9cd32" --type "MODEL"
+tq42 proj dataset list --proj="5fd0f2cd-aa75-4ecb-924c-07270ed9cd32"
 
 [
 id: "aff328cc-a5b4-4cac-80aa-370872e9dcb2"

@@ -98,9 +98,7 @@ def list_all(
 
     For details, see (TODO: update link once a new documentation URL is created)
     """
-    list_datasets_request = ListStoragesRequest(
-        project_id=project_id, type=storage_type
-    )
+    list_datasets_request = ListStoragesRequest(project_id=project_id)
     res: ListStoragesResponse = client.storage_client.ListStorages(
         request=list_datasets_request, metadata=client.metadata
     )
