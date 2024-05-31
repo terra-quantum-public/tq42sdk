@@ -8,8 +8,6 @@ You are not currently logged in. Please log in or authenticate to access this fe
 
 To log in with your username and password or stored token, type `tq42 auth login`.
 
-If you don't have an account, sign up by visiting our [website](https://tq42.com).
-
 If you need further assistance, please contact our support team at support@terraquantum.swiss.
 
 ## Unauthorized
@@ -63,7 +61,7 @@ Suggestions:
 Unable to Execute: `[command]`
 
 We were unable to find the default org and/or proj ID required to run this command.
-For a list of available commands, type `tq42 --help` or consult the documentation at tq42.com/help.
+For a list of available commands, type `tq42 --help` or consult the documentation at [TQ42 Help](https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/).
 
 ## Invalid Argument
 

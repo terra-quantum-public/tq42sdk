@@ -1,7 +1,7 @@
-![](images/TQ42_Logo_Black_Teal.svg)
+![](images/TQ42_Banner.png)
 
 # Introduction to TQ42
-The TQ42 Python SDK puts the power in your hands to accelerate delivery of custom, high-impact solutions. After installing the SDK and authenticating, access algorithms such as TetraOpt – a global optimization library based on tensor train (TT) decomposition. 
+The [TQ42 Python SDK](https://github.com/terra-quantum-public/tq42sdk) puts the power in your hands to accelerate delivery of custom, high-impact solutions. After installing the SDK and authenticating, access algorithms such as TetraOpt – a global optimization library based on tensor train (TT) decomposition. 
 
 With TQ42, there is no need to build or manage your own quantum circuits. Let our algorithms do the work. From the CLI or a Jupyter notebook:
 
@@ -27,6 +27,21 @@ Be sure your system can support TQ42, which requires the following:
 The following Python packages are hard dependencies, and will automatically be installed alongside TQ42:
 - [protobuf](https://googleapis.dev/python/protobuf/latest/)
 - [grpcio-tools](https://pypi.org/project/grpcio-tools/) 
+
+## Quick Start
+List of commands to execute to have a conda environment ready to work with the sdk.
+After having installed [conda](https://docs.anaconda.com/free/anaconda/install/index.html):
+```bash
+conda create -n "my_env_name" python=3.9  # create the conda enviroment, it needs to be python 3.8 or higher
+conda activate my_env_name                # activate your conda enviroment
+pip install -U tq42                       # install the sdk using the newest available version
+pip install jupyter                       # install jupyter if you work with notebook
+pip install jupyter matplotlib            # install matplotlib for visualization purpose
+tq42 auth login                           # authenticate the user 
+tq42 -h                                   # for visualizing the help
+
+git clone git@github.com:terra-quantum-public/tq42sdk.git # cloning the repo in case you want to use the example's notebook 
+```
 
 
 ## Installation
