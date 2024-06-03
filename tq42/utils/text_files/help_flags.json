@@ -82,5 +82,5 @@
     {
         "text": "Set path to alternate configuration file location",
         "flag": "--config"
-    },
+    }
 ]
