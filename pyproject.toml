@@ -14,7 +14,11 @@ authors = ["Terra Quantum AG"]
 python = "^3.8"
 requests = "2.31.0"
 PyYAML = "^6.0.1"
+<<<<<<< HEAD
 tq42_grpc_client = "1.0.134"
+=======
+tq42_grpc_client = "1.0.130"
+>>>>>>> e77e6bd (TQ42-1559: make channels creation work with new channels url)
 pytest = "^7.4.4"
 keyring = "^25.0.0"
 
