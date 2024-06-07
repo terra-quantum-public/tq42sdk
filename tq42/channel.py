@@ -1,14 +1,22 @@
 from __future__ import annotations
 
-import multiprocessing
+import asyncio
 import queue
+import time
+from datetime import datetime
 from typing import List, Callable, Iterator
 
 from google.protobuf import empty_pb2
 
 from tq42.exception_handling import handle_generic_sdk_errors
 from com.terraquantum.channel.v1alpha1.create_channel_pb2 import CreateChannelResponse
-from com.terraquantum.channel.v1alpha1.channel_message_pb2 import ChannelMessage
+
+# important for re-export
+from com.terraquantum.channel.v1alpha1.channel_message_pb2 import (
+    ChannelMessage,
+    Ask,
+    Parameter,
+)
 
 from typing import TYPE_CHECKING
 
@@ -44,30 +52,97 @@ class Channel:
         )
         return Channel(client=client, id=res.channel_id)
 
-    @handle_generic_sdk_errors
+    def connect_algo(
+        self,
+        callback: Callable[[ChannelMessage], ChannelMessage],
+        finish_callback: Callable,
+        max_duration_in_sec: int = 0,
+    ) -> None:
+        loop = asyncio.get_event_loop()
+
+        loop.run_until_complete(
+            self.handle_algo(callback=callback, max_duration_in_sec=max_duration_in_sec)
+        )
+
+        loop.close()
+        finish_callback()
+
+    async def handle_algo(
+        self,
+        callback: Callable[[ChannelMessage], ChannelMessage],
+        max_duration_in_sec: int = 0,
+    ):
+        # establish the connection
+        print("starting")
+        metadata: tuple = (
+            *self.client.metadata,
+            ("channel-id", self.id),
+        )
+        print(metadata)
+        call = self.client.channel_client.ConnectChannelAlgorithm(metadata=metadata)
+
+        print("writing channel message")
+        msg = ChannelMessage()
+        print("sending this msg", msg)
+        await call.write(msg)
+        print("writing channel message done")
+
+        timeout_start = time.time()
+
+        while time.time() < timeout_start + max_duration_in_sec:
+            print("Waiting for message")
+            ask = ChannelMessage(
+                sequential_message_id=1,
+                ask_data=Ask(
+                    parameters=[Parameter(values=[0, 1, 2])], headers=["h1", "h2", "h3"]
+                ),
+            )
+            ask.timestamp.FromDatetime(datetime.now())
+            await call.write(ask)
+            print("Send message, now waiting for response")
+            response = await call.read()
+            print("Response", response)
+
+        await call.done_writing()
+
     def connect(
         self,
         callback: Callable[[ChannelMessage], ChannelMessage],
         finish_callback: Callable,
-        max_duration_in_sec: int,
+        max_duration_in_sec: int = 0,
     ) -> None:
-        # Start listener as a process
-        listen_process = multiprocessing.Process(
-            target=self._listen_stream, args=(callback,)
+        loop = asyncio.get_event_loop()
+
+        loop.run_until_complete(
+            self.handle(callback=callback, max_duration_in_sec=max_duration_in_sec)
         )
-        listen_process.start()
-        listen_process.join(max_duration_in_sec)
 
-        # If thread is active
-        if listen_process.is_alive():
-            print(
-                "Listen process is still running and exceeded the max_duration_in_sec timeout, killing..."
-            )
-            # Terminate process
-            listen_process.terminate()
-            listen_process.join()
-
+        loop.close()
         finish_callback()
+
+    async def handle(
+        self,
+        callback: Callable[[ChannelMessage], ChannelMessage],
+        max_duration_in_sec: int = 0,
+    ):
+        # establish the connection
+        metadata: tuple = (
+            *self.client.metadata,
+            ("channel-id", self.id),
+        )
+        call = self.client.channel_client.ConnectChannelCustomer(metadata=metadata)
+
+        await call.write(ChannelMessage())
+
+        timeout_start = time.time()
+
+        while time.time() < timeout_start + max_duration_in_sec:
+            print("Waiting for message")
+            incoming = await call.read()
+            print(incoming)
+            await call.write(callback(incoming))
+
+        await call.done_writing()
 
     def _listen_stream(
         self, callback: Callable[[ChannelMessage], ChannelMessage]
@@ -83,11 +158,31 @@ class Channel:
         for msg in response_stream:
             incoming_messages.put(msg)
 
+        print("we finished!")
+
+    def _listen_stream2(
+        self, callback: Callable[[ChannelMessage], ChannelMessage]
+    ) -> None:
+        incoming_messages = queue.Queue()
+
+        # establish the connection
+        response_stream = self.client.channel_client.ConnectChannelCustomer(
+            self._handle_messages(
+                incoming_msg_queue=incoming_messages, callback=callback
+            )
+        )
+        for msg in response_stream:
+            print("once")
+            incoming_messages.put(msg)
+
+        print("we finished!")
+
     @staticmethod
     def _handle_messages(
         incoming_msg_queue: queue.Queue,
         callback: Callable[[ChannelMessage], ChannelMessage],
     ) -> Iterator[ChannelMessage]:
+        yield ChannelMessage()
         while True:
             incoming_msg: ChannelMessage = incoming_msg_queue.get()
             outgoing_msg: ChannelMessage = callback(incoming_msg)

@@ -3,6 +3,7 @@ import os
 import webbrowser
 from datetime import datetime
 import grpc
+from grpc import aio
 import requests
 from tq42.utils import dirs, file_handling, utils
 from tq42.utils.token_manager import TokenManager
@@ -149,7 +150,7 @@ class TQ42Client(object):
         self.api_channel = grpc.secure_channel(
             self.api_host, grpc.ssl_channel_credentials()
         )
-        self.channels_channel = grpc.secure_channel(
+        self.channels_channel = aio.secure_channel(
             self.channels_host, grpc.ssl_channel_credentials()
         )
 
