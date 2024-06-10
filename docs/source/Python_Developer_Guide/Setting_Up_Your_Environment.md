@@ -95,7 +95,7 @@ from tq42.project import Project
 with TQ42Client() as client:
     organization = Organization(client=client, id="<YOUR_ORG_ID>").set()
     print(f"Default organization set to {organization.id}")
-    project = Project.show()
+    project = Project.show(client=client)
     print(f"Default project set to {project.id}")
     
 ```
