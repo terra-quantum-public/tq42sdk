@@ -74,7 +74,7 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         layers=[
             Layer(dhn_layer=DHNLayer(
                   quantum_layer=pqn_layer,
-                  hidden_size=8,
+                  hidden_dim=[8],
                   classical_start_index=4),
             )
         ],
