@@ -7,17 +7,19 @@ from google.protobuf.field_mask_pb2 import FieldMask
 from tq42.client import TQ42Client
 from tq42.exception_handling import handle_generic_sdk_errors
 
-from com.terraquantum.experiment.v1.experiment.experiment_pb2 import ExperimentProto
-from com.terraquantum.experiment.v1.experiment.get_experiment_request_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experiment.experiment_pb2 import (
+    ExperimentProto,
+)
+from com.terraquantum.experiment.v3alpha1.experiment.get_experiment_pb2 import (
     GetExperimentRequest,
 )
-from com.terraquantum.experiment.v1.experiment.list_experiments_request_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experiment.list_experiments_pb2 import (
     ListExperimentsRequest,
 )
-from com.terraquantum.experiment.v1.experiment.list_experiments_response_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experiment.list_experiments_pb2 import (
     ListExperimentsResponse,
 )
-from com.terraquantum.experiment.v1.experiment.update_experiment_request_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experiment.update_experiment_request_pb2 import (
     UpdateExperimentRequest,
 )
 
@@ -85,7 +87,7 @@ class Experiment:
         field_mask.paths.append("name")
 
         update_proj_request = UpdateExperimentRequest(
-            update_mask=field_mask, id=self.id, name=name, request_id=None
+            update_mask=field_mask, id=self.id, name=name
         )
         self.data = self._client.experiment_client.UpdateExperiment(
             request=update_proj_request, metadata=self._client.metadata
