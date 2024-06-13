@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import asyncio
-import queue
-import time
-from datetime import datetime
-from typing import List, Callable, Iterator
+import logging
+from typing import List, Callable, Optional
 
 from google.protobuf import empty_pb2
 
@@ -15,7 +13,9 @@ from com.terraquantum.channel.v1alpha1.create_channel_pb2 import CreateChannelRe
 from com.terraquantum.channel.v1alpha1.channel_message_pb2 import (
     ChannelMessage,
     Ask,
-    Parameter,
+    Parameter,  # pylint:disable=unused-import # noqa: F401
+    Tell,
+    DataAcknowledge,
 )
 
 from typing import TYPE_CHECKING
@@ -23,6 +23,9 @@ from typing import TYPE_CHECKING
 # only import the stuff for type hints -> avoid circular imports
 if TYPE_CHECKING:
     from tq42.client import TQ42Client
+
+
+from tq42.utils.timers import AsyncTimedIterable
 
 
 class Channel:
@@ -45,87 +48,61 @@ class Channel:
 
     @staticmethod
     @handle_generic_sdk_errors
-    def create(client: TQ42Client) -> Channel:
+    async def create(client: TQ42Client) -> Channel:
         empty = empty_pb2.Empty()
-        res: CreateChannelResponse = client.channel_client.CreateChannel(
+        res: CreateChannelResponse = await client.channel_client.CreateChannel(
             request=empty, metadata=client.metadata
         )
         return Channel(client=client, id=res.channel_id)
 
-    def connect_algo(
+    async def connect(
         self,
-        callback: Callable[[ChannelMessage], ChannelMessage],
+        callback: Callable[[Ask], Tell],
         finish_callback: Callable,
-        max_duration_in_sec: int = 0,
+        max_duration_in_sec: Optional[int] = None,
+        message_timeout_in_sec: int = 30,
     ) -> None:
-        loop = asyncio.get_event_loop()
+        """
+        Connects to the stream and handles every message with the provided callback to create an answer.
+        ASK gets into the callback and then we expect a TELL answer
 
-        loop.run_until_complete(
-            self.handle_algo(callback=callback, max_duration_in_sec=max_duration_in_sec)
-        )
+        :param callback: Callback that handles an ASK message and returns a TELL message
+        :param finish_callback: Callback that is called when we finish the connection
+        :param int max_duration_in_sec: Timeout for whole connection in seconds. `None` -> no timeout for overall flow
+        :param int message_timeout_in_sec: Timeout between messages in seconds. Main way to end the connection.
+        """
 
-        loop.close()
-        finish_callback()
+        async def _handle():
+            try:
+                timed_stream = AsyncTimedIterable(call, timeout=message_timeout_in_sec)
+                async for incoming in timed_stream:
+                    logging.debug(f"User received {incoming=}")
+                    if incoming.HasField("ask_data"):
+                        ask_msg: ChannelMessage = incoming
+                        ack_msg = ChannelMessage(
+                            acknowledge_data=DataAcknowledge(
+                                id=incoming.sequential_message_id
+                            )
+                        )
+                        tell = callback(incoming.ask_data)
+                        await call.write(ack_msg)
+                        logging.debug(
+                            f"User Sent ack {incoming.sequential_message_id=}"
+                        )
 
-    async def handle_algo(
-        self,
-        callback: Callable[[ChannelMessage], ChannelMessage],
-        max_duration_in_sec: int = 0,
-    ):
-        # establish the connection
-        print("starting")
-        metadata: tuple = (
-            *self.client.metadata,
-            ("channel-id", self.id),
-        )
-        print(metadata)
-        call = self.client.channel_client.ConnectChannelAlgorithm(metadata=metadata)
+                        tell_msg = ChannelMessage(
+                            sequential_message_id=(ask_msg.sequential_message_id + 1),
+                            tell_data=tell,
+                        )
+                        await call.write(tell_msg)
 
-        print("writing channel message")
-        msg = ChannelMessage()
-        print("sending this msg", msg)
-        await call.write(msg)
-        print("writing channel message done")
+            except asyncio.CancelledError:
+                logging.debug("ALGO Stream reading was cancelled.")
+            except asyncio.TimeoutError:
+                logging.debug("ALGO Stream finished because of timeouts")
+            except Exception as e:
+                logging.debug(f"ALGO An unexpected error occurred: {e}")
 
-        timeout_start = time.time()
-
-        while time.time() < timeout_start + max_duration_in_sec:
-            print("Waiting for message")
-            ask = ChannelMessage(
-                sequential_message_id=1,
-                ask_data=Ask(
-                    parameters=[Parameter(values=[0, 1, 2])], headers=["h1", "h2", "h3"]
-                ),
-            )
-            ask.timestamp.FromDatetime(datetime.now())
-            await call.write(ask)
-            print("Send message, now waiting for response")
-            response = await call.read()
-            print("Response", response)
-
-        await call.done_writing()
-
-    def connect(
-        self,
-        callback: Callable[[ChannelMessage], ChannelMessage],
-        finish_callback: Callable,
-        max_duration_in_sec: int = 0,
-    ) -> None:
-        loop = asyncio.get_event_loop()
-
-        loop.run_until_complete(
-            self.handle(callback=callback, max_duration_in_sec=max_duration_in_sec)
-        )
-
-        loop.close()
-        finish_callback()
-
-    async def handle(
-        self,
-        callback: Callable[[ChannelMessage], ChannelMessage],
-        max_duration_in_sec: int = 0,
-    ):
-        # establish the connection
         metadata: tuple = (
             *self.client.metadata,
             ("channel-id", self.id),
@@ -133,61 +110,10 @@ class Channel:
         call = self.client.channel_client.ConnectChannelCustomer(metadata=metadata)
 
         await call.write(ChannelMessage())
-
-        timeout_start = time.time()
-
-        while time.time() < timeout_start + max_duration_in_sec:
-            print("Waiting for message")
-            incoming = await call.read()
-            print(incoming)
-            await call.write(callback(incoming))
-
+        await asyncio.wait_for(_handle(), timeout=max_duration_in_sec)
         await call.done_writing()
 
-    def _listen_stream(
-        self, callback: Callable[[ChannelMessage], ChannelMessage]
-    ) -> None:
-        incoming_messages = queue.Queue()
-
-        # establish the connection
-        response_stream = self.client.channel_client.ConnectChannelCustomer(
-            self._handle_messages(
-                incoming_msg_queue=incoming_messages, callback=callback
-            )
-        )
-        for msg in response_stream:
-            incoming_messages.put(msg)
-
-        print("we finished!")
-
-    def _listen_stream2(
-        self, callback: Callable[[ChannelMessage], ChannelMessage]
-    ) -> None:
-        incoming_messages = queue.Queue()
-
-        # establish the connection
-        response_stream = self.client.channel_client.ConnectChannelCustomer(
-            self._handle_messages(
-                incoming_msg_queue=incoming_messages, callback=callback
-            )
-        )
-        for msg in response_stream:
-            print("once")
-            incoming_messages.put(msg)
-
-        print("we finished!")
-
-    @staticmethod
-    def _handle_messages(
-        incoming_msg_queue: queue.Queue,
-        callback: Callable[[ChannelMessage], ChannelMessage],
-    ) -> Iterator[ChannelMessage]:
-        yield ChannelMessage()
-        while True:
-            incoming_msg: ChannelMessage = incoming_msg_queue.get()
-            outgoing_msg: ChannelMessage = callback(incoming_msg)
-            incoming_msg_queue.task_done()
-            yield outgoing_msg
+        finish_callback()
 
 
 @handle_generic_sdk_errors
