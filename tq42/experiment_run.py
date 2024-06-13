@@ -11,19 +11,21 @@ from tq42.exceptions import ExperimentRunCancelError, ExceedRetriesError
 from tq42.utils import utils
 
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
-    ExperimentRunProto,
     ExperimentRunStatusProto,
 )
-from com.terraquantum.experiment.v1.experimentrun.cancel_experiment_run_request_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experimentrun.experiment_run_pb2 import (
+    ExperimentRunProto,
+)
+from com.terraquantum.experiment.v3alpha1.experimentrun.cancel_experiment_run_request_pb2 import (
     CancelExperimentRunRequest,
 )
-from com.terraquantum.experiment.v1.experimentrun.get_experiment_run_request_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experimentrun.get_experiment_run_request_pb2 import (
     GetExperimentRunRequest,
 )
-from com.terraquantum.experiment.v1.experimentrun.list_experiment_runs_request_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experimentrun.list_experiment_runs_pb2 import (
     ListExperimentRunsRequest,
 )
-from com.terraquantum.experiment.v1.experimentrun.list_experiment_runs_response_pb2 import (
+from com.terraquantum.experiment.v3alpha1.experimentrun.list_experiment_runs_pb2 import (
     ListExperimentRunsResponse,
 )
 
@@ -149,11 +151,11 @@ class ExperimentRun:
         https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#cancelling-an-experiment-run
         """
         try:
-            list_exp_runs_response = CancelExperimentRunRequest(
-                experiment_run_id=self.id, request_id=None
+            cancel_exp_runs_response = CancelExperimentRunRequest(
+                experiment_run_id=self.id
             )
             self.client.experiment_run_client.CancelExperimentRun(
-                request=list_exp_runs_response, metadata=self.client.metadata
+                request=cancel_exp_runs_response, metadata=self.client.metadata
             )
             return self
         except Exception:

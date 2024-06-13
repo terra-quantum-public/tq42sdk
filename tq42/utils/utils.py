@@ -3,7 +3,7 @@ import json
 from typing import Union
 import keyring
 
-from com.terraquantum.experiment.v1.experimentrun import (
+from com.terraquantum.experiment.v3alpha1.experimentrun import (
     create_experiment_run_request_pb2 as create_exp_run,
 )
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
@@ -99,7 +99,6 @@ def dynamic_create_exp_run_request(
     keyword_args = {field_name: parameters}
 
     experiment_request = create_exp_run.CreateExperimentRunRequest(
-        request_id=None,
         algorithm=algo,
         experiment_id=exp_id,
         hardware=hardware,
