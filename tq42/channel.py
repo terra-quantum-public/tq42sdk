@@ -97,11 +97,11 @@ class Channel:
                         await call.write(tell_msg)
 
             except asyncio.CancelledError:
-                logging.debug("ALGO Stream reading was cancelled.")
+                logging.debug("Stream reading was cancelled.")
             except asyncio.TimeoutError:
-                logging.debug("ALGO Stream finished because of timeouts")
+                logging.debug("Stream finished because of the provided timeouts")
             except Exception as e:
-                logging.debug(f"ALGO An unexpected error occurred: {e}")
+                logging.debug(f"An unexpected error occurred in the stream: {e}")
 
         metadata: tuple = (
             *self.client.metadata,
