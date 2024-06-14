@@ -70,7 +70,7 @@ params = MessageToDict(GenericMLTrainMetadataProto(
         layers=[
             Layer(cphn_layer=CPHNLayer(
                   quantum_layer=efq_layer,
-                  hidden_size=2)
+                  hidden_dim=[2]
             )
         ],
     ),
