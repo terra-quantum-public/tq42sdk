@@ -66,7 +66,7 @@ class Channel:
         Connects to the stream and handles every message with the provided callback to create an answer.
         ASK gets into the callback and then we expect a TELL answer
 
-        :param callback: Callback that handles an ASK message and returns a TELL message
+        :param callback: Async callback that handles an ASK message and returns a TELL message
         :param finish_callback: Callback that is called when we finish the connection
         :param int max_duration_in_sec: Timeout for whole connection in seconds. `None` -> no timeout for overall flow
         :param int message_timeout_in_sec: Timeout between messages in seconds. Main way to end the connection.
