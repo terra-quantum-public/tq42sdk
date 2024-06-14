@@ -12,7 +12,7 @@ authors = ["Terra Quantum AG"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-requests = "2.31.0"
+requests = "^2.31.0"
 PyYAML = "^6.0.1"
 tq42_grpc_client = "1.0.134"
 pytest = "^7.4.4"
