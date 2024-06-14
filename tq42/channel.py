@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import List, Callable, Optional
+from typing import List, Callable, Optional, Awaitable
 
 from google.protobuf import empty_pb2
 
@@ -30,7 +30,7 @@ from tq42.utils.timers import AsyncTimedIterable
 
 class Channel:
     """
-    Class to create and view datasets
+    Class to create and connect to a channel
     """
 
     id: str
@@ -57,7 +57,7 @@ class Channel:
 
     async def connect(
         self,
-        callback: Callable[[Ask], Tell],
+        callback: Callable[[Ask], Awaitable[Tell]],
         finish_callback: Callable,
         max_duration_in_sec: Optional[int] = None,
         message_timeout_in_sec: int = 30,
@@ -84,7 +84,7 @@ class Channel:
                                 id=incoming.sequential_message_id
                             )
                         )
-                        tell = callback(incoming.ask_data)
+                        tell = await callback(incoming.ask_data)
                         await call.write(ack_msg)
                         logging.debug(
                             f"User Sent ack {incoming.sequential_message_id=}"
