@@ -3,6 +3,7 @@ import os
 import webbrowser
 from datetime import datetime
 import grpc
+from grpc import aio
 import requests
 from tq42.utils import dirs, file_handling, utils
 from tq42.utils.token_manager import TokenManager
@@ -24,6 +25,9 @@ from com.terraquantum.project.v1.project import (
 from com.terraquantum.storage.v1alpha1 import (
     storage_service_pb2_grpc as pb2_data_grpc,
 )
+from com.terraquantum.channel.v1alpha1 import (
+    channel_service_pb2_grpc as pb2_channel_grpc,
+)
 from tq42.utils.environment_utils import environment_default_set
 from tq42.exceptions import AuthenticationError
 
@@ -39,8 +43,12 @@ class ConfigEnvironment:
         self.scope = scope
 
     @property
-    def host(self):
+    def api_host(self):
         return "api.{}".format(self.base_url)
+
+    @property
+    def channels_host(self):
+        return "channels.{}".format(self.base_url)
 
     @property
     def auth_url_token(self):
@@ -133,21 +141,30 @@ class TQ42Client(object):
         self.token_manager = TokenManager(environment, self.config_folder)
 
         self.environment = environment
-        self.host = environment.host
+        self.api_host = environment.api_host
+        self.channels_host = environment.channels_host
         self.server_port = 443
 
         self.exp_run_id = None
         # instantiate a channel
-        self.channel = grpc.secure_channel(self.host, grpc.ssl_channel_credentials())
+        self.api_channel = grpc.secure_channel(
+            self.api_host, grpc.ssl_channel_credentials()
+        )
+        self.channels_channel = aio.secure_channel(
+            self.channels_host, grpc.ssl_channel_credentials()
+        )
 
         # bind the client and the server
-        self.organization_client = pb2_org_grpc.OrganizationServiceStub(self.channel)
-        self.project_client = pb2_proj_grpc.ProjectServiceStub(self.channel)
-        self.experiment_client = pb2_exp_grpc.ExperimentServiceStub(self.channel)
-        self.storage_client = pb2_data_grpc.StorageServiceStub(self.channel)
-        self.experiment_run_client = pb2_exp_run_grpc.ExperimentRunServiceStub(
-            self.channel
+        self.organization_client = pb2_org_grpc.OrganizationServiceStub(
+            self.api_channel
         )
+        self.project_client = pb2_proj_grpc.ProjectServiceStub(self.api_channel)
+        self.experiment_client = pb2_exp_grpc.ExperimentServiceStub(self.api_channel)
+        self.storage_client = pb2_data_grpc.StorageServiceStub(self.api_channel)
+        self.experiment_run_client = pb2_exp_run_grpc.ExperimentRunServiceStub(
+            self.api_channel
+        )
+        self.channel_client = pb2_channel_grpc.ChannelServiceStub(self.channels_channel)
         self.credential_flow_client_id = os.getenv("TQ42_AUTH_CLIENT_ID")
         self.credential_flow_client_secret = os.getenv("TQ42_AUTH_CLIENT_SECRET")
 

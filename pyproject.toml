@@ -5,14 +5,14 @@ include = ["utils/text_files/*.txt", "utils/text_files/config.json", "tests/test
 
 [tool.poetry]
 name = "tq42"
-version = "0.5.28"
+version = "0.5.29"
 description = "tq42 sdk"
 readme = "README.md"
 authors = ["Terra Quantum AG"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-requests = "2.31.0"
+requests = "^2.31.0"
 PyYAML = "^6.0.1"
 tq42_grpc_client = "1.0.134"
 pytest = "^7.4.4"
