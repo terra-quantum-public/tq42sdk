@@ -110,7 +110,7 @@ class Project:
         Set a friendly name for a project.
 
         For details, see
-        https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments
+        https://help.terraquantum.io/
         """
         return self.update(name=friendly_name)
 

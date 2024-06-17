@@ -100,7 +100,7 @@ class Experiment:
         """
         Set a friendly name for an experiment.
 
-        For details, see https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments
+        For details, see https://help.terraquantum.io/
         """
         return self.update(name=friendly_name)
 
@@ -111,7 +111,7 @@ def list_all(client: TQ42Client, project_id: Optional[str] = None) -> List[Exper
     List all the experiments you have permission to view within a specific project.
     If no project_id is specified the currently set project id will be used for this.
 
-    For details, see https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-experiments
+    For details, see https://help.terraquantum.io/
     """
     if not project_id:
         project_id = get_current_value("proj")

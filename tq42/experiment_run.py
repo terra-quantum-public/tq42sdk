@@ -89,7 +89,7 @@ class ExperimentRun:
         Create an experiment run.
 
         For details, see
-        https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
+        https://help.terraquantum.io/
         """
         create_exp_run_request = utils.dynamic_create_exp_run_request(
             parameters=parameters,
@@ -111,7 +111,7 @@ class ExperimentRun:
         Monitor run status.
 
         For details, see
-        https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run
+        https://help.terraquantum.io/
         """
         self.data = self._get_data()
         return self

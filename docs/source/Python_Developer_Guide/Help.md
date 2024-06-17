@@ -2,6 +2,7 @@
 
 ## Command-specific Help
 For assistance with any of the commands, precede any command with the `help` flag for contextual guidance.
+Visit https://help.terraquantum.io/ to access our help centre - access help articles and video tutorials, report bugs, contact support and request improvements.
 
 For example, type the command:
 

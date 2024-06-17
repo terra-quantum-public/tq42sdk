@@ -97,7 +97,7 @@ def list_all(client: TQ42Client) -> List[Organization]:
     List all the organizations you have permission to view.
 
     For details, see
-    https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-organizations
+    https://help.terraquantum.io/
     """
     empty = empty_pb2.Empty()
     res: ListOrganizationsResponse = (
