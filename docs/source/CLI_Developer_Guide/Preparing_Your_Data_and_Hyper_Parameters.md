@@ -1,6 +1,6 @@
 # Preparing Your Data and Hyper Parameters
 
-The way you construct your code may differ depending on the type of algorithm or problem being solved. Visit [TQ42 Help](https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/) for links to detailed documentation on each algorithm, including:
+The way you construct your code may differ depending on the type of algorithm or problem being solved. Visit [TQ42 Help](https://help.terraquantum.io/) for links to detailed documentation on each algorithm, including:
 
 - An overview of the algorithm
 
