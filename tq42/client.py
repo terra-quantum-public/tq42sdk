@@ -205,7 +205,7 @@ class TQ42Client(object):
         When running TQ42 Python commands, your environment needs to have access to your TQ42 account credentials.
 
         For details, see
-         https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/README.html#authentication
+         https://help.terraquantum.io/
         """
         # Send the POST request and print the response
         response = requests.post(
