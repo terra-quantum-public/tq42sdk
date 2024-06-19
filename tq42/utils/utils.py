@@ -14,7 +14,7 @@ from com.terraquantum.experiment.v1.experimentrun.algorithm import shared_pb2
 import tq42.utils.dirs as dirs
 from tq42.utils import file_handling
 from tq42.exceptions import NoMatchingAttributeError
-from keyring.errors import NoKeyringError, InitError
+from keyring.errors import NoKeyringError, InitError, PasswordSetError, KeyringLocked
 
 
 def get_id(input):
@@ -117,7 +117,7 @@ def save_token(service_name: str, backup_save_path: str, token: str) -> str:
         )
         return save_location
 
-    except (NoKeyringError, InitError):
+    except (NoKeyringError, InitError, PasswordSetError):
         file_handling.write_to_file(backup_save_path, token)
         return backup_save_path
 
@@ -129,5 +129,5 @@ def get_token(service_name: str, backup_save_path: str) -> str:
             username="username",
         )
 
-    except (NoKeyringError, InitError):
+    except (NoKeyringError, InitError, KeyringLocked):
         return file_handling.read_file(backup_save_path)
