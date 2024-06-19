@@ -78,13 +78,6 @@ Welcome to TQ42SDK's Documentation
    QuEnc_Algorithm/Parameters_and_Hyperparameters.md
    QuEnc_Algorithm/Output_Format.md
 
-.. toctree::
-   :maxdepth: 4
-   :caption: TQNet Machine Learning:
-
-   TQNet_Machine_Learning/Introduction.md
-   TQNet_Machine_Learning/model_architecture_parameters
-   TQNet_Machine_Learning/Best_Use_Cases_&_Applicability.md
 
 Indices and tables
 ==================
