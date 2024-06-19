@@ -285,7 +285,9 @@ class TestUtils(unittest.TestCase):
 
     @mock.patch("keyring.get_password")
     @mock.patch("keyring.set_password")
-    def test_password_set_error(self, mock_set_password, mock_get_password):
+    def test_PasswordSetError_KeyringLocked_token_file_path_used(
+        self, mock_set_password, mock_get_password
+    ):
         token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
         mock_set_password.side_effect = PasswordSetError()
         mock_get_password.side_effect = KeyringLocked()
