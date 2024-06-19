@@ -49,7 +49,7 @@
             },
             "create": {
                 "help": {
-                    "text": "Create an experiment dataset.",
+                    "text": "Create a dataset within a project.",
                     "level": "command",
                     "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Create_and_list_Datasets.html#create-a-dataset",
                     "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#creating-a-dataset-and-listing-datasets"
@@ -57,9 +57,25 @@
             },
             "list": {
                 "help": {
-                    "text": "List all experiment datasets.",
+                    "text": "List all datasets within a project.",
                     "level": "command",
                     "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Create_and_list_Datasets.html#list-datasets",
+                    "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#creating-a-dataset-and-listing-datasets"
+                }
+            },
+            "get": {
+                "help": {
+                    "text": "Get a specific dataset.",
+                    "level": "command",
+                    "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Create_and_list_Datasets.html",
+                    "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#creating-a-dataset-and-listing-datasets"
+                }
+            },
+            "export": {
+                "help": {
+                    "text": "Export a specific dataset.",
+                    "level": "command",
+                    "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/CLI_Developer_Guide/Create_and_list_Datasets.html",
                     "python_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#creating-a-dataset-and-listing-datasets"
                 }
             }

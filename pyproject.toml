@@ -17,6 +17,8 @@ PyYAML = "^6.0.1"
 tq42_grpc_client = "1.0.135"
 pytest = "^7.4.4"
 keyring = "^25.0.0"
+tqdm = "^4.66.4"
+validators = "^0.28.3"
 
 [[tool.poetry.source]]
 name = "PyPI"
