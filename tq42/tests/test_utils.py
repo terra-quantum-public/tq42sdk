@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 from unittest import mock
-from keyring.errors import InitError, NoKeyringError
+from keyring.errors import InitError, NoKeyringError, PasswordSetError, KeyringLocked
 
 from tq42 import exceptions
 from tq42.utils import dirs, utils, file_handling
@@ -277,6 +277,27 @@ class TestUtils(unittest.TestCase):
             backup_save_path=token_file_path,
             token="test_token",
         )
+        token = utils.get_token(
+            service_name="access_token", backup_save_path=token_file_path
+        )
+        os.remove(token_file_path)
+        self.assertEqual(token, "test_token")
+
+    @mock.patch("keyring.get_password")
+    @mock.patch("keyring.set_password")
+    def test_should_return_token_even_if_keyring_locked_and_passwort_set_error_thrown(
+        self, mock_set_password, mock_get_password
+    ):
+        token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
+        mock_set_password.side_effect = PasswordSetError()
+        mock_get_password.side_effect = KeyringLocked()
+
+        utils.save_token(
+            service_name="access_token",
+            backup_save_path=token_file_path,
+            token="test_token",
+        )
+
         token = utils.get_token(
             service_name="access_token", backup_save_path=token_file_path
         )
