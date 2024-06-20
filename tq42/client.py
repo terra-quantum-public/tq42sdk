@@ -148,7 +148,11 @@ class TQ42Client(object):
         self.exp_run_id = None
         # instantiate a channel
         self.api_channel = grpc.secure_channel(
-            self.api_host, grpc.ssl_channel_credentials()
+            self.api_host,
+            grpc.ssl_channel_credentials(),
+            options=[
+                ('grpc.max_receive_message_length', 10_000_000),
+            ]
         )
         self.channels_channel = aio.secure_channel(
             self.channels_host, grpc.ssl_channel_credentials()
