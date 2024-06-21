@@ -6,8 +6,8 @@
    - Format: `[storage_type]://[bucket_name]`.
    - Examples:
      - Google Cloud Storage: `gs://bucket_name`
-     - AWS S3: `s3://aws_bucket`
-     - Azure Storage: `az://another_bucket`.
+     - AWS S3: `s3://aws_bucket` (currently not supported)
+     - Azure Storage: `az://another_bucket` (currently not supported)
 
 2. **GCP Service Account Name**:
    - Format: `project-[PROJECT_NUMBER]@storage-transfer-service.iam.gserviceaccount.com`.
