@@ -63,6 +63,9 @@ class Dataset:
         )
         return storage_data
 
+    def _refresh(self) -> None:
+        self.data = self._get()
+
     @staticmethod
     def from_proto(client: TQ42Client, msg: StorageProto) -> Dataset:
         """
@@ -100,7 +103,11 @@ class Dataset:
         return Dataset.from_proto(client=client, msg=res)
 
     @handle_generic_sdk_errors
-    def export(self, directory_path: str) -> None:
+    def export(self, directory_path: str) -> List[str]:
+        """
+        Export all files within the dataset.
+        Returns a list of exported file paths
+        """
         if not os.path.isdir(directory_path):
             raise ValueError(
                 f"Provided directory path {directory_path} is not a valid directory"
@@ -112,12 +119,17 @@ class Dataset:
             request=export_storage_request, metadata=self.client.metadata
         )
 
+        exported_file_paths = []
+
         for signed_url in res.signed_urls:
             file_path = os.path.join(
                 directory_path,
                 self._get_file_name_from_signed_url(signed_url=signed_url),
             )
             self._download_file_from_url(url=signed_url, file_path=file_path)
+            exported_file_paths.append(file_path)
+
+        return exported_file_paths
 
     @staticmethod
     def _download_file_from_url(url: str, file_path: str):
