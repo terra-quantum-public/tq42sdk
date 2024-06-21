@@ -49,3 +49,13 @@ def check_params(command, args):
         if args.proj is None:
             example_command = "Example usage: tq42 proj dataset list --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01\n"
             raise SystemExit(InvalidInputCliError(msg=example_command))
+
+    elif command == "proj dataset get":
+        if args.dataset is None:
+            example_command = "Example usage: tq42 proj dataset get 98ccb1d2-a3d0-48c8-b172-022f6db9be01\n"
+            raise SystemExit(InvalidInputCliError(msg=example_command))
+
+    elif command == "proj dataset export":
+        if args.dataset is None or args.directory_path is None:
+            example_command = "Example usage: tq42 proj dataset export 98ccb1d2-a3d0-48c8-b172-022f6db9be01 /Users/user1/Downloads\n"
+            raise SystemExit(InvalidInputCliError(msg=example_command))
