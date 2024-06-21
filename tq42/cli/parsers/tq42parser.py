@@ -92,6 +92,15 @@ def add_proj_dataset_parser(proj_subparser):
     list_help.add_parser(cmd_parser)
     list_help.add_flag("proj")
 
+    get_help = tq42_help.Help.lookup_help("proj dataset get".split())
+    dataset_get_parser = get_help.add_parser(cmd_parser)
+    dataset_get_parser.add_argument("dataset")
+
+    export_help = tq42_help.Help.lookup_help("proj dataset export".split())
+    dataset_export_parser = export_help.add_parser(cmd_parser)
+    dataset_export_parser.add_argument("dataset")
+    dataset_export_parser.add_argument("directory_path")
+
 
 def add_org_parser(group_parser):
     org_help = tq42_help.Help.lookup_help(["org"])

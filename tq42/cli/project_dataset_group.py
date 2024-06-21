@@ -9,6 +9,12 @@ def project_dataset_group(client, args):
     elif args.subcommand == "list":
         return proj_dataset_list(client, args)
 
+    elif args.subcommand == "get":
+        return proj_dataset_get(client, args)
+
+    elif args.subcommand == "export":
+        return proj_dataset_export(client, args)
+
 
 def proj_dataset_list(client, args):
     check_params("proj dataset list", args)
@@ -25,3 +31,14 @@ def proj_dataset_create(client, args):
         url=args.url,
         sensitivity=args.sensitivity.upper(),
     ).data
+
+
+def proj_dataset_get(client, args):
+    check_params("proj dataset get", args)
+    return Dataset(client=client, id=args.dataset).data
+
+
+def proj_dataset_export(client, args):
+    check_params("proj dataset export", args)
+    dataset = Dataset(client=client, id=args.dataset)
+    dataset.export(directory_path=args.directory_path)
