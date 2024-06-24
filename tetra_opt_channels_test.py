@@ -10,7 +10,6 @@ import numpy as np
 import OptimizationTestFunctions as otf
 
 from tq42.experiment_run import ExperimentRun
-from tq42.algorithm import CvaOptParametersProto
 
 
 async def main():
