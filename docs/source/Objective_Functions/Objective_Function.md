@@ -69,6 +69,13 @@ It also need the following class to stream the information to TetraOpt
 We can import them from the tq42 library in our Python script using the following:
 1. `from tq42.channel import Channel, Ask, Tell`
 
+  Python types for Ask and Tell parameters:
+  - ask.headers -> list of strings
+  - ask.parameter.values -> list of floats
+  - tell.results -> list of floats
+  - tell.candidates.values -> list of floats
+  
+
 
 #### The `Ask` Class
 In our example above, we used the Ackley function provided by the OptimizationTestFunctions library as our objective function. 
@@ -103,9 +110,8 @@ An Example of `Tell` object values for an objective and local optimization funct
 ```
 
 
-  An example of using an Ask and Tell object for receiving and passing the arguments to an Ackley function used as an objective function. 
- 
- The Ackley function needs to be initialized by the number of dimensions required. We can find this value by finding the length of the `Ask` object's headers field. Once it is initialized to the correct number of dimensions, we then pass the input values to the Ackley function by looping through the ask objects parameters. The `Tell` object is constructed by using the input values and the results.
+  An example of using an Ask and Tell object for receiving and passing the arguments to an Ackley function used as an objective function.
+
 ```
 from tq42.channel import Ask, Tell
 import OptimizationTestFunctions as otf
