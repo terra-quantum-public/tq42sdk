@@ -131,3 +131,4 @@ def get_token(service_name: str, backup_save_path: str) -> str:
 
     except (NoKeyringError, InitError, KeyringLocked):
         return file_handling.read_file(backup_save_path)
+
