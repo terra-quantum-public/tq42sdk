@@ -11,7 +11,7 @@ algorithm.
 
 ## Objective Function and Local Optimization Function Format
 TetraOpt requires the following way of communication for its objective and local optimization function.
-1. A communication channel (TQ42 specific technical implementation / service)
+1. A communication channel (using the tq42 API)
 2. An https endpoint
 
 
