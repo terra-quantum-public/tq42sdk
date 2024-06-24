@@ -39,7 +39,7 @@ tetra_opt_parameters = {
 ```
 
 An example of TetraOpt parameters using `an https endpoint`. Notice the
-`objective_function` and `local_optimizer parameter`:
+`objective_function` and `local_optimizer` parameter:
 ```
 tetra_opt_parameters = {
     "dimensionality": 2,
@@ -78,8 +78,6 @@ We can import them from the tq42 library in our Python script using the followin
 
 
 #### The `Ask` Class
-In our example above, we used the Ackley function provided by the OptimizationTestFunctions library as our objective function. 
-
 An Example of an `Ask` object values passed by TetraOpt:
 ```
 {
@@ -92,8 +90,6 @@ An Example of an `Ask` object values passed by TetraOpt:
 ```
 
 #### The `Tell` Class 
-To return the answers to TetraOpt, we need to create a Tell object. For the objective function, we need the list of the results, the parameters and the headers to construct it. For the local optimization function, we need an extra candidates parameter.
-
 An Example of `Tell` object values for an objective and local optimization function:
 ```
 {
@@ -168,7 +164,8 @@ The connect API parameters are:
 - int max_duration_in_sec: Timeout for whole connection in seconds. `None` -> no timeout for overall flow
 - int message_timeout_in_sec: Timeout between messages in seconds. Main way to end the connection.
 
-
+def success():
+    print("One async function done!")
 
 await asyncio.gather(
     objective_func_channel.connect(
