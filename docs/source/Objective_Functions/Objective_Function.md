@@ -63,22 +63,23 @@ The channel uses objects of the following classes to send and receive informatio
 1. `Ask`
 2. `Tell`
 
-It also need the following class to stream the information to TetraOpt
+It also need the following class to stream the information from/to TetraOpt
 1. `Channel`
 
 We can import them from the tq42 library in our Python script using the following:
-1. `from tq42.channel import Channel, Ask, Tell`
+
+`from tq42.channel import Channel, Ask, Tell`
 
   Python types for Ask and Tell parameters:
-  - ask.headers -> list of strings
-  - ask.parameter.values -> list of floats
-  - tell.results -> list of floats
-  - tell.candidates.values -> list of floats
+  - `ask.headers` -> list of strings
+  - `ask.parameter.values` -> list of floats
+  - `tell.results` -> list of floats
+  - `tell.candidates.values` -> list of floats
   
 
 
 #### The `Ask` Class
-An Example of an `Ask` object values passed by TetraOpt:
+An example of an `Ask` object values passed by TetraOpt:
 ```
 {
     "parameters": [
@@ -90,7 +91,7 @@ An Example of an `Ask` object values passed by TetraOpt:
 ```
 
 #### The `Tell` Class 
-An Example of `Tell` object values for an objective and local optimization function:
+An example of `Tell` object values for an objective and local optimization function:
 ```
 {
     "parameters": [
@@ -99,6 +100,7 @@ An Example of `Tell` object values for an objective and local optimization funct
     ],
     "headers": ["h0", "h1"],
     "results": [6.59359884, 7.86938667],
+    #parameter candidates is only used for local optimization function
     "candidates": [
         {"values": [-8.18565e-09, -8.18565e-09]}
     ]
@@ -134,7 +136,11 @@ async def objective_function_callback(ask: Ask) -> Tell:
     return tell
 ```
 
- An example of using an Ask and Tell object for receiving and passing the arguments to a local optimization function. Notice the difference in creating a Tell object, you need an extra `candidates` parameter.
+To use an Ask and Tell object for passing arguments to a local optimization function, note these key points:
+
+1. When creating a Tell object, you need an extra candidates parameter.
+2. Before adding results to the candidate list, map them to a string called "values".
+ 
 ```
 
 async def local_optimization_function_callback(ask: Ask) -> Tell:
