@@ -21,7 +21,7 @@ Welcome to TQ42SDK's Documentation
    Python_Developer_Guide/Command_Structure.md
    Python_Developer_Guide/Setting_Up_Your_Environment.md
    Python_Developer_Guide/Selecting_Compute_Resources.md
-   Python_Developer_Guide/Create_and_list_Datasets.md
+   Python_Developer_Guide/Working_with_Datasets.md
    Python_Developer_Guide/Preparing_Your_Data_and_Hyper_Parameters.md
    Python_Developer_Guide/Submitting_and_Monitoring_a_Run.md
    Python_Developer_Guide/Errors.md
@@ -35,7 +35,7 @@ Welcome to TQ42SDK's Documentation
    CLI_Developer_Guide/Command_Structure.md
    CLI_Developer_Guide/Setting_Up_Your_Environment.md
    CLI_Developer_Guide/Selecting_Compute_Resources.md
-   CLI_Developer_Guide/Create_and_list_Datasets.md
+   CLI_Developer_Guide/Working_with_Datasets.md
    CLI_Developer_Guide/Preparing_Your_Data_and_Hyper_Parameters.md
    CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.md
    CLI_Developer_Guide/Errors.md

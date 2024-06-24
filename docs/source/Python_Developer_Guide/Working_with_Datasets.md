@@ -1,4 +1,4 @@
-# Create and List Datasets
+# Working with Datasets
 
 ## Create a Dataset
 
@@ -33,26 +33,25 @@ The preceding command consists of the following elements:
 
 The result of this dataset creation is a `Dataset` instance.
 
-For example:
+
+## Get information about datasets
+
+After you have created a dataset, the system will begin syncing the dataset.
+
+You can do one of two things to get the status of this dataset (as well as others):
+
+1. Get information about a specific dataset by running
 
 ```python
 from tq42.client import TQ42Client
-from tq42.dataset import Dataset, DatasetSensitivityProto
+from tq42.dataset import Dataset
 
 with TQ42Client() as client:
-    dataset = Dataset.create(
-        client=client,
-        name="testing_tshq_11_01_24",
-        description="testing_tshq_11_01_24",
-        url="gs://tq-pvpower-demo-source",
-        sensitivity=DatasetSensitivityProto.SENSITIVE,
-        project_id="cbbc8b76-146c-45b1-b70c-1a18eab29a07",
-    )
+    dataset = Dataset(client=client, id="<YOUR_DATASET_ID>")
+    print(dataset)
 ```
 
-## List Datasets
-
-After you have created a dataset, the system will begin syncing the dataset. You can list all of your datasets by:
+2. You can list all of your datasets in a given project by running 
 
 ```python
 from tq42.client import TQ42Client
@@ -61,4 +60,20 @@ from tq42.dataset import list_all
 with TQ42Client() as client:
     datasets = list_all(client=client, project_id="<YOUR_PROJECT_ID>")
     print(datasets)
+```
+
+## Exporting a dataset
+
+To make proper use of datasets an export functionality is key to extract data and leverage it for further workflows.
+This can be achieved by running the following command
+
+```python
+from tq42.client import TQ42Client
+from tq42.dataset import Dataset
+
+with TQ42Client() as client:
+    dataset = Dataset(client=client, id="<YOUR_DATASET_ID>")
+    print(dataset)
+    exported_files = dataset.export(directory_path="<YOUR_EXPORT_PATH>")
+    print(exported_files)
 ```
