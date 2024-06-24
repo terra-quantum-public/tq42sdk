@@ -26,13 +26,19 @@ def handle_generic_sdk_errors(func: F) -> F:
             if status_code == StatusCode.UNAUTHENTICATED:
                 raise exceptions.UnauthenticatedError() from None
 
-            if status_code in [StatusCode.INVALID_ARGUMENT, StatusCode.NOT_FOUND]:
+            if status_code in [
+                StatusCode.INVALID_ARGUMENT,
+                StatusCode.NOT_FOUND,
+                StatusCode.UNKNOWN,
+            ]:
                 # offending command will be second from the last
                 # last line is: traceback.extract_stack()
                 index = -2 if len(traceback.extract_stack()) > 1 else 0
                 raise exceptions.InvalidArgumentError(
                     command=traceback.extract_stack()[index].line, details=e.details()
                 ) from None
+
+            raise e
 
         except KeyError:
             raise exceptions.NoDefaultError(
@@ -41,6 +47,11 @@ def handle_generic_sdk_errors(func: F) -> F:
         except exceptions.NoMatchingAttributeError as e:
             raise exceptions.InvalidArgumentError(
                 command=traceback.extract_stack()[0].line, details=e.details
+            )
+        except FileExistsError as e:
+            raise exceptions.InvalidArgumentError(
+                command=traceback.extract_stack()[0].line,
+                details=f"File {e} already exists",
             )
         except (
             exceptions.AuthenticationError,
@@ -60,6 +71,6 @@ def handle_generic_sdk_errors(func: F) -> F:
             logging.debug(
                 "Error {} is raised in SDK and not specifically handled".format(e)
             )
-            raise Exception
+            raise e
 
     return cast(F, wrapped)

@@ -14,6 +14,7 @@ class Args:
     proj: str
     exp: str
     run: str
+    export_path: str
     config: Any
 
 
@@ -38,6 +39,10 @@ class FunctionalTestConfig:
         return self.args.run
 
     @property
+    def export_path(self):
+        return self.args.export_path
+
+    @property
     def config(self):
         return self.args.config
 
@@ -50,7 +55,7 @@ class FunctionalTestConfig:
     def prepare_defaults():
         auto_pick = False
         client = TQ42Client()
-        arguments = Args(org="", proj="", exp="", run="", config=None)
+        arguments = Args(org="", proj="", exp="", run="", export_path="", config=None)
 
         choices = [
             "{} ({})".format(org.id, org.data.name)
@@ -83,7 +88,21 @@ class FunctionalTestConfig:
         arguments.run = FunctionalTestConfig.provide_choice_id(
             "exp run", choices, auto_pick
         )
+        arguments.export_path = FunctionalTestConfig.question_with_default(
+            "Which export path to use?", ".", auto_pick
+        )
         return arguments
+
+    @staticmethod
+    def question_with_default(question: str, default: str, auto_pick: bool) -> str:
+        if auto_pick:
+            return default
+
+        choice = str(input(f"{question} ({default})"))
+        if choice.strip() == "":
+            return default
+
+        return choice
 
     @staticmethod
     def custom_select(question: str, choices: list) -> str:

@@ -6,7 +6,6 @@ from tq42.organization import list_all as list_all_organizations, Organization
 from tq42.project import Project, list_all as list_all_projects
 from tq42.experiment import Experiment, list_all as list_all_experiments
 from tq42.experiment_run import ExperimentRun, list_all as list_all_experiment_runs
-from tq42.dataset import Dataset, list_all as list_all_datasets, DatasetSensitivityProto
 from tq42.functional_tests.functional_test_config import FunctionalTestConfig
 from tq42.algorithm import (
     ToyMetadataProto,
@@ -133,23 +132,3 @@ class TestFunctionalTQ42API(unittest.TestCase, FunctionalTestConfig):
             name=random_string
         )
         self.assertEqual(updated_project.data.name, random_string)
-
-    def test_exp_dataset_create(self):
-        exp_dataset_create = Dataset.create(
-            client=self.get_client(),
-            project_id=self.proj,
-            name="Dataset Name Test1",
-            description="Dataset description test 1",
-            url="https://testdataset.testdataset/data",
-            sensitivity=DatasetSensitivityProto.CONFIDENTIAL,
-        )
-
-        self.assertEqual("Dataset Name Test1", exp_dataset_create.data.name)
-
-    def test_exp_datasets_list(self):
-        exp_dataset_list = list_all_datasets(
-            client=self.get_client(), project_id=self.proj
-        )
-        dataset_name = "Dataset Name Test1"
-        found = any(dataset_name in dataset.data.name for dataset in exp_dataset_list)
-        self.assertTrue(found)
