@@ -19,28 +19,34 @@ An example of TetraOpt parameters using the `communication channel`. Notice the
 `objective_function_channel_id` and `local_optimizer_channel_id` parameter:
 
 ```
-objective_func_channel = await Channel.create(client=client)
-local_opt_channel = await Channel.create(client=client)
+from tq42.channel import Ask, Tell
+from tq42.client import TQ42Client
 
-tetra_opt_parameters = {
-    "dimensionality": 2,
-    "iteration_number": 2,
-    "maximal_rank": 4,
-    "points_number": 1,
-    "quantization": False,
-    "tolerance": 0.0010000000474974513,
-    "lower_limits": [0, 0],
-    "upper_limits": [9, 9],
-    "grid": [10, 10],
-     "objective_function_channel_id": objective_func_channel.id
-     #local_optimizer_channel_id parameter is optional
-    "local_optimizer_channel_id": local_opt_channel.id
-}
+with TQ42Client() as client:
+  objective_func_channel = await Channel.create(client=client)
+  local_opt_channel = await Channel.create(client=client)
+  
+  tetra_opt_parameters = {
+      "dimensionality": 2,
+      "iteration_number": 2,
+      "maximal_rank": 4,
+      "points_number": 1,
+      "quantization": False,
+      "tolerance": 0.0010000000474974513,
+      "lower_limits": [0, 0],
+      "upper_limits": [9, 9],
+      "grid": [10, 10],
+       "objective_function_channel_id": objective_func_channel.id
+       #local_optimizer_channel_id parameter is optional
+      "local_optimizer_channel_id": local_opt_channel.id
+  }
 ```
 
 An example of TetraOpt parameters using `an https endpoint`. Notice the
 `objective_function` and `local_optimizer` parameter:
 ```
+from tq42.client import TQ42Client
+
 tetra_opt_parameters = {
     "dimensionality": 2,
     "iteration_number": 2,
@@ -102,7 +108,10 @@ An example of `Tell` object values for an objective and local optimization funct
     "results": [6.59359884, 7.86938667],
     #parameter candidates is only used for local optimization function
     "candidates": [
-        {"values": [-8.18565e-09, -8.18565e-09]}
+        {'values': array([0., 0.])},
+        {'values': array([-8.18565023e-09, -8.18565023e-09])},
+        {'values': array([5.02359648e-08, 5.02359648e-08])}, 
+        {'values': array([9., 9.])}
     ]
 }
 ```
@@ -165,13 +174,13 @@ async def local_optimization_function_callback(ask: Ask) -> Tell:
 ```
 
 We can then connect the channels created for `objective_func_channel` and `local_opt_channel`  to the objective function and local optimization function we created above using the connect API of the channel. The connect API connects to the stream and handles every message with the provided callback to create an answer.
-```
 The connect API parameters are:
 - callback: Async callback that handles an ASK message and returns a TELL message
 - finish_callback: Callback that is called when we finish the connection
 - int max_duration_in_sec: Timeout for whole connection in seconds. `None` -> no timeout for overall flow
 - int message_timeout_in_sec: Timeout between messages in seconds. Main way to end the connection.
 
+```
 def success():
     print("One async function done!")
 
