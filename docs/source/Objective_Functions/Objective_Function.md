@@ -175,10 +175,10 @@ async def local_optimization_function_callback(ask: Ask) -> Tell:
 
 We can then connect the channels created for `objective_func_channel` and `local_opt_channel`  to the objective function and local optimization function we created above using the connect API of the channel. The connect API connects to the stream and handles every message with the provided callback to create an answer.
 The connect API parameters are:
-- callback: Async callback that handles an ASK message and returns a TELL message
-- finish_callback: Callback that is called when we finish the connection
-- int max_duration_in_sec: Timeout for whole connection in seconds. `None` -> no timeout for overall flow
-- int message_timeout_in_sec: Timeout between messages in seconds. Main way to end the connection.
+- `callback`: Async callback that handles an ASK message and returns a TELL message
+- `finish_callback`: Callback that is called when we finish the connection
+- int `max_duration_in_sec`: Timeout for whole connection in seconds. `None` -> no timeout for overall flow
+- int `message_timeout_in_sec`: Timeout between messages in seconds. Main way to end the connection.
 
 ```
 def success():
