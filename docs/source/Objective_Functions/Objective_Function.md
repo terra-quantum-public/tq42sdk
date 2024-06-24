@@ -136,7 +136,9 @@ async def objective_function_callback(ask: Ask) -> Tell:
     return tell
 ```
 
-To use an Ask and Tell object for passing arguments to a local optimization function, note these key points:
+An example of using an Ask and Tell object for receiving and passing the arguments to a local optimization function.
+
+Note these key points when constructing a Tell object for a local optimization function, 
 
 1. When creating a Tell object, you need an extra candidates parameter.
 2. Before adding results to the candidate list, map them to a string called "values".
@@ -162,7 +164,7 @@ async def local_optimization_function_callback(ask: Ask) -> Tell:
     return tell
 ```
 
-We can then connect the channels created for `objective_function_channel_id` and `local_optimizer_channel_id`  to the objective function and local optimization function we created above using the connect API of the channel.   The connect API connects to the stream and handles every message with the provided callback to create an answer.
+We can then connect the channels created for `objective_func_channel` and `local_opt_channel`  to the objective function and local optimization function we created above using the connect API of the channel. The connect API connects to the stream and handles every message with the provided callback to create an answer.
 ```
 The connect API parameters are:
 - callback: Async callback that handles an ASK message and returns a TELL message
