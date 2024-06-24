@@ -10,13 +10,13 @@ algorithm.
 [2]: https://en.wikipedia.org/wiki/Pareto_front
 
 ## Objective Function and Local Optimization Function Format
-A TQ42 optimization algorithm must be provided with one or more real-valued functions to be optimized. The objective and local optimization function must be provided in the format of:
-1. A communication channel
+TetraOpt requires the following way of communication for its objective and local optimization function.
+1. A communication channel (TQ42 specific technical implementation / service)
 2. An https endpoint
 
 
 An example of TetraOpt parameters using the `communication channel`. Notice the
-`objective_function_channel_id` and `local_optimizer_channel_id parameter`:
+`objective_function_channel_id` and `local_optimizer_channel_id` parameter:
 
 ```
 objective_func_channel = await Channel.create(client=client)
@@ -32,10 +32,9 @@ tetra_opt_parameters = {
     "lower_limits": [0, 0],
     "upper_limits": [9, 9],
     "grid": [10, 10],
-     "objective_function_channel_id": objective_func_channel
+     "objective_function_channel_id": objective_func_channel.id
      #local_optimizer_channel_id parameter is optional
-    "local_optimizer_channel_id": local_opt_channel
-    "polling": {"initial_delay": 1.0, "retries": 100, "delay": 1.0, "backoff_factor": 1.1}
+    "local_optimizer_channel_id": local_opt_channel.id
 }
 ```
 
@@ -52,9 +51,9 @@ tetra_opt_parameters = {
     "lower_limits": [0, 0],
     "upper_limits": [9, 9],
     "grid": [10, 10],
-    'objective_function':'http://127.0.0.1:8000/test_func_eval/Ackley/',
+    'objective_function':'http://34.32.169.11:8000/test_func_eval/Ackley/',
      #local_optimizer parameter is optional  
-    "local_optimizer": "http://127.0.0.1:8000/local_optimization/Ackley/",
+    "local_optimizer": "http://34.32.169.11:8000/local_optimization/Ackley/",
     "polling": {"initial_delay": 1.0, "retries": 100, "delay": 1.0, "backoff_factor": 1.1}
 }
 ```
@@ -77,84 +76,29 @@ In our example above, we used the Ackley function provided by the OptimizationTe
 An Example of an `Ask` object values passed by TetraOpt:
 ```
 {
-    parameters {
-      values: 1
-      values: 3
-    }
-    parameters {
-      values: 2
-      values: 7
-    }
-    headers: "h0"
-    headers: "h1"
+    "parameters": [
+        {"values": [1, 3]},
+        {"values": [2, 7]}
+    ],
+    "headers": ["h0", "h1"]
 }
 ```
 
-The fields are formally described in Google Protocol Buffers as:
-```
-message Ask {
-  repeated Parameter parameters = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).repeated.min_items = 1
-  ];
-  repeated string headers = 2;
-}
-
-message Parameter {
-  repeated float values = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).repeated.min_items = 1
-  ];
-}
-
-```
 #### The `Tell` Class 
 To return the answers to TetraOpt, we need to create a Tell object. For the objective function, we need the list of the results, the parameters and the headers to construct it. For the local optimization function, we need an extra candidates parameter.
 
 An Example of `Tell` object values for an objective and local optimization function:
 ```
 {
-    parameters {
-      values: 1
-      values: 3
-    }
-    parameters {
-      values: 2
-      values: 7
-    }
-    headers: "h0"
-    headers: "h1"
-    results: 6.59359884
-    results: 7.86938667
-    
-    #candidates is only used for local optimization function
-    candidates {
-        values: -8.18565e-09
-        values: -8.18565e-09
-    }
-}
-```
-
-This is formally described in Google Protocol Buffers as:
-```
-message Tell {
-  repeated Parameter parameters = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).repeated.min_items = 1
-  ];
-  repeated string headers = 2;
-  repeated float results = 3 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).repeated.min_items = 1
-  ];
-  repeated Parameter candidates = 4;
-}
-
-message Parameter {
-  repeated float values = 1 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).repeated.min_items = 1
-  ];
+    "parameters": [
+        {"values": [1, 3]},
+        {"values": [2, 7]}
+    ],
+    "headers": ["h0", "h1"],
+    "results": [6.59359884, 7.86938667],
+    "candidates": [
+        {"values": [-8.18565e-09, -8.18565e-09]}
+    ]
 }
 ```
 
