@@ -6,7 +6,7 @@ You are not currently logged in. Please log in or authenticate to access this fe
 
 To log in with your username and password or stored token, type `tq42 auth login`.
 
-If you need further assistance, please visit https://help.terraquantum.io/.
+If you need further assistance, please visit [TQ42 Help](https://help.terraquantum.io/).
 
 ## Unauthorized
 
