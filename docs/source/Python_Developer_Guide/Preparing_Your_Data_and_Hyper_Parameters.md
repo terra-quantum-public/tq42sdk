@@ -1,6 +1,6 @@
 # Preparing Your Data and Hyper Parameters
 
-The way you construct your code may differ depending on the type of algorithm or problem being solved. Visit [TQ42 Help](https://docs.tq42.com/en/latest/) for links to detailed documentation on each algorithm, including:
+The way you construct your code may differ depending on the type of algorithm or problem being solved. Visit the [documentation](https://docs.tq42.com/en/latest/) for details on each algorithm, including:
 
 - An overview of the algorithm
 

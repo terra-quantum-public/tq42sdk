@@ -36,7 +36,7 @@ Please check your internet connection and try again. If the problem persists, co
 
 The command you entered, `[variable]`, is not recognized. Please check the spelling and syntax of the command and try again.
 
-For a list of available commands, type `tq42 --help` or consult the documentation at [TQ42 Help](https://docs.tq42.com/en/latest/).
+For a list of available commands, type `tq42 --help` or consult the [documentation](https://docs.tq42.com/en/latest/).
 
 ## Resource Unavailable
 
@@ -59,7 +59,7 @@ Suggestions:
 Unable to Execute: `[command]`
 
 We were unable to find the default org and/or proj ID required to run this command.
-For a list of available commands, type `tq42 --help` or consult the documentation at [TQ42 Help](https://docs.tq42.com/en/latest/).
+For a list of available commands, type `tq42 --help` or consult the [documentation](https://docs.tq42.com/en/latest/).
 
 ## Invalid Argument
 
