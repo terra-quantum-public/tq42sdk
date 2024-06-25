@@ -38,7 +38,8 @@ For example:
 ```bash
 tq42 --help
 
-Visit https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/index.html for more detail on the following commands:
+Visit https://help.terraquantum.io/ to access our help center, from where you can access help articles and video tutorials, report bugs, contact support and request improvements.
+For TQ42SDK documentation, visit https://docs.tq42.com/en/latest/.
 
 Mandatory commands:
 
