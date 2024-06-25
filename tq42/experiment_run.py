@@ -89,7 +89,7 @@ class ExperimentRun:
         Create an experiment run.
 
         For details, see
-        https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
         """
         create_exp_run_request = utils.dynamic_create_exp_run_request(
             parameters=parameters,
@@ -111,7 +111,7 @@ class ExperimentRun:
         Monitor run status.
 
         For details, see
-        https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run
         """
         self.data = self._get_data()
         return self
@@ -124,7 +124,7 @@ class ExperimentRun:
         Monitor an experiment run until it completes, then automatically display the results (if there are no errors).
 
         For details, see
-        https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run
         """
         time.sleep(initial_delay)
 
@@ -148,7 +148,7 @@ class ExperimentRun:
         Cancel a run that is QUEUED, PENDING, or RUNNING.
 
         For details, see
-        https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#cancelling-an-experiment-run
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#cancelling-an-experiment-run
         """
         try:
             cancel_exp_runs_response = CancelExperimentRunRequest(
@@ -168,7 +168,7 @@ def list_all(client: TQ42Client, experiment_id: str) -> List[ExperimentRun]:
     List all the runs within an experiment you have permission to view.
 
     For details, see
-    https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-runs-within-an-experiment
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-runs-within-an-experiment
     """
     list_exp_run_request = ListExperimentRunsRequest(experiment_id=experiment_id)
 

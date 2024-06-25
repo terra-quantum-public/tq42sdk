@@ -56,7 +56,7 @@ class Compute:
         Show details of compute configurations.
 
         For details, see
-        https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Selecting_Compute_Resources.html#viewing-available-compute-resources-and-configuration-details
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Selecting_Compute_Resources.html#viewing-available-compute-resources-and-configuration-details
         """
         return self.config
 
@@ -67,6 +67,6 @@ def list_all() -> List[Compute]:
     Show available compute configurations.
 
     For details, see
-    https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Selecting_Compute_Resources.html#viewing-available-compute-resources-and-configuration-details
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Selecting_Compute_Resources.html#viewing-available-compute-resources-and-configuration-details
     """
     return [Compute(hardware=val) for key, val in HardwareProto.items() if val != 0]

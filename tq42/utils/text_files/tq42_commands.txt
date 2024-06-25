@@ -1,4 +1,6 @@
-Visit {} for more detail on the following commands:
+Visit {} to access our help center, from where you can access help articles and video tutorials, report bugs, contact support and request improvements.
+
+For TQ42SDK documentation, visit https://docs.tq42.com/en/latest/.
 
 Mandatory commands:
 

@@ -103,7 +103,8 @@ class ConfigEnvironment:
 
 class TQ42Client(object):
     """
-    Visit tq42.com/help for more details on all commands.
+    Visit https://help.terraquantum.io/ to access our help center, from where you can access help articles and video tutorials, report bugs, contact support and request improvements.
+    For TQ42SDK documentation, visit https://docs.tq42.com/en/latest/.
     """
 
     def __call__(self, **kwargs):
@@ -209,7 +210,7 @@ class TQ42Client(object):
         When running TQ42 Python commands, your environment needs to have access to your TQ42 account credentials.
 
         For details, see
-         https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/README.html#authentication
+         https://docs.tq42.com/en/latest/README.html#authentication
         """
         # Send the POST request and print the response
         response = requests.post(
