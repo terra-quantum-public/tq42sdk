@@ -187,7 +187,7 @@ The connect API parameters are:
 
 ```
 def success():
-    print("One async function done!")
+    print("One callback function done!")
 
 await asyncio.gather(
     objective_func_channel.connect(
