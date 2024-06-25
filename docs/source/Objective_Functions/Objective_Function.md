@@ -14,9 +14,9 @@ TetraOpt requires the following way of communication for its objective and local
 1. A communication channel (using the tq42 API)
 2. An https endpoint
 
+### Example Using Communication Channel
+Below is an example of how to set up TetraOpt parameters using a communication channel. Notice the `objective_function_channel_id` and `local_optimizer_channel_id` parameters:
 
-An example of TetraOpt parameters using the `communication channel`. Notice the
-`objective_function_channel_id` and `local_optimizer_channel_id` parameter:
 
 ```
 from tq42.channel import Ask, Tell
@@ -42,8 +42,9 @@ with TQ42Client() as client:
   }
 ```
 
-An example of TetraOpt parameters using `an https endpoint`. Notice the
-`objective_function` and `local_optimizer` parameter:
+### Example Using HTTPS Endpoint
+Below is an example of how to set up TetraOpt parameters using an HTTPS endpoint. Notice the `objective_function` and `local_optimizer` parameters:
+
 ```
 from tq42.client import TQ42Client
 
@@ -65,18 +66,19 @@ tetra_opt_parameters = {
 ```
 
 ### 1. To use the communications channel:
-The channel uses objects of the following classes to send and receive information:
+The communication channel uses the following classes to send and receive information:
+
 1. `Ask`
 2. `Tell`
+3. `Channel`
 
-It also need the following class to stream the information from/to TetraOpt
-1. `Channel`
 
-We can import them from the tq42 library in our Python script using the following:
+You can import these classes from the tq42 library by:
 
 `from tq42.channel import Channel, Ask, Tell`
 
-  Python types for Ask and Tell parameters:
+
+####  Below are the Python types for the Ask and Tell parameters you need to know:
   - `ask.headers` -> list of strings
   - `ask.parameter.values` -> list of floats
   - `tell.results` -> list of floats
@@ -116,8 +118,10 @@ An example of `Tell` object values for an objective and local optimization funct
 }
 ```
 
-
-  An example of using an Ask and Tell object for receiving and passing the arguments to an Ackley function used as an objective function.
+### Implementing Objective and Local Optimization Functions
+#### Objective Function Callback Example
+  An example of using an Ask object to receive the arguments and creating a Tell object to return the results to TetraOpt.
+  
 
 ```
 from tq42.channel import Ask, Tell
@@ -144,8 +148,8 @@ async def objective_function_callback(ask: Ask) -> Tell:
     )
     return tell
 ```
-
-An example of using an Ask and Tell object for receiving and passing the arguments to a local optimization function.
+#### Local Optimization Function Callback Example
+An example of using an Ask object to receive the arguments and creating a Tell object to return the results to TetraOpt for a local optimization function.
 
 Note these key points when constructing a Tell object for a local optimization function, 
 
@@ -172,6 +176,7 @@ async def local_optimization_function_callback(ask: Ask) -> Tell:
     )
     return tell
 ```
+### Connecting Channels to Functions
 
 We can then connect the channels created for `objective_func_channel` and `local_opt_channel`  to the objective function and local optimization function we created above using the connect API of the channel. The connect API connects to the stream and handles every message with the provided callback to create an answer.
 The connect API parameters are:
