@@ -46,7 +46,7 @@ Mandatory commands:
 tq42 auth login
 
 tq42 exp run create \
-    --exp="EXP_ID" \^
+    --exp="EXP_ID" \
     --compute="COMPUTE_NAME" \
     --algorithm="ALGORITHM_NAME" \
     --parameters="PARAMETERS_JSON"
