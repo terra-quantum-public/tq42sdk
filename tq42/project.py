@@ -110,7 +110,7 @@ class Project:
         Set a friendly name for a project.
 
         For details, see
-        https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments
         """
         return self.update(name=friendly_name)
 
@@ -165,7 +165,7 @@ def list_all(
     List all the projects you have permission to view within the organization that is currently set.
 
     For details, see
-    https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-projects
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-projects
     """
 
     if not organization_id:

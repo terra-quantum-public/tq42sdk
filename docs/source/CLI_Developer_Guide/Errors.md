@@ -1,5 +1,5 @@
 # Errors
-This page contains common errors you may encounter when using TQ42. If you need further assistance, please visit [TQ42 Help](https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/) or contact our support team at support@terraquantum.swiss.
+This page contains common errors you may encounter when using TQ42. If you need further assistance, please visit [TQ42 Help](https://docs.tq42.com/en/latest/). If you need further assistance, please visit https://help.terraquantum.io/ 
 
 ## Authentication Expired
 `User Not Logged In: Authentication Required`
@@ -8,7 +8,7 @@ You are not currently logged in. Please log in or authenticate to access this fe
 
 To log in with your username and password or stored token, type `tq42 auth login`.
 
-If you need further assistance, please contact our support team at support@terraquantum.swiss.
+If you need further assistance, please visit https://help.terraquantum.io/.
 
 ## Unauthorized
 
@@ -38,7 +38,7 @@ Please check your internet connection and try again. If the problem persists, co
 
 The command you entered, `[variable]`, is not recognized. Please check the spelling and syntax of the command and try again.
 
-For a list of available commands, type `tq42 --help` or consult the documentation at [TQ42 Help](https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/).
+For a list of available commands, type `tq42 --help` or consult the documentation at [TQ42 Help](https://docs.tq42.com/en/latest/).
 
 ## Resource Unavailable
 
@@ -61,7 +61,7 @@ Suggestions:
 Unable to Execute: `[command]`
 
 We were unable to find the default org and/or proj ID required to run this command.
-For a list of available commands, type `tq42 --help` or consult the documentation at [TQ42 Help](https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/).
+For a list of available commands, type `tq42 --help` or consult the documentation at [TQ42 Help](https://docs.tq42.com/en/latest/).
 
 ## Invalid Argument
 
