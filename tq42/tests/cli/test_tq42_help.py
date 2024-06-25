@@ -142,7 +142,7 @@ class TestTQ42Help(unittest.TestCase):
     def test_walk_root(self):
         tree = {
             "help": {
-                "cli_url": "https://terra-quantum-tq42sdk-docs.readthedocs-hosted.com/en/latest/index.html",
+                "cli_url": "https://docs.tq42.com/en/latest/index.html",
                 "level": "tq42",
             }
         }
