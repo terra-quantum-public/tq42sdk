@@ -1,5 +1,5 @@
 # Errors
-This page contains common errors you may encounter when using TQ42. If you need further assistance, please visit [TQ42 Help](https://docs.tq42.com/en/latest/).
+This page contains common errors you may encounter when using TQ42. If you need further assistance, please visit [TQ42 Help](https://help.terraquantum.io/).
 `User Not Logged In: Authentication Required`
 
 You are not currently logged in. Please log in or authenticate to access this feature or command.
