@@ -10,7 +10,7 @@ algorithm.
 [2]: https://en.wikipedia.org/wiki/Pareto_front
 
 ## Objective Function and Local Optimization Function Format
-TetraOpt requires the following way of communication for its objective and local optimization function.
+TetraOpt requires one of the following methods of communication for its objective and local optimization functions:
 1. A communication channel (using the tq42 API)
 2. An https endpoint
 
@@ -83,7 +83,6 @@ You can import these classes from the tq42 library by:
   - `ask.parameter.values` -> list of floats
   - `tell.results` -> list of floats
   - `tell.candidates.values` -> list of floats
-  
 
 
 #### The `Ask` Class
@@ -100,6 +99,10 @@ An example of an `Ask` object values passed by TetraOpt:
 
 #### The `Tell` Class 
 An example of `Tell` object values for an objective and local optimization function:
+
+Note:
+1. You need an extra `candidates` parameter for the Tell object of the local optimization function:.
+2. Before adding results to the `candidate` list, map them to a string called "values".
 ```
 {
     "parameters": [
@@ -118,89 +121,17 @@ An example of `Tell` object values for an objective and local optimization funct
 }
 ```
 
-### Implementing Objective and Local Optimization Functions
-#### Objective Function Callback Example
-  An example of using an Ask object to receive the arguments and creating a Tell object to return the results to TetraOpt.
-  
-
-```
-from tq42.channel import Ask, Tell
-import OptimizationTestFunctions as otf
-import numpy as np
-
-
-async def objective_function_callback(ask: Ask) -> Tell:     
-    dimensions = len(ask.headers)
-    
-    #initialize Ackley function to receive n dimension arrays
-    func = otf.Ackley(dimensions)
-    y = []
-    
-    #append the results of the Ackley function to y for all given n dimension parameters
-    for parameter in ask.parameters:
-        y.append(float(func(np.array(parameter.values))))
-
-    #create and return a Tell object which has the parameters and the results mapped together
-    tell = Tell(
-        parameters=ask.parameters,
-        headers=ask.headers,
-        results=y
-    )
-    return tell
-```
-#### Local Optimization Function Callback Example
-An example of using an Ask object to receive the arguments and creating a Tell object to return the results to TetraOpt for a local optimization function.
-
-Note these key points when constructing a Tell object for a local optimization function, 
-
-1. When creating a Tell object, you need an extra candidates parameter.
-2. Before adding results to the candidate list, map them to a string called "values".
- 
-```
-
-async def local_optimization_function_callback(ask: Ask) -> Tell:
-    dim = len(ask.headers)
-    func = otf.Ackley(dim)
-    y = []
-    new_x = []
-    for parameter in ask.parameters:
-        res = optimize.minimize(func, np.array(parameter.values))
-        new_x.append({"values": res.x})
-        y.append(float(res.fun))
-
-    tell = Tell(
-        parameters=ask.parameters,
-        headers=ask.headers,
-        results=y,
-        candidates=new_x
-    )
-    return tell
-```
 ### Connecting Channels to Functions
 
-We can then connect the channels created for `objective_func_channel` and `local_opt_channel`  to the objective function and local optimization function we created above using the connect API of the channel. The connect API connects to the stream and handles every message with the provided callback to create an answer.
-The connect API parameters are:
-- `callback`: Async callback that handles an ASK message and returns a TELL message
-- `finish_callback`: Callback that is called when we finish the connection
-- int `max_duration_in_sec`: Timeout for whole connection in seconds. `None` -> no timeout for overall flow
-- int `message_timeout_in_sec`: Timeout between messages in seconds. Main way to end the connection.
+To connect the channels `objective_func_channel` and `local_opt_channel` to the objective function and local optimization function, we use the `connect` API. This API links the channels to their respective functions and processes each message through the provided callback function. To see the API help, you can do the following:
 
 ```
-def success():
-    print("One callback function done!")
-
-await asyncio.gather(
-    objective_func_channel.connect(
-         callback=objective_function_callback, finish_callback=success, max_duration_in_sec=None, message_timeout_in_sec=500
-    ),
-    local_opt_channel.connect(
-        callback=local_optimization_function_callback, finish_callback=success, max_duration_in_sec=None, message_timeout_in_sec=500
-    )
-)
+from tq42.channel import Channel
+help(Channel.connect)
 ```
+
 
 For a working example, please refer to the notebooks section in the tq42sdk repo: https://github.com/terra-quantum-public/tq42sdk/tree/main/notebooks.
-
 
 
 ### 2. To use an https endpoint:
