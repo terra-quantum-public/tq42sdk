@@ -121,16 +121,6 @@ Note:
 }
 ```
 
-### Connecting Channels to Functions
-
-To connect the channels `objective_func_channel` and `local_opt_channel` to the objective function and local optimization function, we use the `connect` API. This API links the channels to their respective functions and processes each message through the provided callback function. To see the API help, you can do the following:
-
-```
-from tq42.channel import Channel
-help(Channel.connect)
-```
-
-
 For a working example, please refer to the notebooks section in the tq42sdk repo: https://github.com/terra-quantum-public/tq42sdk/tree/main/notebooks.
 
 
