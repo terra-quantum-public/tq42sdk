@@ -15,7 +15,7 @@ TetraOpt requires one of the following methods of communication for its objectiv
 2. An https endpoint
 
 ### Example Using Communication Channel
-Below is an example of how to set up TetraOpt parameters using a communication channel. Notice the `objective_function_channel_id` and `local_optimizer_channel_id` parameters:
+Below is an example of how to set up the TetraOpt parameter using a communication channel. Notice the `objective_function_channel_id` and `local_optimizer_channel_id` parameters:
 
 
 ```
@@ -26,7 +26,7 @@ with TQ42Client() as client:
   objective_func_channel = await Channel.create(client=client)
   local_opt_channel = await Channel.create(client=client)
   
-  tetra_opt_parameters = {
+  tetra_opt_parameter = {
       "dimensionality": 2,
       "iteration_number": 2,
       "maximal_rank": 4,
@@ -43,12 +43,12 @@ with TQ42Client() as client:
 ```
 
 ### Example Using HTTPS Endpoint
-Below is an example of how to set up TetraOpt parameters using an HTTPS endpoint. Notice the `objective_function` and `local_optimizer` parameters:
+Below is an example of how to set up the TetraOpt parameter using an HTTPS endpoint. Notice the `objective_function` and `local_optimizer` parameters:
 
 ```
 from tq42.client import TQ42Client
 
-tetra_opt_parameters = {
+tetra_opt_parameter = {
     "dimensionality": 2,
     "iteration_number": 2,
     "maximal_rank": 4,
@@ -66,11 +66,11 @@ tetra_opt_parameters = {
 ```
 
 ### 1. To use the communications channel:
-The communication channel uses the following classes to send and receive information:
+TetraOpt uses the Ask and Tell pattern to send and receive information as objects to its objective and local optimization function. It also uses a communication channel to stream the information to and from the server.
 
-1. `Ask`
-2. `Tell`
-3. `Channel`
+1. `Ask` - TetraOpt sends an Ask object to the objective and local optimization function
+2. `Tell` - The objective and local optimization function needs to respond witn a Tell object to send information back to TetraOpt
+3. `Channel`- This is used to connect the functions running locally to TetraOpt running in the cloud.
 
 
 You can import these classes from the tq42 library by:
@@ -121,7 +121,7 @@ Note:
 }
 ```
 
-For a working example, please refer to the notebooks section in the tq42sdk repo: https://github.com/terra-quantum-public/tq42sdk/tree/main/notebooks.
+For a full working example, please refer to the notebooks section in the tq42sdk repo: https://github.com/terra-quantum-public/tq42sdk/tree/main/notebooks.
 
 
 ### 2. To use an https endpoint:
