@@ -1,17 +1,130 @@
-# Creating an Objective Function or Local Optimization Function for TQ42
+# Creating an Objective Function and Local Optimization Function for TQ42
 
 An objective function serves as a foundational component for optimization algorithms, guiding the computation towards an optimal solution. It is a precise mathematical expression defining the criteria for the "best" outcome, which could include minimizing costs, maximizing revenue, finding the most efficient route, or other objectives. In cases of multi-objective optimization([1]), additional functions are added to accommodate several objectives simultaneously, balancing trade-offs and providing a set of optimal solutions known as the Pareto front.([2]) This approach allows the algorithm to evaluate potential solutions against a spectrum of criteria and converge on the one that best satisfies the composite set of predefined goals.
 
-The TetraOpt algorithm can optionally accept a local optimization function to refine optimization estimates. This is 
+The TetraOpt algorithm can also optionally accept a local optimization function to refine optimization estimates. This is 
 equivalent to running the TetraOpt optimization by itself, but following up each iteration with a second optimization 
 algorithm. 
 
 [1]: https://www.egr.msu.edu/~kdeb/papers/k2011003.pdf
 [2]: https://en.wikipedia.org/wiki/Pareto_front
 
-### Objective Function Format
-A TQ42 optimization algorithm must be provided with one or more real-valued functions to be optimized. The objective function(s) must be provided in the format of an endpoint accessible through https.
+## Objective Function and Local Optimization Function Format
+TetraOpt requires one of the following methods of communication for its objective and local optimization functions:
+1. A communication channel (using the tq42 API)
+2. An https endpoint
 
+### Example Using Communication Channel
+Below is an example of how to set up the TetraOpt parameter using a communication channel. Notice the `objective_function_channel_id` and `local_optimizer_channel_id` parameters:
+
+
+```
+from tq42.channel import Ask, Tell
+from tq42.client import TQ42Client
+
+with TQ42Client() as client:
+  objective_func_channel = await Channel.create(client=client)
+  local_opt_channel = await Channel.create(client=client)
+  
+  tetra_opt_parameter = {
+      "dimensionality": 2,
+      "iteration_number": 2,
+      "maximal_rank": 4,
+      "points_number": 1,
+      "quantization": False,
+      "tolerance": 0.0010000000474974513,
+      "lower_limits": [0, 0],
+      "upper_limits": [9, 9],
+      "grid": [10, 10],
+       "objective_function_channel_id": objective_func_channel.id
+       #local_optimizer_channel_id parameter is optional
+      "local_optimizer_channel_id": local_opt_channel.id
+  }
+```
+
+### Example Using HTTPS Endpoint
+Below is an example of how to set up the TetraOpt parameter using an HTTPS endpoint. Notice the `objective_function` and `local_optimizer` parameters:
+
+```
+from tq42.client import TQ42Client
+
+tetra_opt_parameter = {
+    "dimensionality": 2,
+    "iteration_number": 2,
+    "maximal_rank": 4,
+    "points_number": 1,
+    "quantization": False,
+    "tolerance": 0.0010000000474974513,
+    "lower_limits": [0, 0],
+    "upper_limits": [9, 9],
+    "grid": [10, 10],
+    'objective_function':'http://34.32.169.11:8000/test_func_eval/Ackley/',
+     #local_optimizer parameter is optional  
+    "local_optimizer": "http://34.32.169.11:8000/local_optimization/Ackley/",
+    "polling": {"initial_delay": 1.0, "retries": 100, "delay": 1.0, "backoff_factor": 1.1}
+}
+```
+
+### 1. To use the communications channel:
+TetraOpt uses the Ask and Tell pattern to send and receive information as objects to its objective and local optimization function. It also uses a communication channel to stream the information to and from the server.
+
+1. `Ask` - TetraOpt sends an Ask object to the objective and local optimization function
+2. `Tell` - The objective and local optimization function needs to respond witn a Tell object to send information back to TetraOpt
+3. `Channel`- This is used to connect the functions running locally to TetraOpt running in the cloud.
+
+
+You can import these classes from the tq42 library by:
+
+`from tq42.channel import Channel, Ask, Tell`
+
+
+####  Below are the Python types for the Ask and Tell parameters you need to know:
+  - `ask.headers` -> list of strings
+  - `ask.parameter.values` -> list of floats
+  - `tell.results` -> list of floats
+  - `tell.candidates.values` -> list of floats
+
+
+#### The `Ask` Class
+An example of an `Ask` object values passed by TetraOpt:
+```
+{
+    "parameters": [
+        {"values": [1, 3]},
+        {"values": [2, 7]}
+    ],
+    "headers": ["h0", "h1"]
+}
+```
+
+#### The `Tell` Class 
+An example of `Tell` object values for an objective and local optimization function:
+
+Note:
+1. You need an extra `candidates` parameter for the Tell object of the local optimization function:.
+2. Before adding results to the `candidate` list, map them to a string called "values".
+```
+{
+    "parameters": [
+        {"values": [1, 3]},
+        {"values": [2, 7]}
+    ],
+    "headers": ["h0", "h1"],
+    "results": [6.59359884, 7.86938667],
+    #parameter candidates is only used for local optimization function
+    "candidates": [
+        {"values": [0., 0.]},
+        {"values": [-8.18565023e-09, -8.18565023e-09]},
+        {"values": [5.02359648e-08, 5.02359648e-08]}, 
+        {"values": [9., 9.]}
+    ]
+}
+```
+
+For a full working example, please refer to the notebooks section in the tq42sdk repo: https://github.com/terra-quantum-public/tq42sdk/tree/main/notebooks.
+
+
+### 2. To use an https endpoint:
 The endpoint will have two API calls:
 1. `eval`
 2. `task_status`
@@ -19,7 +132,7 @@ The endpoint will have two API calls:
 A local optimization function can be specified using endpoint with the same API calls and payloads as an objective 
 function endpoint. The difference will be in the results of the `task_status` call, as explained later. 
 
-## 1. `eval` API Call
+#### 1. `eval` API Call
 The TQ42 optimization algorithms use pandas data frames internally and the `eval` endpoint will receive a json string containing a dictionary which is transformable to a pandas data frame and vice versa. The keys of the dictionary are the columns of the data frame, which are also the names of the input variables. The `eval` endpoint uses the `POST` verb for HTTP to evaluate these candidate solutions and return the same dictionary extended with the objective(s) as new key(s), e.g.
 
 URL of the eval API endpoint
@@ -57,7 +170,7 @@ The result of this API call will be a task id, such as:
 ```
 
 
-## 2. `task_status` API Call
+#### 2. `task_status` API Call
 This will check for the task status using the `POST` verb for HTTP. It will expect the same as input the output from the `eval` function call, e.g.
 
 URL of the task_status API endpoint:
@@ -134,7 +247,7 @@ The status field will include `FAILURE`,`PENDING`,`RECEIVED`,`RETRY`,`REVOKED`,`
 
 If the status is `SUCCESS` then it will also return the results, which is the data given to the `eval` API call extended by the evaluation.
 
-## Example
+### Example
 
 Creating an objective function for TQ42 optimization algorithms requires that your solution be available online. So we recommend creating virtual machine in Google Cloud Platform or any cloud provider with your desired specifications. Install the desired operating system and enable http or https traffic. Any programming language can be used to interface with the TQ42 optimization algorithms. We recommend starting with python for simplicity.
 
