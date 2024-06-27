@@ -113,10 +113,10 @@ Note:
     "results": [6.59359884, 7.86938667],
     #parameter candidates is only used for local optimization function
     "candidates": [
-        {'values': array([0., 0.])},
-        {'values': array([-8.18565023e-09, -8.18565023e-09])},
-        {'values': array([5.02359648e-08, 5.02359648e-08])}, 
-        {'values': array([9., 9.])}
+        {"values": [0., 0.]},
+        {"values": [-8.18565023e-09, -8.18565023e-09]},
+        {"values": [5.02359648e-08, 5.02359648e-08]}, 
+        {"values": [9., 9.]}
     ]
 }
 ```
