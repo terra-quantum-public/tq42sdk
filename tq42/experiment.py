@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Optional, List
 
 from google.protobuf.field_mask_pb2 import FieldMask
+from google.protobuf.json_format import MessageToJson
 
 from tq42.client import TQ42Client
 from tq42.exception_handling import handle_generic_sdk_errors
@@ -54,7 +55,9 @@ class Experiment:
         return f"<Experiment Id={self.id} Name={self.data.name}>"
 
     def __str__(self) -> str:
-        return str(self.data)
+        return (
+            f"Experiment: {MessageToJson(self.data, preserving_proto_field_name=True)}"
+        )
 
     @handle_generic_sdk_errors
     def _get_data(self) -> ExperimentProto:

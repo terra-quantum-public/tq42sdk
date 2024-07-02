@@ -69,7 +69,7 @@ tetra_opt_parameter = {
 TetraOpt uses the Ask and Tell pattern to send and receive information as objects to its objective and local optimization function. It also uses a communication channel to stream the information to and from the server.
 
 1. `Ask` - TetraOpt sends an Ask object to the objective and local optimization function
-2. `Tell` - The objective and local optimization function needs to respond witn a Tell object to send information back to TetraOpt
+2. `Tell` - The objective and local optimization function needs to respond with a Tell object to send information back to TetraOpt
 3. `Channel`- This is used to connect the functions running locally to TetraOpt running in the cloud.
 
 

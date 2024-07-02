@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Dict, List
 
 from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.pretty_list import PrettyList
 from tq42.utils.utils import get_hw_configurations
 
 # this import is also important for re-export!
@@ -69,4 +70,6 @@ def list_all() -> List[Compute]:
     For details, see
     https://docs.tq42.com/en/latest/Python_Developer_Guide/Selecting_Compute_Resources.html#viewing-available-compute-resources-and-configuration-details
     """
-    return [Compute(hardware=val) for key, val in HardwareProto.items() if val != 0]
+    return PrettyList(
+        [Compute(hardware=val) for key, val in HardwareProto.items() if val != 0]
+    )
