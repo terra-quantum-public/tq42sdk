@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import os.path
 from typing import Optional, List
+
+from google.protobuf.json_format import MessageToJson
 from tqdm import tqdm
 import requests
 import validators
@@ -53,7 +55,7 @@ class Dataset:
         return f"<Dataset Id={self.id} Name={self.data.name}>"
 
     def __str__(self) -> str:
-        return str(self.data)
+        return f'Dataset: {MessageToJson(self.data, preserving_proto_field_name=True)}'
 
     @handle_generic_sdk_errors
     def _get(self) -> StorageProto:

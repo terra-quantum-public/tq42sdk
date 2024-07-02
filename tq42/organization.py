@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Optional, List
 
 from google.protobuf import empty_pb2
+from google.protobuf.json_format import MessageToJson
 
 from tq42.project import Project
 from tq42.exception_handling import handle_generic_sdk_errors
@@ -46,7 +47,7 @@ class Organization:
         return f"<Organization Id={self.id} Name={self.data.name}>"
 
     def __str__(self) -> str:
-        return str(self.data)
+        return f'Organization: {MessageToJson(self.data, preserving_proto_field_name=True)}'
 
     @handle_generic_sdk_errors
     def _get(self) -> OrganizationProto:

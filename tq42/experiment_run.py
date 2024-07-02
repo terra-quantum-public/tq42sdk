@@ -3,6 +3,8 @@ from __future__ import annotations
 import time
 from typing import Optional, List
 
+from google.protobuf.json_format import MessageToJson
+
 from tq42.client import TQ42Client
 from tq42.exception_handling import handle_generic_sdk_errors
 from tq42.compute import HardwareProto
@@ -54,7 +56,7 @@ class ExperimentRun:
         return f"<ExperimentRun Id={self.id}>"
 
     def __str__(self) -> str:
-        return str(self.data)
+        return f'ExperimentRun: {MessageToJson(self.data, preserving_proto_field_name=True)}'
 
     @handle_generic_sdk_errors
     def _get_data(self) -> ExperimentRunProto:
