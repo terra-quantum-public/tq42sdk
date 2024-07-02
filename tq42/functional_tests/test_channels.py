@@ -63,12 +63,11 @@ async def test_exp_run_with_channel(functional_test_config):
         )
 
     def success():
-        exp_run.check()
+        poll_result = exp_run.poll()
+        assert ExperimentRunStatusProto.COMPLETED == poll_result.data.status
 
     await channel.connect(
         callback=callback, finish_callback=success, max_duration_in_sec=None, message_timeout_in_sec=300
     )
 
-    exp_run = ExperimentRun(
-        client=functional_test_config.get_client(), id=functional_test_config.exp_run)
     assert exp_run.data.status == ExperimentRunStatusProto.COMPLETED
