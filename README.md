@@ -158,3 +158,21 @@ Alternatively, you can also use either the SDK or CLI to check on the experiment
 For more details om these two please take a look into the corresponding section of the documentation.
 
 For more details on specific algorithms please take a look at the individual sections.
+
+## TQ42 Help Center 
+ 
+TQ42 offers a dedicated Help Center, allowing you to access a wide range of support and learning materials, including: 
+ 
+- Video tutorials on SDK processes. 
+- Help articles across a range of platform workflows, including organisation and project configuration, inviting team members and running experiments. 
+- A scientific knowledge base – including articles on quantum computing, machine learning, optimization, simulation and our flagship algorithms. 
+ 
+Please visit our [Help Center Homepage](https://help.terraquantum.io/). 
+ 
+Customers can also contact our Customer Support team via the Help Centre using the help widget. Here, you can: 
+ 
+- Contact our team for technical support 
+- Report a bug on our platform 
+- Suggest an improvement on TQ42. 
+ 
+Our Help Center can also be accessed via CLI and Python specific commands. Please see the appropriate developer guides further through our SDK documentation for more information. 
