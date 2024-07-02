@@ -31,6 +31,8 @@ from com.terraquantum.experiment.v3alpha1.experimentrun.list_experiment_runs_pb2
     ListExperimentRunsResponse,
 )
 
+from tq42.utils.pretty_list import PrettyList
+
 
 class ExperimentRun:
     id: str
@@ -56,7 +58,7 @@ class ExperimentRun:
         return f"<ExperimentRun Id={self.id}>"
 
     def __str__(self) -> str:
-        return f'ExperimentRun: {MessageToJson(self.data, preserving_proto_field_name=True)}'
+        return f"ExperimentRun: {MessageToJson(self.data, preserving_proto_field_name=True)}"
 
     @handle_generic_sdk_errors
     def _get_data(self) -> ExperimentRunProto:
@@ -178,7 +180,9 @@ def list_all(client: TQ42Client, experiment_id: str) -> List[ExperimentRun]:
         request=list_exp_run_request, metadata=client.metadata
     )
     # TODO: It seems like currently the API returns `experiment_runs` instead of `experimentRuns` as in the protobufs
-    return [
-        ExperimentRun.from_proto(client=client, msg=experiment_run)
-        for experiment_run in res.experiment_runs
-    ]
+    return PrettyList(
+        [
+            ExperimentRun.from_proto(client=client, msg=experiment_run)
+            for experiment_run in res.experiment_runs
+        ]
+    )

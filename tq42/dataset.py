@@ -30,6 +30,8 @@ from com.terraquantum.storage.v1alpha1.export_storage_pb2 import (
     ExportStorageResponse,
 )
 
+from tq42.utils.pretty_list import PrettyList
+
 
 class Dataset:
     """
@@ -55,7 +57,7 @@ class Dataset:
         return f"<Dataset Id={self.id} Name={self.data.name}>"
 
     def __str__(self) -> str:
-        return f'Dataset: {MessageToJson(self.data, preserving_proto_field_name=True)}'
+        return f"Dataset: {MessageToJson(self.data, preserving_proto_field_name=True)}"
 
     @handle_generic_sdk_errors
     def _get(self) -> StorageProto:
@@ -166,4 +168,6 @@ def list_all(client: TQ42Client, project_id: str) -> List[Dataset]:
     res: ListStoragesResponse = client.storage_client.ListStorages(
         request=list_datasets_request, metadata=client.metadata
     )
-    return [Dataset.from_proto(client=client, msg=dataset) for dataset in res.storages]
+    return PrettyList(
+        [Dataset.from_proto(client=client, msg=dataset) for dataset in res.storages]
+    )

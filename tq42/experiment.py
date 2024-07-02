@@ -55,7 +55,9 @@ class Experiment:
         return f"<Experiment Id={self.id} Name={self.data.name}>"
 
     def __str__(self) -> str:
-        return f'Experiment: {MessageToJson(self.data, preserving_proto_field_name=True)}'
+        return (
+            f"Experiment: {MessageToJson(self.data, preserving_proto_field_name=True)}"
+        )
 
     @handle_generic_sdk_errors
     def _get_data(self) -> ExperimentProto:

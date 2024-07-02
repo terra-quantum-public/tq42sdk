@@ -18,6 +18,8 @@ from com.terraquantum.organization.v1.organization.get_organization_request_pb2 
 
 from typing import TYPE_CHECKING
 
+from tq42.utils.pretty_list import PrettyList
+
 # only import the stuff for type hints -> avoid circular imports
 if TYPE_CHECKING:
     from tq42.client import TQ42Client
@@ -47,7 +49,7 @@ class Organization:
         return f"<Organization Id={self.id} Name={self.data.name}>"
 
     def __str__(self) -> str:
-        return f'Organization: {MessageToJson(self.data, preserving_proto_field_name=True)}'
+        return f"Organization: {MessageToJson(self.data, preserving_proto_field_name=True)}"
 
     @handle_generic_sdk_errors
     def _get(self) -> OrganizationProto:
@@ -106,6 +108,6 @@ def list_all(client: TQ42Client) -> List[Organization]:
             request=empty, metadata=client.metadata
         )
     )
-    return [
-        Organization.from_proto(client=client, msg=msg) for msg in res.organizations
-    ]
+    return PrettyList(
+        [Organization.from_proto(client=client, msg=msg) for msg in res.organizations]
+    )
