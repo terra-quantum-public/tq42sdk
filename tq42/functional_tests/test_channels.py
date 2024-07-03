@@ -30,10 +30,10 @@ async def test_exp_run_with_channel(functional_test_config):
         "objectives": [{"name": "Ackley", "aim_type": "MINIMIZE"}],
         "variables": [
             {"name": "x1", "info_real": {"lower_bound": -1.0, "upper_bound": 1.0}},
-            {"name": "x2", "info_real": {"lower_bound": -1.0, "upper_bound": 1.0}}
+            {"name": "x2", "info_real": {"lower_bound": -1.0, "upper_bound": 1.0}},
         ],
         "func_eval_worker_channel_id": channel.id,
-        "parameters": {"max_generation": 3, "mue": 15, "lambda": 100}
+        "parameters": {"max_generation": 3, "mue": 15, "lambda": 100},
     }
 
     exp_run = ExperimentRun.create(
@@ -41,7 +41,7 @@ async def test_exp_run_with_channel(functional_test_config):
         algorithm=AlgorithmProto.CVA_OPT,
         experiment_id=functional_test_config.exp,
         compute=HardwareProto.SMALL,
-        parameters={'parameters': cva_params, 'inputs': {}},
+        parameters={"parameters": cva_params, "inputs": {}},
     )
 
     async def callback(ask: Ask) -> Tell:
@@ -51,18 +51,17 @@ async def test_exp_run_with_channel(functional_test_config):
         for parameter in ask.parameters:
             y.append(float(func(np.array(parameter.values))))
 
-        return Tell(
-            parameters=ask.parameters,
-            headers=ask.headers,
-            results=y
-        )
+        return Tell(parameters=ask.parameters, headers=ask.headers, results=y)
 
     def success():
         poll_result = exp_run.poll()
         assert ExperimentRunStatusProto.COMPLETED == poll_result.data.status
 
     await channel.connect(
-        callback=callback, finish_callback=success, max_duration_in_sec=None, message_timeout_in_sec=300
+        callback=callback,
+        finish_callback=success,
+        max_duration_in_sec=None,
+        message_timeout_in_sec=300,
     )
 
     assert exp_run.data.status == ExperimentRunStatusProto.COMPLETED
