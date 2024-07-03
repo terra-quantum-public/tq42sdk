@@ -63,9 +63,50 @@ This circuit diagram reflects the default settings listed above, plus 12 input f
 
 Here is an example of how to apply the CQ layer within a custom model architecture in the SDK.
 
-The following example trains a custom time series prediction problem using a single EFQ layer:
+The following example trains...:
 
 ```python
 from tq42.client import TQ42Client
 
+metadata = GenericMLTrainMetadataProto(
+    parameters=GenericMLTrainParametersProto(
+        # Choose model type here
+        model_type=MLModelType.MLP,
+        # Add and customize and customize layers here
+        layers=[
+            Layer(custom_layer=CustomLayer(n_qubits=4, gates=[
+                {type=GateProto.variational, wire=0, rotation=MeasureProto.X},
+                {type=GateProto.encoding, wire=0, rotation=MeasureProto.Z, feature_id=0},
+                {type=GateProto.encoding, wire=1, rotation=MeasureProto.Z, feature_id=1},
+                {type=GateProto.variational, wire=0, rotation=MeasureProto.X},
+                {type=GateProto.measurement, wire=0, measure=MeasureProto.Y}]
+            ])),
+        ],
+        num_epochs=5,
+        k_fold=1,
+        batch_size=128,
+        learning_rate=0.01,
+        optim=OptimProto.ADAM,
+        loss_func=LossFuncProto.MAE,
+        train_model_info = TrainModelInfoProto(
+            # Provide a unique name to identify your trained model.
+            name="ENTER_MODEL_NAME_HERE",
+            # Add a brief description to help users understand the purpose or functionality of this trained model.
+            description="ADD_DESCRIPTION_HERE",
+        ),
+    ),
+    inputs = MLTrainInputsProto(
+        # Provide the specific dataset storage ID of the data you uploaded to TQ42.
+        data=DatasetStorageInfoProto(storage_id="ENTER_DATASET_STORAGE_ID_HERE")
+    ),
+)
+with TQ42Client() as client:
+    run = ExperimentRun.create(
+        client=client,
+        algorithm=AlgorithmProto.GENERIC_ML_TRAIN,
+        # Fill in with the specific ID of the experiment you created in TQ42.
+        experiment_id="ENTER_EXPERIMENT_ID_HERE",
+        compute=HardwareProto.SMALL,
+        parameters=MessageToDict(metadata, preserving_proto_field_name=True)
+    )
 ```
