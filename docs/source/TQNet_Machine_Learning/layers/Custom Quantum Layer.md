@@ -3,11 +3,9 @@
 
 WIP - 3 sentence introduction text
 
-## ANYA to get architecture, diagrams, reference from AR team's github pages. They should have published something there
+# ANYA to get architecture, diagrams, reference from AR team's github pages. They should have published something there
+# Update: no arxiv reference or achitecture diagram for CQ layer
 
-![CQ layer architecture](../images/EFQ_layer_architecture.png)
-
-[Reference](https://arxiv.org/pdf/2212.00736.pdf)
 
 ## Key Benefits
 - The main benefit of our custom quantum layer is that it __________.
@@ -23,35 +21,31 @@ The following hyperparameters are included in the CQ layer. These are not necess
 | gates          | A list of quantum gates, where each gate has its own set of parameters. The choice and order of gates determines the quantum operations performed on the input data. Can be `Pauli`, `Hadamard` or `CNOT`. | list of objects |   --    |                   |
 
 
-# rotations are single-qubit gates
-# look at Qiskit docs, there might be a table listing the gates, which I could modify
-# need to list wire1
-# wire = Which qubits these apply to. (see Qiskit, Pennylane)
-| 1 Qubit Gate Hyperparameter | Description                                                                                                                                                                                             | Syntax | Range    | Default  |
-|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|----------|
-| variational    | Controls the number of iterations for the quantum algorithm used to train the quantum layer. The variational algorithm optimizes the quantum circuit parameters to minimize a cost function.                         | int    | 1 to 100 | 12 |
-| encoding       | Specifies the encoding method used to represent classical data in the quantum circuit. Different encoding techniques may be suitable for different types of problems. Can be `method1`, `method2` or `method3`.      | int    | 1 to 3 | 2 |
+# 1-Qubit Gate Hyperparameters
+| Hyperparameter | Description                                                                                                                                                                                                          | Syntax | Range    | Default  |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|----------|
+| variational    | Controls the number of iterations for the quantum algorithm used to train the quantum layer. The variational algorithm optimizes the quantum circuit parameters to minimize a cost function.                         | int    | 1 to 100 | 12       |
+| encoding       | Specifies the encoding method used to represent classical data in the quantum circuit. Different encoding techniques may be suitable for different types of problems. Can be `method1`, `method2` or `method3`.      | int    | 1 to 3   | 2        |
 | measurement    | The number of measurements to perform on the quantum circuit. The measurement process collapses the quantum state and projects it onto a classical outcome. More measurements may provide more accurate results but may also increase noise and uncertainty.  | int    | 1 to 100 | 10 |
-| wire           | Specifies which qubit(s) a particular gate should be applied to. Indicates the qubit index.                                                                                                                          | int    | [0, n_qubits-1] | 0 |
+ qubits in each circuit will be measured. If set to 'None' each qubit will be measured  | str    | 'single', 'even', 'None' | 'None' |
+| wire           | Specifies which qubit(s) a particular gate should be applied to. Indicates the qubit index.                                                                                                                          | int   | [0, n_qubits-1] | 0 |
 
-
-variational | Controls the number of iterations for the quantum algorithm used to train the quantum layer. The variational algorithm optimizes the quantum circuit parameters to minimize a cost function. 
-encoding | Specifies the encoding method used to represent classical data in the quantum circuit. Different encoding techniques may be suitable for different types of problems. Can be `method1`, `method2` or `method3`.
-measurement | The number of measurements to perform on the quantum circuit. The measurement process collapses the quantum state and projects it onto a classical outcome. More measurements may provide more accurate results but may also increase noise and uncertainty. 
-wire | Specifies which qubit(s) a particular gate should be applied to. Indicates the qubit index. 
-wire2 | Specifies which qubit(s) a particular gate should be applied to. Specifies the indices of the two qubits. 
-
-
-
-# CNOT gate is a 2 qubit gate
-# need to list wire1 and wire2
-| 2 Qubit Gate Hyperparameter | Description                                                                                                                                                                                             | Syntax | Range    | Default  |
-|----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|----------|
-| variational    | Controls the number of iterations for the quantum algorithm used to train the quantum layer. The variational algorithm optimizes the quantum circuit parameters to minimize a cost function.                         | int    | 1 to 100 | 12 |
-| encoding       | Specifies the encoding method used to represent classical data in the quantum circuit. Different encoding techniques may be suitable for different types of problems. Can be `method1`, `method2` or `method3`.      | int    | 1 to 3 | 2 |
+# 2-Qubit Gate Hyperparameters
+| Hyperparameter | Description                                                                                                                                                                                                      | Syntax | Range    | Default  |
+|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|----------|
+| variational    | Controls the number of iterations for the quantum algorithm used to train the quantum layer. The variational algorithm optimizes the quantum circuit parameters to minimize a cost function.                     | int    | 1 to 100 | 12       |
+| encoding       | Specifies the encoding method used to represent classical data in the quantum circuit. Different encoding techniques may be suitable for different types of problems. Can be `method1`, `method2` or `method3`.  | int    | 1 to 3   | 2        |
 | measurement    | The number of measurements to perform on the quantum circuit. The measurement process collapses the quantum state and projects it onto a classical outcome. More measurements may provide more accurate results but may also increase noise and uncertainty.  | int    | 1 to 100 | 10 |
-| wire           | Specifies which qubit(s) a particular gate should be applied to. Specifies the indices of the two qubits.                                                                                                            | int    | [0, n_qubits-1] | 0 |
+| wire           | Specifies which qubit(s) a particular gate should be applied to. Indicates the indices of the two qubits.                                                                                                        | int    | [0, n_qubits-1] | 0 |
 
+## UNCLEAR
+
+1. 3 defitions for measurement?
+| measurement    | The number of measurements to perform on the quantum circuit. The measurement process collapses the quantum state and projects it onto a classical outcome. More measurements may provide more accurate results but may also increase noise and uncertainty.  | int    | 1 to 100 | 10 |
+| measurement    | type of CNOTs configuration before measurement. When set to 'single', CNOTs would be applied at the end of each circuit and reduce the whole output dimension by :math:`ext{n_qubits}` times. If set to 'even' only 
+| measure        | Pauli measurement that will be used at the end of each circuit. Can be `X`, `Y` or `Z`.                                    | str    | `X` `Y` `Z`                       | `Y`               |
+
+2. Should I add entangling, measure and rotation to qubit gate hyperparams?
 
 ## USE THESE DESCRIPTIONS FOR QUBIT GATE HYPERPARAMS
 | Gate Parameter | Description                                                                                                                | Syntax | Range    | Default  |
