@@ -9,7 +9,7 @@ WIP - 3 sentence introduction text
 
 ## Key Benefits
 - The main benefit of our custom quantum layer is that it __________.
-
+`
 
 ## Hyperparameters and Default Settings
 The following hyperparameters are included in the CQ layer. These are not necessarily the recommended settings for every application or use case; they may require tuning to find the optimal values for your specific use case.
