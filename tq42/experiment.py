@@ -24,6 +24,7 @@ from com.terraquantum.experiment.v3alpha1.experiment.update_experiment_request_p
     UpdateExperimentRequest,
 )
 
+from tq42.utils.pretty_list import PrettyList
 from tq42.utils.utils_for_cache import get_current_value
 
 
@@ -123,7 +124,9 @@ def list_all(client: TQ42Client, project_id: Optional[str] = None) -> List[Exper
     res: ListExperimentsResponse = client.experiment_client.ListExperiments(
         request=list_experiments_request, metadata=client.metadata
     )
-    return [
-        Experiment.from_proto(client=client, msg=experiment_run)
-        for experiment_run in res.experiments
-    ]
+    return PrettyList(
+        [
+            Experiment.from_proto(client=client, msg=experiment_run)
+            for experiment_run in res.experiments
+        ]
+    )
