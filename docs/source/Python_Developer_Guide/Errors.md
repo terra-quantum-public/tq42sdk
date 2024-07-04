@@ -76,3 +76,10 @@ Unauthorized Access: Insufficient Local Permissions
 
 You do not have the necessary privileges to write data locally.
 Contact your system administrator or request the appropriate access level.
+
+## Connection Error
+
+`Channel disconnected. Please reconnect by re-executing the channel connection.`
+
+The connection was not automatically restored after a connection loss. It is safe to just reopen the channel connection.
+This is mostly done by just re-executing the code.

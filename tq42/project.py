@@ -4,8 +4,10 @@ from typing import Optional, List
 
 from google.protobuf.field_mask_pb2 import FieldMask
 from google.protobuf.timestamp_pb2 import Timestamp
+from google.protobuf.json_format import MessageToJson
 
 from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.pretty_list import PrettyList
 from tq42.utils.utils_for_cache import (
     get_current_value,
     write_key_value_to_cache,
@@ -57,7 +59,7 @@ class Project:
         return f"<Project Id={self.id} Name={self.data.name}>"
 
     def __str__(self) -> str:
-        return str(self.data)
+        return f"Project: {MessageToJson(self.data, preserving_proto_field_name=True)}"
 
     @handle_generic_sdk_errors
     def _get(self) -> ProjectProto:
@@ -176,4 +178,6 @@ def list_all(
     res: ListProjectsResponse = client.project_client.ListProjects(
         request=create_list_proj_request, metadata=client.metadata
     )
-    return [Project.from_proto(client=client, msg=data) for data in res.projects]
+    return PrettyList(
+        [Project.from_proto(client=client, msg=data) for data in res.projects]
+    )

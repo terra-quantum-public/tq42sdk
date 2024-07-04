@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import os.path
 from typing import Optional, List
+
+from google.protobuf.json_format import MessageToJson
 from tqdm import tqdm
 import requests
 import validators
@@ -28,6 +30,8 @@ from com.terraquantum.storage.v1alpha1.export_storage_pb2 import (
     ExportStorageResponse,
 )
 
+from tq42.utils.pretty_list import PrettyList
+
 
 class Dataset:
     """
@@ -53,7 +57,7 @@ class Dataset:
         return f"<Dataset Id={self.id} Name={self.data.name}>"
 
     def __str__(self) -> str:
-        return str(self.data)
+        return f"Dataset: {MessageToJson(self.data, preserving_proto_field_name=True)}"
 
     @handle_generic_sdk_errors
     def _get(self) -> StorageProto:
@@ -164,4 +168,6 @@ def list_all(client: TQ42Client, project_id: str) -> List[Dataset]:
     res: ListStoragesResponse = client.storage_client.ListStorages(
         request=list_datasets_request, metadata=client.metadata
     )
-    return [Dataset.from_proto(client=client, msg=dataset) for dataset in res.storages]
+    return PrettyList(
+        [Dataset.from_proto(client=client, msg=dataset) for dataset in res.storages]
+    )
