@@ -91,3 +91,8 @@ positional arguments:
     exp                 Class to manage experiments
     org                 Class to manage organization
 ```
+
+## Help Center
+Need further assistance? 
+Visit our [Help Center](https://help.terraquantum.io/), from where you can access help articles and video tutorials, report bugs, contact support and request improvements.
+Or visit the [TQ42SDK documentation](https://docs.tq42.com/en/latest/).
