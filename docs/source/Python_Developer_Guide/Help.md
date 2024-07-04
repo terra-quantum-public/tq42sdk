@@ -24,5 +24,5 @@ help(TQ42Client)
 
 ## Help Center
 Need further assistance? 
-Visit https://help.terraquantum.io/ to access our help center, from where you can access help articles and video tutorials, report bugs, contact support and request improvements.
-For TQ42SDK documentation, visit https://docs.tq42.com/en/latest/.
+Visit our [Help Center](https://help.terraquantum.io/), from where you can access help articles and video tutorials, report bugs, contact support and request improvements.
+Or visit the [TQ42SDK documentation](https://docs.tq42.com/en/latest/).
