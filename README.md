@@ -159,7 +159,7 @@ For more details om these two please take a look into the corresponding section 
 
 For more details on specific algorithms please take a look at the individual sections.
 
-## TQ42 Help Center 
+# TQ42 Help Center 
  
 TQ42 offers a dedicated Help Center, allowing you to access a wide range of support and learning materials, including: 
  
