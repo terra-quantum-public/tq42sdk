@@ -158,10 +158,10 @@ async def run_exp_with_channel(client, experient_id, cva_params):
             max_duration_in_sec=None,
             message_timeout_in_sec=120
         )
-    retries += 1
     # return the run to retrieve the result    
     return run
 
-run = await run_exp_with_channel(tq42client, experiment_id="your_experiment_id", cva_params)
+loop = asyncio.get_event_loop()
+run = loop.run_until_complete(run_exp_with_channel(tq42client, experiment_id, cva_params))
 result = run.poll()
 ```
