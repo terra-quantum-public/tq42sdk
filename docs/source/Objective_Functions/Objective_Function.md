@@ -10,7 +10,7 @@ algorithm.
 [2]: https://en.wikipedia.org/wiki/Pareto_front
 
 ## Objective Function and Local Optimization Function Format
-TetraOpt requires one of the following methods of communication for its objective and local optimization functions:
+TQ42 optimizers require one of the following methods of communication for its objective and local optimization functions. Please note that only TetraOpt may be configured wiht a local optimizer:
 1. A communication channel (using the tq42 API)
 2. An https endpoint
 
