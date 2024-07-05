@@ -118,7 +118,7 @@ cva_params['parameters']['max_generation'] = 50
 cva_params['parameters']['mue'] = 2
 cva_params['parameters']['lambda'] = 10
 
-async def run_exp_with_channel(client, experiment_id, cva_params):
+async def run_exp_with_channel(client, experient_id, cva_params):
     # set up channel
     channel = await Channel.create(client=client)
     # extend cva_params with func_eval_worker_channel_id
@@ -128,11 +128,10 @@ async def run_exp_with_channel(client, experiment_id, cva_params):
     run = ExperimentRun.create(
         client=client, 
         algorithm=AlgorithmProto.CVA_OPT, 
-        experiment_id="your_experiment_id",
+        experiment_id=experiment_id,
         compute=HardwareProto.SMALL,
         parameters={'parameters': cva_params, 'inputs': {} }
     )
-    print(f\" starting run with id {run.id}\")
 
     # define the callback function
     async def callback(ask: Ask) -> Tell:
@@ -149,29 +148,20 @@ async def run_exp_with_channel(client, experiment_id, cva_params):
             headers=ask.headers,
             results=y
         )
-    # define a function to be called after the optimization is finished
-    def success():
-        pass
 
-    # let the channel wait for connections
-    is_finished = False
-    max_retries = 10
-    retries = 0
-    while (not is_finished) and (retries < max_retries):
-        await channel.connect(
-                callback=callback,
-                finish_callback=success,
-                max_duration_in_sec=None,
-                message_timeout_in_sec=120
-            )
-        retries += 1
-        run_state = run.check().data.status
-        if ExperimentRunStatusProto.Name(run_state) in ['CANCELLED', 'COMPLETED', 'FAILED', 'CANCEL_PENDING']:
-            is_finished = True
-        else:
-            print('run is in state ' + ExperimentRunStatusProto.Name(run_state) + ', continuing')
+	def do_nothing():
+		pass
+
+    await channel.connect(
+            callback=callback,
+            finish_callback=do_nothing,
+            max_duration_in_sec=None,
+            message_timeout_in_sec=120
+        )
+    retries += 1
     # return the run to retrieve the result    
     return run
 
-run = await run_exp_with_channel(tq42client, experiment_id, cva_params)
+run = await run_exp_with_channel(tq42client, experiment_id="your_experiment_id", cva_params)
+result = run.poll()
 ```
