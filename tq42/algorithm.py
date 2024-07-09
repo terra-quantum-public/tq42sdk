@@ -39,8 +39,8 @@ from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.cphn_pb2 i
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.dhn_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.quantum_layer_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.custom_quantum_layer_pb2 import *
-from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.gate.cnot_pb2 import *
-from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.gate.encoding_pb2 import *
-from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.gate.variational_pb2 import *
-from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.gate.hadamard_pb2 import *
-from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.gate.measurement_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.gate_cnot_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.gate_encoding_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.gate_variational_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.gate_hadamard_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.gate_measurement_pb2 import *
