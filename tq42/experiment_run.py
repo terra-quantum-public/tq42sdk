@@ -3,35 +3,40 @@ from __future__ import annotations
 import time
 from typing import Optional, List
 
+import protovalidate
+from com.terraquantum.experiment.v3alpha2.experimentrun.create_experiment_run_request_pb2 import (
+    CreateExperimentRunRequest,
+)
+from google.protobuf import any_pb2
 from google.protobuf.json_format import MessageToJson
 
 from tq42.client import TQ42Client
 from tq42.exception_handling import handle_generic_sdk_errors
 from tq42.compute import HardwareProto
-from tq42.algorithm import AlgorithmProto
 from tq42.exceptions import ExperimentRunCancelError, ExceedRetriesError
 from tq42.utils import utils
 
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
     ExperimentRunStatusProto,
 )
-from com.terraquantum.experiment.v3alpha1.experimentrun.experiment_run_pb2 import (
+from com.terraquantum.experiment.v3alpha2.experimentrun.experiment_run_pb2 import (
     ExperimentRunProto,
 )
-from com.terraquantum.experiment.v3alpha1.experimentrun.cancel_experiment_run_request_pb2 import (
+from com.terraquantum.experiment.v3alpha2.experimentrun.cancel_experiment_run_request_pb2 import (
     CancelExperimentRunRequest,
 )
-from com.terraquantum.experiment.v3alpha1.experimentrun.get_experiment_run_request_pb2 import (
+from com.terraquantum.experiment.v3alpha2.experimentrun.get_experiment_run_request_pb2 import (
     GetExperimentRunRequest,
 )
-from com.terraquantum.experiment.v3alpha1.experimentrun.list_experiment_runs_pb2 import (
+from com.terraquantum.experiment.v3alpha2.experimentrun.list_experiment_runs_pb2 import (
     ListExperimentRunsRequest,
 )
-from com.terraquantum.experiment.v3alpha1.experimentrun.list_experiment_runs_pb2 import (
+from com.terraquantum.experiment.v3alpha2.experimentrun.list_experiment_runs_pb2 import (
     ListExperimentRunsResponse,
 )
 
 from tq42.utils.pretty_list import PrettyList
+from tq42.utils.schema_registry import get_metadata_proto
 
 
 class ExperimentRun:
@@ -84,10 +89,12 @@ class ExperimentRun:
     @handle_generic_sdk_errors
     def create(
         client: TQ42Client,
-        algorithm: AlgorithmProto,
+        algorithm: str,
+        version: str,
         experiment_id: str,
         compute: HardwareProto,
         parameters: dict,
+        sub_type: str = None,
     ) -> ExperimentRun:
         """
         Create an experiment run.
@@ -95,11 +102,29 @@ class ExperimentRun:
         For details, see
         https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
         """
-        create_exp_run_request = utils.dynamic_create_exp_run_request(
-            parameters=parameters,
-            algo=algorithm,
-            exp_id=experiment_id,
+
+        metadata_proto = get_metadata_proto(
+            algorithm=algorithm, version=version, sub_type=sub_type
+        )
+        if not metadata_proto:
+            raise ValueError(
+                f"Cannot create experiment run for {algorithm=} {version=} {sub_type=}"
+            )  # FIXME
+
+        metadata = metadata_proto(**parameters)
+        try:
+            protovalidate.validate(metadata)
+        except protovalidate.ValidationError as e:
+            raise ValueError("Failed to validate parameters") from e
+
+        metadata_ref = any_pb2.Any()
+        metadata_ref.Pack(metadata_proto)
+        create_exp_run_request = CreateExperimentRunRequest(
+            experiment_id=experiment_id,
+            algorithm=algorithm,
             hardware=compute,
+            version=version,
+            metadata=metadata_ref,
         )
 
         res: ExperimentRunProto = client.experiment_run_client.CreateExperimentRun(
