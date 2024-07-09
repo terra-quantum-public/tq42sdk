@@ -4,6 +4,18 @@
 
 After an experiment run created a model, these models are available to query by the user.
 
+To get the corresponding id you can query your experiment run like below and find the corresponding id 
+(named `storageId`) in the `result` field under `outputs`.
+
+```python
+from tq42.client import TQ42Client
+from tq42.experiment_run import ExperimentRun
+
+with TQ42Client() as client:
+    exp_run = ExperimentRun(client=client, id="<YOUR_EXP_RUN_ID>")
+    print(exp_run)
+```
+
 You can do one of two things to get the information about a model:
 
 1. You can list all of your models in a given project by running
