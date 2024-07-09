@@ -1,15 +1,16 @@
 # Custom Quantum Layer
 ## Introduction to CQ
 
-WIP - 3 sentence introduction text
+Unlike traditional quantum layers, the CQ layer offers a high degree of customization, enabling the tailoring of the quantum circuit architecture to specific problem domains. This flexibility allows for the optimization of processing different patterns using quantum and classical neurons as needed, making the CQ layer particularly well-suited for applications such as quantum machine learning, quantum classification, physics-informed neural networks, and others. 
 
 # ANYA to get architecture, diagrams, reference from AR team's github pages. They should have published something there
 # Update: no arxiv reference or achitecture diagram for CQ layer
 
 
 ## Key Benefits
-- The main benefit of our custom quantum layer is that it __________.
-`
+- The primary advantage of the Custom Quantum layer is its ability to be highly configurable, allowing for the definition of the number of qubits, gate sets, and encoding methods that best suit the use case.
+- The CQ layer provides a flexible interface for integrating quantum circuits into neural network architectures, enabling the harnessing of the power of quantum computing in a way that is optimized for specific problem domains.
+
 
 ## Hyperparameters and Default Settings
 The following hyperparameters are included in the CQ layer. These are not necessarily the recommended settings for every application or use case; they may require tuning to find the optimal values for your specific use case.
