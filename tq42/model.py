@@ -7,7 +7,6 @@ from google.protobuf.json_format import MessageToJson
 from tq42.client import TQ42Client
 from tq42.exception_handling import handle_generic_sdk_errors
 
-# This is important to re-export it!
 from com.terraquantum.storage.v1alpha1.storage_pb2 import (
     StorageProto,
     StorageType,
