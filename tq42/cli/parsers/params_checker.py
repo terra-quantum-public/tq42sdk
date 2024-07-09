@@ -66,6 +66,6 @@ def check_params(command, args):
             raise SystemExit(InvalidInputCliError(msg=example_command))
 
     elif command == "proj model get":
-        if args.dataset is None:
+        if args.model is None:
             example_command = "Example usage: tq42 proj model get 98ccb1d2-a3d0-48c8-b172-022f6db9be01\n"
             raise SystemExit(InvalidInputCliError(msg=example_command))

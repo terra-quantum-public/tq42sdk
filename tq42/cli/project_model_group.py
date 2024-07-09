@@ -17,4 +17,4 @@ def proj_model_list(client, args):
 
 def proj_model_get(client, args):
     check_params("proj model get", args)
-    return Model(client=client, id=args.dataset).data
+    return Model(client=client, id=args.model).data
