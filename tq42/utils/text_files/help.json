@@ -80,6 +80,30 @@
                 }
             }
         },
+        "model": {
+            "help": {
+                "text": "Class to manage models.",
+                "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Work_with_Datasets.html",
+                "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Work_with_Datasets.html",
+                "level": "group"
+            },
+            "list": {
+                "help": {
+                    "text": "List all models within a project.",
+                    "level": "command",
+                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Work_with_Datasets.html",
+                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Work_with_Datasets.html"
+                }
+            },
+            "get": {
+                "help": {
+                    "text": "Get a specific model.",
+                    "level": "command",
+                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Work_with_Datasets.html",
+                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Work_with_Datasets.html"
+                }
+            }
+        },
         "help": {
             "text": "Class to manage projects",
             "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings",

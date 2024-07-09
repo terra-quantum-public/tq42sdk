@@ -73,11 +73,12 @@ def add_proj_parser(group_parser):
     friendlyname_help.add_flag("proj")
 
     add_proj_dataset_parser(proj_subparser)
+    add_proj_model_parser(proj_subparser)
 
 
 def add_proj_dataset_parser(proj_subparser):
-    run_help = tq42_help.Help.lookup_help("proj dataset".split())
-    proj_subparser = run_help.add_parser(proj_subparser)
+    dataset_help = tq42_help.Help.lookup_help("proj dataset".split())
+    proj_subparser = dataset_help.add_parser(proj_subparser)
     cmd_parser = proj_subparser.add_subparsers(dest="subcommand")
 
     create_help = tq42_help.Help.lookup_help("proj dataset create".split())
@@ -100,6 +101,20 @@ def add_proj_dataset_parser(proj_subparser):
     dataset_export_parser = export_help.add_parser(cmd_parser)
     dataset_export_parser.add_argument("dataset")
     dataset_export_parser.add_argument("directory_path")
+
+
+def add_proj_model_parser(proj_subparser):
+    model_help = tq42_help.Help.lookup_help("proj model".split())
+    proj_subparser = model_help.add_parser(proj_subparser)
+    cmd_parser = proj_subparser.add_subparsers(dest="subcommand")
+
+    list_help = tq42_help.Help.lookup_help("proj model list".split())
+    list_help.add_parser(cmd_parser)
+    list_help.add_flag("proj")
+
+    get_help = tq42_help.Help.lookup_help("proj model get".split())
+    model_get_parser = get_help.add_parser(cmd_parser)
+    model_get_parser.add_argument("dataset")
 
 
 def add_org_parser(group_parser):
