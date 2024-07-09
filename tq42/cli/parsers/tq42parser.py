@@ -114,7 +114,7 @@ def add_proj_model_parser(proj_subparser):
 
     get_help = tq42_help.Help.lookup_help("proj model get".split())
     model_get_parser = get_help.add_parser(cmd_parser)
-    model_get_parser.add_argument("dataset")
+    model_get_parser.add_argument("model")
 
 
 def add_org_parser(group_parser):
