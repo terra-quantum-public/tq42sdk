@@ -61,52 +61,94 @@ This circuit diagram reflects the default settings listed above, plus 12 input f
 ## Sample Python Code Block
 # Sample code block from Domain Specs is wrong, but will be used as a placeholder
 
-Here is an example of how to apply the CQ layer within a custom model architecture in the SDK.
+Here is an example of how to apply the custom quantum layer within a custom model architecture in the SDK.
 
-The following example trains...:
+The following example trains a custom time series prediction problem using a custom quantum layer with a classical dense layer.
 
 ```python
+from google.protobuf.json_format import MessageToDict
 from tq42.client import TQ42Client
+from tq42.experiment_run import ExperimentRun
+from tq42.compute import HardwareProto
+from tq42.algorithm import (
+    TrainDataProcessingParametersProto,
+    OptimProto,
+    LossFuncProto,
+    DatasetStorageInfoProto,
+    GenericMLTrainMetadataProto,
+    GenericMLTrainParametersProto,
+    Layer,
+    ClassicalDenseLayer,
+    MLModelType,
+    TrainModelInfoProto,
+    MLTrainInputsProto,
+    AlgorithmProto,
+    MeasureProto,
+    CustomQuantumLayer,
+    CnotGate,
+    HadamardGate,
+    VariationalGate,
+    EncodingGate,
+    MeasurementGate,
+    Gate
+)
 
-metadata = GenericMLTrainMetadataProto(
+custom_quantum_layer_msg = CustomQuantumLayer(
+    num_qubits=2,
+    gates=[
+        Gate(hadamard=HadamardGate(wire=0)),
+        Gate(hadamard=HadamardGate(wire=1)),
+        Gate(variational=VariationalGate(wire=0, rotation=MeasureProto.X)),
+        Gate(
+            encoding=EncodingGate(wire=1, rotation=MeasureProto.Y, feature_id=0)
+        ),
+        Gate(cnot=CnotGate(wire1=0, wire2=1)),
+        Gate(variational=VariationalGate(wire=1, rotation=MeasureProto.X)),
+        Gate(measurement=MeasurementGate(wire=0, pauli=MeasureProto.X)),
+        Gate(measurement=MeasurementGate(wire=1, pauli=MeasureProto.X)),
+    ],
+)
+
+env_msg = GenericMLTrainMetadataProto(
     parameters=GenericMLTrainParametersProto(
-        # Choose model type here
         model_type=MLModelType.MLP,
-        # Add and customize and customize layers here
         layers=[
-            Layer(custom_layer=CustomLayer(n_qubits=4, gates=[
-                {type=GateProto.variational, wire=0, rotation=MeasureProto.X},
-                {type=GateProto.encoding, wire=0, rotation=MeasureProto.Z, feature_id=0},
-                {type=GateProto.encoding, wire=1, rotation=MeasureProto.Z, feature_id=1},
-                {type=GateProto.variational, wire=0, rotation=MeasureProto.X},
-                {type=GateProto.measurement, wire=0, measure=MeasureProto.Y}]
-            ])),
+            Layer(custom_quantum_layer=custom_quantum_layer_msg),
+            Layer(classical_dense_layer=ClassicalDenseLayer(hidden_size=1, bias=True)),
         ],
-        num_epochs=5,
+        num_epochs=1,
         k_fold=1,
         batch_size=128,
         learning_rate=0.01,
         optim=OptimProto.ADAM,
         loss_func=LossFuncProto.MAE,
-        train_model_info = TrainModelInfoProto(
-            # Provide a unique name to identify your trained model.
-            name="ENTER_MODEL_NAME_HERE",
-            # Add a brief description to help users understand the purpose or functionality of this trained model.
-            description="ADD_DESCRIPTION_HERE",
+        train_model_info=TrainModelInfoProto(
+            name="local_test",
+            description="a_description",
+        ),
+        data_processing_parameters=TrainDataProcessingParametersProto(
+            input_columns=[0, 1, 2, 3], output_columns=[4], timestamp_columns=[]
         ),
     ),
-    inputs = MLTrainInputsProto(
-        # Provide the specific dataset storage ID of the data you uploaded to TQ42.
-        data=DatasetStorageInfoProto(storage_id="ENTER_DATASET_STORAGE_ID_HERE")
+    inputs=MLTrainInputsProto(
+        data=DatasetStorageInfoProto(storage_id="47c6aba9-881b-4664-b714-dd9bb2f6bd5e")
     ),
 )
+
 with TQ42Client() as client:
+    client.login()
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.GENERIC_ML_TRAIN,
-        # Fill in with the specific ID of the experiment you created in TQ42.
-        experiment_id="ENTER_EXPERIMENT_ID_HERE",
+        experiment_id="b2004690-2a4b-479e-bafe-13a475bb0d69",
         compute=HardwareProto.SMALL,
-        parameters=MessageToDict(metadata, preserving_proto_field_name=True)
+        parameters=MessageToDict(env_msg, preserving_proto_field_name=True)
     )
+
+    print(run.data)
+
+    result = run.poll()
+
+    print(result.data)
+
 ```
