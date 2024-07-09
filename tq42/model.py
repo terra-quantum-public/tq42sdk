@@ -71,7 +71,7 @@ def list_all(client: TQ42Client, project_id: str) -> List[Model]:
     """
     List all models for a project.
 
-    For details, see (TODO: update link once a new documentation URL is created)
+    For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Models.html
     """
     list_models_request = ListStoragesRequest(
         project_id=project_id, type=StorageType.MODEL
