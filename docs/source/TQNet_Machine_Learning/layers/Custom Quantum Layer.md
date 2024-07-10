@@ -35,6 +35,18 @@ The following hyperparameters are included in the CQ layer. These are not necess
 | gates          | A list of quantum gates, where each gate has its own set of parameters. The choice and order of gates determines the quantum operations performed on the input data. Can be `Pauli`, `Hadamard` or `CNOT`. | list of objects |   --    |                   |
 
 
+Other gates include: 
+1 Qubit
+`Rotation`
+`U1`, `U2`, `U3`, `CZ`
+
+2 Qubit
+`SWAP`, `CP`
+
+`Measure`
+`Reset`
+`Barrier` (for circuit visualization)
+
 # 1-Qubit Gate Hyperparameters
 | Hyperparameter | Description                                                                                                                                                                                                          | Syntax | Range    | Default  |
 |----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|----------|
