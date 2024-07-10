@@ -3,9 +3,7 @@
 
 Unlike traditional quantum layers, the CQ layer offers a high degree of customization, enabling the tailoring of the quantum circuit architecture to specific problem domains. This flexibility allows for the optimization of processing different patterns using quantum and classical neurons as needed, making the CQ layer particularly well-suited for applications such as quantum machine learning, quantum classification, physics-informed neural networks, and others. 
 
-# ANYA to get architecture, diagrams, reference from AR team's github pages. They should have published something there
-# Update: no arxiv reference or achitecture diagram for CQ layer
-
+UNAVAILABLE: architecture, diagrams, reference from AR team's github pages for CQ Layer
 
 ## Key Benefits
 - The primary advantage of the Custom Quantum layer is its ability to be highly configurable, allowing for the definition of the number of qubits, gate sets, and encoding methods that best suit the use case.
@@ -19,6 +17,7 @@ The following hyperparameters are included in the CQ layer. These are not necess
 |----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|-----------------------------------|-------------------|
 | n_qubits       | Number of qubits in each quantum circuit. <br/>For best results, formulate `n_qubits` as a power of 2.                                                                | int              | 2 to 8                            | 4                 |
 | n_qubits       | Number of qubits each gate acts on. <br/>For best results, formulate `n_qubits` as a power of 2.                                                                      | int              | 2 to 8                            | 4                 |
+| gates          | A list of quantum gates, where each gate has its own set of parameters. The choice and order of gates determines the quantum operations performed on the input data. Can be `Pauli`, `Hadamard` or `CNOT`. | list of objects |   --    |                   |
 | gates          | A list of quantum gates, where each gate has its own set of parameters. The choice and order of gates determines the quantum operations performed on the input data. Can be `Pauli`, `Hadamard` or `CNOT`. | list of objects |   --    |                   |
 
 
@@ -39,7 +38,9 @@ The following hyperparameters are included in the CQ layer. These are not necess
 | measurement    | The number of measurements to perform on the quantum circuit. The measurement process collapses the quantum state and projects it onto a classical outcome. More measurements may provide more accurate results but may also increase noise and uncertainty.  | int    | 1 to 100 | 10 |
 | wire           | Specifies which qubit(s) a particular gate should be applied to. Indicates the indices of the two qubits.                                                                                                        | int    | [0, n_qubits-1] | 0 |
 
-## UNCLEAR
+## UNCLEAR : 
+## 1. 3 definitions for measurement
+## 2. Should I add entangling, measure and rotation to qubit gate hyperparams?
 
 1. 3 defitions for measurement?
 | measurement    | The number of measurements to perform on the quantum circuit. The measurement process collapses the quantum state and projects it onto a classical outcome. More measurements may provide more accurate results but may also increase noise and uncertainty.  | int    | 1 to 100 | 10 |
@@ -55,12 +56,10 @@ The following hyperparameters are included in the CQ layer. These are not necess
 | rotation       | ADD DETAILED EXPLANATION. Type of embedding rotations used. Can be `X`, `Y` or `Z`.                                        | str    | `X` `Y` `Z`                       | `Z`               |
 
 ## Quantum Circuit Representation
-This circuit diagram reflects the default settings listed above, plus 12 input features. To visualize a dynamic graph, please use the TQ42 web interface.
 
-![EFQ Circuit Diagram](../images/EFQ_Circuit_Diagram.png)
+UNAVAILBLE
 
 ## Sample Python Code Block
-# Sample code block from Domain Specs is wrong, but will be used as a placeholder
 
 Here is an example of how to apply the custom quantum layer within a custom model architecture in the SDK.
 
