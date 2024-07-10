@@ -258,7 +258,7 @@ class TQ42Client(object):
 
     def save_access_token(self, access_token: str):
         save_location = utils.save_token(
-            service_name="access_token",
+            service_name="tq42_access_token",
             backup_save_path=self.token_file_path,
             token=access_token,
         )
@@ -298,6 +298,6 @@ class TQ42Client(object):
     def metadata(self):
         self.token_manager.renew_expring_token()
         token = utils.get_token(
-            service_name="access_token", backup_save_path=self.token_file_path
+            service_name="tq42_access_token", backup_save_path=self.token_file_path
         )
         return (("authorization", "Bearer " + token),)
