@@ -236,12 +236,12 @@ class TestUtils(unittest.TestCase):
         # keyring is working on Mac Sonoma 14.4 and Windows 11
         token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
         utils.save_token(
-            service_name="access_token",
+            service_name="tq42_access_token",
             backup_save_path=token_file_path,
             token="test_token",
         )
         token = utils.get_token(
-            service_name="access_token", backup_save_path=token_file_path
+            service_name="tq42_access_token", backup_save_path=token_file_path
         )
         self.assertEqual(token, "test_token")
 
@@ -253,12 +253,12 @@ class TestUtils(unittest.TestCase):
         mock_set_password.side_effect = InitError()
         mock_get_password.side_effect = InitError()
         utils.save_token(
-            service_name="access_token",
+            service_name="tq42_access_token",
             backup_save_path=token_file_path,
             token="test_token",
         )
         token = utils.get_token(
-            service_name="access_token", backup_save_path=token_file_path
+            service_name="tq42_access_token", backup_save_path=token_file_path
         )
         os.remove(token_file_path)
         self.assertEqual(token, "test_token")
@@ -273,12 +273,12 @@ class TestUtils(unittest.TestCase):
         mock_set_password.side_effect = NoKeyringError()
         mock_get_password.side_effect = NoKeyringError()
         utils.save_token(
-            service_name="access_token",
+            service_name="tq42_access_token",
             backup_save_path=token_file_path,
             token="test_token",
         )
         token = utils.get_token(
-            service_name="access_token", backup_save_path=token_file_path
+            service_name="tq42_access_token", backup_save_path=token_file_path
         )
         os.remove(token_file_path)
         self.assertEqual(token, "test_token")
@@ -293,13 +293,13 @@ class TestUtils(unittest.TestCase):
         mock_get_password.side_effect = KeyringLocked()
 
         utils.save_token(
-            service_name="access_token",
+            service_name="tq42_access_token",
             backup_save_path=token_file_path,
             token="test_token",
         )
 
         token = utils.get_token(
-            service_name="access_token", backup_save_path=token_file_path
+            service_name="tq42_access_token", backup_save_path=token_file_path
         )
         os.remove(token_file_path)
         self.assertEqual(token, "test_token")
