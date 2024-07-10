@@ -90,7 +90,7 @@ class Dataset:
         """
         Create a dataset for a project.
 
-        For details, see (TODO: update link once a new documentation URL is created)
+        For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html
         """
         create_dataset_request = CreateStorageFromExternalBucketRequest(
             project_id=project_id,
@@ -160,7 +160,7 @@ def list_all(client: TQ42Client, project_id: str) -> List[Dataset]:
     """
     List all datasets for a project.
 
-    For details, see (TODO: update link once a new documentation URL is created)
+    For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html
     """
     list_datasets_request = ListStoragesRequest(
         project_id=project_id, type=StorageType.DATASET

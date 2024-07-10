@@ -51,32 +51,56 @@
                 "help": {
                     "text": "Create a dataset within a project.",
                     "level": "command",
-                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Work_with_Datasets.html",
-                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Work_with_Datasets.html"
+                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Working_with_Datasets.html",
+                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html"
                 }
             },
             "list": {
                 "help": {
                     "text": "List all datasets within a project.",
                     "level": "command",
-                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Work_with_Datasets.html",
-                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Work_with_Datasets.html"
+                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Working_with_Datasets.html",
+                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html"
                 }
             },
             "get": {
                 "help": {
                     "text": "Get a specific dataset.",
                     "level": "command",
-                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Work_with_Datasets.html",
-                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Work_with_Datasets.html"
+                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Working_with_Datasets.html",
+                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html"
                 }
             },
             "export": {
                 "help": {
                     "text": "Export a specific dataset.",
                     "level": "command",
-                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Work_with_Datasets.html",
-                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Work_with_Datasets.html"
+                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Working_with_Datasets.html",
+                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html"
+                }
+            }
+        },
+        "model": {
+            "help": {
+                "text": "Class to manage models.",
+                "cli_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Models.html",
+                "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Models.html",
+                "level": "group"
+            },
+            "list": {
+                "help": {
+                    "text": "List all models within a project.",
+                    "level": "command",
+                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Working_with_Models.html",
+                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Models.html"
+                }
+            },
+            "get": {
+                "help": {
+                    "text": "Get a specific model.",
+                    "level": "command",
+                    "cli_url": "https://docs.tq42.com/en/latest/CLI_Developer_Guide/Working_with_Models.html",
+                    "python_url": "https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Models.html"
                 }
             }
         },
