@@ -272,7 +272,7 @@ class TQ42Client(object):
 
     def save_refresh_token(self, refresh_token: str):
         utils.save_token(
-            service_name="refresh_token",
+            service_name="tq42_refresh_token",
             backup_save_path=self.refresh_token_file_path,
             token=refresh_token,
         )

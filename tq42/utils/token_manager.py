@@ -52,7 +52,7 @@ class TokenManager:
         if "access_token" in json_response:
             access_token = json_response["access_token"]
             utils.save_token(
-                service_name="access_token",
+                service_name="tq42_access_token",
                 backup_save_path=self.token_file_path,
                 token=access_token,
             )
