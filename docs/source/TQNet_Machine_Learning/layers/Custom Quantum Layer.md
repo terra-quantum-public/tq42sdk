@@ -4,7 +4,9 @@ OBJECTIVES:
 {} validate Key Benefits - need supplementary info
 {} include architecture, diagrams, reference -> unavailable, Anya checked AR team's Github pages and TQml docstrings
 {} include quantum circuit representation -> unavailable, Anya checked AR team's Github pages and TQml docstrings
+{} Anya and Reuben have discussed the types of gates available
 {} validate Hyperparams, 1-Qubit hyperparams, 2-Qubit hyperparams
+{} validate UNCLEAR section
 {} validate python code snippet
 {} add comments to jupyter notebook
 {} validate jupyter notebook
