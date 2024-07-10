@@ -1,3 +1,15 @@
+
+OBJECTIVES:
+{} validate Introduction
+{} validate Key Benefits - need supplementary info
+{} include architecture, diagrams, reference -> unavailable, Anya checked AR team's Github pages and TQml docstrings
+{} include quantum circuit representation -> unavailable, Anya checked AR team's Github pages and TQml docstrings
+{} validate Hyperparams, 1-Qubit hyperparams, 2-Qubit hyperparams
+{} validate python code snippet
+{} add comments to jupyter notebook
+{} validate jupyter notebook
+
+
 # Custom Quantum Layer
 ## Introduction to CQ
 
