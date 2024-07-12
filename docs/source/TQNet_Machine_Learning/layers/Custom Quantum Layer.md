@@ -15,37 +15,15 @@ OBJECTIVES:
 # Custom Quantum Layer
 ## Introduction to CQ
 
-The Custom Quantum (CQ) layer is a novel approach designed to seamlessly integrate quantum layers with classical neural network layers, creating a syngergistic hybrid model. The CQ layer leverages the non-linear transformations inherent in quantum circuits to express a wide range of functions, creating a richer and more stable representation of the input data which can then be further distilled by subsequent classical layers. 
+The Custom Quantum (CQ) layer is a novel approach designed to seamlessly integrate quantum layers with classical neural network layers, creating a syngergistic hybrid model. The CQ layer leverages the non-linear transformations inherent in quantum circuits to express a wide range of functions, creating a richer and more stable representation of the input data, which can then be further distilled by subsequent classical layers. The CQ approach is highly flexible and allows for complete control over the design of the quantum circuit. 
 
-The flexible hybrid architecture enables unprecedented expressivity of complex data features and navigation of critical challenges in high-dimensional search spaces (such as vanishing gradients and barren plateaus). 
+This architecture offers unprecedented expressivity of complex data features and navigation of critical challenges in high-dimensional search spaces (such as vanishing gradients and barren plateaus) – representing a promising path forward in the development of more powerful, efficient, and adaptable machine learning models for complex real-world problems. 
 
-
-
-This results in a richer and more stable representation of the input data, which can then be further distilled by subsequent classical layers.
-
-The CQ architecture can also be leveraged for natural representation of periodic functions, 
-
-, creating a synergistic model that combines the strengths of both paradigms. 
-
-By leveraging the non-linear transformations inherent in quantum circuits, the CQ layer offers a powerful complement to traditional neural network layers. 
-
-The custom quantum layer is a novel approach to quantum machine learning that leverages the representation of quantum models as partial Fourier series. 
-By carefully designing the data encoding strategy and trainable circuit blocks, this layer can access a rich frequency spectrum and flexibly adjust Fourier coefficients. 
-This allows the quantum model to express a wide range of functions, potentially achieving universal function approximation. 
-
-the CQ layer offers a promising path forward in the development of more powerful, efficient, and adaptable machine learning models for complex real-world problems.
-
-Unlike traditional quantum layers, the CQ layer offers a high degree of customization, enabling the tailoring of the quantum circuit architecture to specific problem domains. This flexibility allows for the optimization of processing different patterns using quantum and classical neurons as needed, making the CQ layer particularly well-suited for applications such as quantum machine learning, quantum classification, physics-informed neural networks, and others. 
+! tip ! By carefully designing the data encoding strategy and trainable circuit blocks...
 
 UNAVAILABLE: architecture, diagrams, reference from AR team's github pages for CQ Layer
 
 ## Key Benefits
-
-- Increased expressivity through controlled expansion of the frequency spectrum
-- Ability to represent a wide range of functions through partial Fourier series
-- Potential for universal function approximation
-- Natural representation of periodic functions, suitable for time-series and signal processing tasks
-- Classical pre-processing can increase the expressivity of small quantum models.
 
 - Enhanced Expressivity: The CQ layer leverages quantum circuits to perform non-linear transformations on input data, accessing a rich frequency spectrum that allows for more complex feature representation than classical neural network layers alone. 
 - Mitigation of Training Obstacles: By enabling precise control over circuit design, the CQ layer helps address vanishing gradients and barren plateaus - common challenges in both quantum and deep classical neural networks. This allows for more effective training, even in deep hybrid architectures.
