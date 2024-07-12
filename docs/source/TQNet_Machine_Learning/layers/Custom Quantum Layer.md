@@ -21,7 +21,9 @@ This architecture offers unprecedented expressivity of complex data features and
 
 ! tip ! By carefully designing the data encoding strategy and trainable circuit blocks...
 
-UNAVAILABLE: architecture, diagrams, reference from AR team's github pages for CQ Layer
+![CQ layer architecture](    )
+
+[Reference](https://arxiv.org/pdf/2008.08605)
 
 ## Key Benefits
 
@@ -33,8 +35,6 @@ UNAVAILABLE: architecture, diagrams, reference from AR team's github pages for C
 - Noise Resilience: The non-linear transformations performed by the CQ layer can help in extracting stable features from noisy data, which can then be further processed by classical layers to produce a clean, precise representation of the underlying patterns.
 - Lightweight yet Powerful Models: By combining the expressive power of quantum circuits with the proven effectiveness of classical neural networks, hybrid models incorporating the CQ layer can achieve high performance with potentially fewer total parameters than purely classical approaches.
 - Potential for universal function approximation
-
-
 
 
 ## Hyperparameters and Default Settings
