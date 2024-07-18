@@ -7,7 +7,7 @@ OBJECTIVES:
 {x} validate Hyperparams, 1-Qubit hyperparams, 2-Qubit hyperparams
 {x} validate UNCLEAR section
 {x} validate python code snippet -> use a regression example, not a time series!
-{} add comments to jupyter notebook
+{x} add comments to jupyter notebook
 {} validate jupyter notebook
 
 
@@ -130,7 +130,7 @@ env_msg = GenericMLTrainMetadataProto(
         ),
     ),
     inputs=MLTrainInputsProto(
-        data=DatasetStorageInfoProto(storage_id="47c6aba9-881b-4664-b714-dd9bb2f6bd5e") ## REMOVE IDs
+        data=DatasetStorageInfoProto(storage_id="ENTER_DATASET_STORAGE_ID_HERE")
     ),
 )
 
@@ -139,7 +139,7 @@ with TQ42Client() as client:
     run = ExperimentRun.create(
         client=client,
         algorithm=AlgorithmProto.GENERIC_ML_TRAIN,
-        experiment_id="b2004690-2a4b-479e-bafe-13a475bb0d69",
+        experiment_id=exp.id,
         compute=HardwareProto.SMALL,
         parameters=MessageToDict(env_msg, preserving_proto_field_name=True)
     )
