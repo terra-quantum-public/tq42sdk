@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import os.path
 from typing import Optional, List
+
+from google.protobuf.json_format import MessageToJson
 from tqdm import tqdm
 import requests
 import validators
@@ -28,6 +30,8 @@ from com.terraquantum.storage.v1alpha1.export_storage_pb2 import (
     ExportStorageResponse,
 )
 
+from tq42.utils.pretty_list import PrettyList
+
 
 class Dataset:
     """
@@ -53,7 +57,7 @@ class Dataset:
         return f"<Dataset Id={self.id} Name={self.data.name}>"
 
     def __str__(self) -> str:
-        return str(self.data)
+        return f"Dataset: {MessageToJson(self.data, preserving_proto_field_name=True)}"
 
     @handle_generic_sdk_errors
     def _get(self) -> StorageProto:
@@ -86,7 +90,7 @@ class Dataset:
         """
         Create a dataset for a project.
 
-        For details, see (TODO: update link once a new documentation URL is created)
+        For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html
         """
         create_dataset_request = CreateStorageFromExternalBucketRequest(
             project_id=project_id,
@@ -156,7 +160,7 @@ def list_all(client: TQ42Client, project_id: str) -> List[Dataset]:
     """
     List all datasets for a project.
 
-    For details, see (TODO: update link once a new documentation URL is created)
+    For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html
     """
     list_datasets_request = ListStoragesRequest(
         project_id=project_id, type=StorageType.DATASET
@@ -164,4 +168,6 @@ def list_all(client: TQ42Client, project_id: str) -> List[Dataset]:
     res: ListStoragesResponse = client.storage_client.ListStorages(
         request=list_datasets_request, metadata=client.metadata
     )
-    return [Dataset.from_proto(client=client, msg=dataset) for dataset in res.storages]
+    return PrettyList(
+        [Dataset.from_proto(client=client, msg=dataset) for dataset in res.storages]
+    )

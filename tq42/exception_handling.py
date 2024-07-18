@@ -3,6 +3,7 @@ import traceback
 
 from grpc import StatusCode
 from grpc._channel import _InactiveRpcError as InactiveRpcError
+from grpc.aio import AioRpcError
 
 from tq42 import exceptions
 from functools import wraps
@@ -39,7 +40,10 @@ def handle_generic_sdk_errors(func: F) -> F:
                 ) from None
 
             raise e
-
+        except AioRpcError:
+            raise ConnectionError(
+                "Channel disconnected. Please reconnect by re-executing the channel connection."
+            ) from None
         except KeyError:
             raise exceptions.NoDefaultError(
                 command=traceback.extract_stack()[0].line

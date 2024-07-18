@@ -40,7 +40,8 @@ class TokenManager:
 
     def request_new_access_token(self):
         refresh_token = utils.get_token(
-            service_name="refresh_token", backup_save_path=self.refresh_token_file_path
+            service_name="tq42_refresh_token",
+            backup_save_path=self.refresh_token_file_path,
         )
         data = self.environment.refresh_token_data(refresh_token)
         response = requests.post(
@@ -52,7 +53,7 @@ class TokenManager:
         if "access_token" in json_response:
             access_token = json_response["access_token"]
             utils.save_token(
-                service_name="access_token",
+                service_name="tq42_access_token",
                 backup_save_path=self.token_file_path,
                 token=access_token,
             )

@@ -5,6 +5,7 @@ from tq42.cli import (
     experiment_group as exp_group,
     compute_group as compute_group,
     project_dataset_group as proj_data_group,
+    project_model_group as proj_model_group,
 )
 
 from tq42.utils import environment_utils as env_group
@@ -21,6 +22,8 @@ def tq42_all(client: TQ42Client, args) -> Optional[str]:
         return exp_group.experiment_group(client, args)
     elif args.group == "proj" and args.command == "dataset":
         return proj_data_group.project_dataset_group(client, args)
+    elif args.group == "proj" and args.command == "model":
+        return proj_model_group.project_model_group(client, args)
     elif args.group == "proj":
         return proj_group.project_group(client, args)
     elif args.group == "org":

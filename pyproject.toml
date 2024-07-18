@@ -5,7 +5,7 @@ include = ["utils/text_files/*.txt", "utils/text_files/config.json", "tests/test
 
 [tool.poetry]
 name = "tq42"
-version = "0.5.36"
+version = "0.5.43"
 description = "tq42 sdk"
 readme = "README.md"
 authors = ["Terra Quantum AG"]
@@ -14,11 +14,12 @@ authors = ["Terra Quantum AG"]
 python = "^3.8"
 requests = "^2.31.0"
 PyYAML = "^6.0.1"
-tq42_grpc_client = "1.0.139"
+tq42_grpc_client = "1.0.154"
 pytest = "^7.4.4"
 keyring = "^25.0.0"
 tqdm = "^4.66.4"
 validators = "^0.28.3"
+pytest-asyncio = "^0.23.7"
 
 [[tool.poetry.source]]
 name = "PyPI"

@@ -4,8 +4,6 @@ There are two sets of parameters, one to define the optimization problem to be s
 
 ## Parameters to define the optimization problem
 
-* func_eval_worker_url: The URL of the function evaluation worker
-
 * objectives: List of objectives
 
   An objective is defined by
@@ -25,6 +23,13 @@ There are two sets of parameters, one to define the optimization problem to be s
   * info_int: A dictionary with two entries: lower_bound and upper_bound
   * info_class: A dictionary with entry values which is a list of possible class values as strings
 
+* function evaluation
+
+  There are two possibilities to link a function evaluator to the optimization. One is to set a function worker url implementing a web service which sends back immediately the objective values after receiving candidate solutions. The other way is to use channels. Channels are implementing a so called ask & tell interface where the optimizer sends the candidates to the channel and waits until the objective values are made available on the channel. More details on setting up a web service or a channel implementing a function evaluator can be found in [Objective Functions](../Objective_Functions/Objective_Function.md).
+
+ * func_eval_worker_url: The URL of the function evaluation worker
+ * func_eval_worker_channel_id: The id returned by the channel
+
 ## Parameters to control the algorithm
 These parameters are optional and will be set to default values when they are not provided to the optimization algorithm.
 
@@ -43,6 +48,8 @@ The number of parents in a iteration
 The number of offsprings created in a iteration
 
 ## Example
+
+### Example using a function eval worker url
 ```python
 from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun
@@ -82,4 +89,79 @@ with TQ42Client() as client:
         compute=HardwareProto.SMALL,
         parameters=params,
     )
+```
+
+### Example using a channel to evaluate the objective function
+```python
+from tq42.client import TQ42Client
+from tq42.experiment_run import ExperimentRun
+from tq42.organization import list_all as list_all_organizations
+from tq42.project import list_all as list_all_projects
+from tq42.experiment import list_all as list_all_experiments
+from tq42.experiment_run import ExperimentRunStatusProto
+from tq42.algorithm import AlgorithmProto
+from tq42.compute import HardwareProto
+import json
+import pandas
+import asyncio
+import numpy as np
+from tq42.channel import Channel, Ask, Tell
+import OptimizationTestFunctions as otf
+
+cva_params = {}
+cva_params['objectives'] = [{'name': 'Rosenbrock', 'aim_type':'MINIMIZE'}]
+cva_params['variables'] = []
+cva_params['variables'].append({'name': 'x1', 'info_real':{'lower_bound':-1.0, 'upper_bound':1.0}})
+cva_params['variables'].append({'name': 'x2', 'info_real':{'lower_bound':-1.0, 'upper_bound':1.0}})
+cva_params['parameters'] = {}
+cva_params['parameters']['max_generation'] = 50
+cva_params['parameters']['mue'] = 2
+cva_params['parameters']['lambda'] = 10
+
+async def run_exp_with_channel(client, experient_id, cva_params):
+    # set up channel
+    channel = await Channel.create(client=client)
+    # extend cva_params with func_eval_worker_channel_id
+    cva_params['func_eval_worker_channel_id'] = channel.id
+    
+    # create the experiment run
+    run = ExperimentRun.create(
+        client=client, 
+        algorithm=AlgorithmProto.CVA_OPT, 
+        experiment_id=experiment_id,
+        compute=HardwareProto.SMALL,
+        parameters={'parameters': cva_params, 'inputs': {} }
+    )
+
+    # define the callback function
+    async def callback(ask: Ask) -> Tell:
+        dim = len(ask.headers)
+        func = otf.Rosenbrock(dim)
+        print('callback received parameters of length: ' + str(len(ask.parameters)))
+        y = []
+        for parameter in ask.parameters:
+            y.append(float(func(np.array(parameter.values))))
+        # add result to data
+
+        return Tell(
+            parameters=ask.parameters,
+            headers=ask.headers,
+            results=y
+        )
+
+	def do_nothing():
+		pass
+
+    await channel.connect(
+            callback=callback,
+            finish_callback=do_nothing,
+            max_duration_in_sec=None,
+            message_timeout_in_sec=120
+        )
+    # return the run to retrieve the result    
+    return run
+
+loop = asyncio.get_event_loop()
+run = loop.run_until_complete(run_exp_with_channel(tq42client, experiment_id, cva_params))
+result = run.poll()
 ```

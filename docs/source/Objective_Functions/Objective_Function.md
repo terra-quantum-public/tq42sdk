@@ -10,7 +10,7 @@ algorithm.
 [2]: https://en.wikipedia.org/wiki/Pareto_front
 
 ## Objective Function and Local Optimization Function Format
-TetraOpt requires one of the following methods of communication for its objective and local optimization functions:
+TQ42 optimizers require one of the following methods of communication for its objective and local optimization functions. Please note that only TetraOpt may be configured wiht a local optimizer:
 1. A communication channel (using the tq42 API)
 2. An https endpoint
 
@@ -69,7 +69,7 @@ tetra_opt_parameter = {
 TetraOpt uses the Ask and Tell pattern to send and receive information as objects to its objective and local optimization function. It also uses a communication channel to stream the information to and from the server.
 
 1. `Ask` - TetraOpt sends an Ask object to the objective and local optimization function
-2. `Tell` - The objective and local optimization function needs to respond witn a Tell object to send information back to TetraOpt
+2. `Tell` - The objective and local optimization function needs to respond with a Tell object to send information back to TetraOpt
 3. `Channel`- This is used to connect the functions running locally to TetraOpt running in the cloud.
 
 
