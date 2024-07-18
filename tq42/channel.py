@@ -35,6 +35,7 @@ class Channel:
 
     id: str
     client: TQ42Client
+    sequential_message_id: int = 0
 
     def __init__(self, client: TQ42Client, id: str):
         self.client = client
@@ -94,6 +95,12 @@ class Channel:
                         break
                     elif data_field_name == "ask_data":
                         tell = await callback(incoming.ask_data)
+                        if self.sequential_message_id >= incoming.sequential_message_id:
+                            logging.debug(
+                                "Message id is not sequential. Ignoring message"
+                            )
+                            continue
+                        self.sequential_message_id = incoming.sequential_message_id
                         await _acknowledge_message(msg=incoming)
                         tell_msg = ChannelMessage(
                             sequential_message_id=(incoming.sequential_message_id + 1),
