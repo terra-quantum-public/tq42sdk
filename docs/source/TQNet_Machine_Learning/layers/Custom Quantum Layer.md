@@ -1,16 +1,4 @@
 
-OBJECTIVES:
-{x} validate Introduction
-{x} validate Key Benefits - need supplementary info
-{} include architecture, diagrams, reference -> unavailable, Anya checked AR team's Github pages and TQml docstrings
-{x} Anya and Reuben have discussed the types of gates available
-{x} validate Hyperparams, 1-Qubit hyperparams, 2-Qubit hyperparams
-{x} validate UNCLEAR section
-{x} validate python code snippet -> use a regression example, not a time series!
-{x} add comments to jupyter notebook
-{} validate jupyter notebook
-
-
 # Custom Quantum Layer
 ## Introduction to CQ
 
@@ -35,27 +23,29 @@ This architecture offers unprecedented expressivity of complex data features and
 ## Hyperparameters and Default Settings
 The following hyperparameters are included in the CQ layer. These are not necessarily the recommended settings for every application or use case; they may require tuning to find the optimal values for your specific use case.
 
-| Hyperparameter | Description                                                                                                                                                           | Syntax           | Range                             | Default           |
+| Hyperparameters | Description                                                                                                                                                           | Syntax           | Range                             | Default           |
 |----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|-----------------------------------|-------------------|
 | n_qubits       | Number of qubits in each quantum circuit. <br/>For best results, formulate `n_qubits` as a power of 2.                                                                | int              | 2 to 8                            | 4                 |
-| gates          | A list of quantum gates, where each gate has its own set of parameters. The choice and order of gates determines the quantum operations performed on the input data. Can be `Rotation`, `Hadamard` or `CNOT`. | list of objects |  (see below tables) |  (see below tables)       |
+| gates          | A list of quantum gates, where each gate has its own set of parameters. The choice and order of gates determines the quantum operations performed on the input data.  | list of objects |  (see below) |  (see below)       |
 
-# 1-Qubit Gate Hyperparameters
-| Hyperparameter | Description                                                                                                                                                                                                          | Syntax | Range    | Default  |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|----------|
-| variational    | Controls the number of iterations for the quantum algorithm used to train the quantum layer. The variational algorithm optimizes the quantum circuit parameters to minimize a cost function.                         | int    | 1 to 100 | 12       |
-| encoding       | Specifies the encoding method used to represent classical data in the quantum circuit. Different encoding techniques may be suitable for different types of problems. Can be `method1`, `method2` or `method3`.      | int    | 1 to 3   | 2        |
-| measurement        | Pauli measurement that will be used at the end of each circuit for a particular qubit. Can be `X`, `Y` or `Z`.                                    | str    | `X` `Y` `Z`                       | `Y`               | -> this is the WINNER
- qubits in each circuit will be measured. If set to 'None' each qubit will be measured  | str    | 'single', 'even', 'None' | 'None' |
-| wire           | Specifies which qubit(s) a particular gate should be applied to. Indicates the qubit index.                                                                                                                          | int   | [0, n_qubits-1] | 0 |
 
-# 2-Qubit Gate Hyperparameters
-| Hyperparameter | Description                                                                                                                                                                                                      | Syntax | Range    | Default  |
-|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|----------|
-| variational    | Controls the number of iterations for the quantum algorithm used to train the quantum layer. The variational algorithm optimizes the quantum circuit parameters to minimize a cost function.                     | int    | 1 to 100 | 12       |
-| encoding       | Specifies the encoding method used to represent classical data in the quantum circuit. Different encoding techniques may be suitable for different types of problems. Can be `method1`, `method2` or `method3`.  | int    | 1 to 3   | 2        |
-| measurement        | Pauli measurement that will be used at the end of each circuit for a particular qubit. Can be `X`, `Y` or `Z`.                                    | str    | `X` `Y` `Z`                       | `Y`               | -> this is the WINNER
-| wire           | Specifies which qubit(s) a particular gate should be applied to. Indicates the indices of the two qubits.                                                                                                        | int    | [0, n_qubits-1] | 0 |
+The gates have the following types and hyperparameters (see below).
+
+### 1-Qubit Gates
+
+| Gate Type    | Description                                                                                                                                                                                                          | wire             | rotation      | feature_id    | pauli |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|---------------|---------------|-------|
+| variational  | Controls the number of iterations for the quantum algorithm used to train the quantum layer. The variational algorithm optimizes the quantum circuit parameters to minimize a cost function.                         | [0, n_qubits-1]  | `X`, `Y`, `Z` | n/a           | n/a   |
+| encoding     | Specifies the encoding method used to represent classical data in the quantum circuit. Different encoding techniques may be suitable for different types of problems. Can be `X`, `Y` or `Z`.                        | [0, n_qubits-1]  | `X`, `Y`, `Z` | `Y`           | n/a   |
+| measurement  | Pauli measurement that will be used at the end of each circuit for a particular qubit. Can be `X`, `Y` or `Z`.                                                                                                        | [0, n_qubits-1]  | n/a           | `X`, `Y`, `Z` | n/a   |
+| Hadamard     | Applies a Hadamard transformation to a qubit.                                                                                                                                                                         | [0, n_qubits-1]  | n/a           | n/a           | n/a   |
+
+
+### 2-Qubit Gates
+
+| Gate Type | Description                                                                                                                                                                                                          | wire1 | wire2 |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|----------|
+| CNOT    | Applies a CNOT to a pair of qubits.                                                                                                      | [0, n_qubits-1] | [0, n_qubits-1] |
 
 
 ## Sample Python Code Block
