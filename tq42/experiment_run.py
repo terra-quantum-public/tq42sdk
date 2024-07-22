@@ -94,7 +94,6 @@ class ExperimentRun:
         experiment_id: str,
         compute: HardwareProto,
         parameters: dict,
-        sub_type: str = None,
     ) -> ExperimentRun:
         """
         Create an experiment run.
@@ -103,13 +102,12 @@ class ExperimentRun:
         https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
         """
 
-        metadata_proto = get_metadata_proto(
-            algorithm=algorithm, version=version, sub_type=sub_type
-        )
+        metadata_proto = get_metadata_proto(algorithm=algorithm, version=version)
         if not metadata_proto:
             raise ValueError(
-                f"Cannot create experiment run for {algorithm=} {version=} {sub_type=}"
-            )  # FIXME
+                f"Cannot create experiment run for {algorithm=} {version=}. Please check the version for the given "
+                f"algorithm."
+            )
 
         metadata = metadata_proto(**parameters)
         try:

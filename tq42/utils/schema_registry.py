@@ -15,20 +15,10 @@ from google.protobuf.message import Message
 
 _REGISTRY_HOST = os.getenv("TQ42_SCHEMA_REGISTRY_HOST ", "buf.build")
 _REGISTRY_ACCOUNT = os.getenv("TQ42_SCHEMA_REGISTRY_ACCOUNT", "tq42-algorithms")
-_PACKAGE_PREFIX = "com.terraquantum.tq42.algorithms"
 
 
-def get_metadata_proto(
-    algorithm: str, version: str, sub_type: str = None
-) -> Optional[Type[Message]]:
+def get_metadata_proto(algorithm: str, version: str) -> Optional[Type[Message]]:
     messages = _get_message_types(algorithm=algorithm, version=version)
-
-    if sub_type is not None:
-        messages = {
-            key: value
-            for key, value in messages.items()
-            if key.startswith(f"{_PACKAGE_PREFIX}.{sub_type.lower()}")
-        }
 
     protos = [
         message_type
