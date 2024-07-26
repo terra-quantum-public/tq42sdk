@@ -20,6 +20,7 @@ keyring = "^25.0.0"
 tqdm = "^4.66.4"
 validators = "^0.28.3"
 pytest-asyncio = "^0.23.7"
+click = "^8.1.7"
 
 [[tool.poetry.source]]
 name = "PyPI"
@@ -27,10 +28,14 @@ priority = "primary"
 
 [tool.poetry.scripts]
 tq42 = "tq42.__main__:main"
+tq42new = "tq42.cli.entrypoint:cli"
 
 [tool.poetry.group.styles.dependencies]
 black = "^23.12.1"
 ruff = "^0.1.9"
+
+[tool.poetry.group.dev.dependencies]
+optimizationtestfunctions = "^1.0.1"
 
 [tool.ruff]
 exclude = [
