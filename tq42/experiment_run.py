@@ -35,13 +35,15 @@ from tq42.utils.pretty_list import PrettyList
 
 
 class ExperimentRun:
+    """
+    Class to run experiments and view results
+
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
+    """
+
     id: str
     client: TQ42Client
     data: ExperimentRunProto
-
-    """
-    Class to run experiments and view results
-    """
 
     def __init__(
         self, client: TQ42Client, id: str, data: Optional[ExperimentRunProto] = None

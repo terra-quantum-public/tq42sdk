@@ -21,6 +21,12 @@ class HardwareConfig:
 
 
 class Compute:
+    """
+    Class to manage compute configurations.
+
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Selecting_Compute_Resources.html#selecting-compute-resources-for-your-experiment-run
+    """
+
     hardware: HardwareProto
     config: HardwareConfig
 

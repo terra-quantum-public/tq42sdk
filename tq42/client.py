@@ -105,6 +105,8 @@ class TQ42Client(object):
     """
     Visit https://help.terraquantum.io/ to access our help center, from where you can access help articles and video tutorials, report bugs, contact support and request improvements.
     For TQ42SDK documentation, visit https://docs.tq42.com/en/latest/.
+
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#
     """
 
     def __call__(self, **kwargs):
@@ -197,6 +199,9 @@ class TQ42Client(object):
 
     @handle_generic_sdk_errors
     def login(self):
+        """
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#
+        """
         if self.credential_flow_client_id and self.credential_flow_client_secret:
             self.login_without_user_interaction()
         else:

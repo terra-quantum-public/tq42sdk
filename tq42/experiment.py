@@ -31,6 +31,8 @@ from tq42.utils.cache import get_current_value
 class Experiment:
     """
     Class to manage experiments
+
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
     """
 
     _client: TQ42Client

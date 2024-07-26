@@ -23,6 +23,8 @@ from tq42.utils.pretty_list import PrettyList
 class Model:
     """
     Class to view models
+
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Models.html
     """
 
     id: str
