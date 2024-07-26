@@ -10,23 +10,7 @@ from .project_group import project_group
 from .environment_group import environment_group
 
 
-@click.group(
-    help=(
-        "Visit {} to access our help center, from where you can access help articles and video tutorials, report bugs, contact support and request improvements."
-        "\n\n"
-        "For TQ42SDK documentation, visit https://docs.tq42.com/en/latest/."
-        "\n\n"
-        "Mandatory commands:"
-        "\n\n"
-        "tq42 auth login"
-        "\n\n"
-        'tq42 exp run create --exp="EXP_ID" --compute="COMPUTE_NAME" --algorithm="ALGORITHM_NAME" --parameters="PARAMETERS_JSON"'
-        "\n\n"
-        "---"
-        "\n\n"
-        "All other command are optional."
-    )
-)
+@click.group()
 @click.option(
     "--config",
     "config_path",
@@ -36,6 +20,22 @@ from .environment_group import environment_group
 @click.version_option()
 @click.pass_context
 def cli(ctx: TQ42CliContext, config_path: str):
+    """
+    Visit https://help.terraquantum.io/ to access our help center, from where you can access help articles and video tutorials, report bugs,
+    contact support and request improvements.
+
+    For TQ42SDK documentation, visit https://docs.tq42.com/en/latest/.
+
+    Mandatory commands:
+
+    tq42 auth login
+
+    tq42 exp run create --exp="EXP_ID" --compute="COMPUTE_NAME" --algorithm="ALGORITHM_NAME" --parameters="PARAMETERS_JSON"
+
+    ---
+
+    All other command are optional.
+    """
     ctx.ensure_object(TQ42CliObject)
     ctx.obj.client = TQ42Client(alt_config_file=config_path)
 

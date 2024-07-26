@@ -9,8 +9,13 @@ from tq42.algorithm import AlgorithmProto
 from tq42.compute import HardwareProto
 
 
-@click.group("run", help="Command group to manage experiment runs")
+@click.group("run")
 def exp_run_group() -> click.Group:
+    """
+    Class to run experiments and view results
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#
+    """
     pass
 
 
@@ -18,6 +23,11 @@ def exp_run_group() -> click.Group:
 @click.argument("exp_run_id", required=True, type=str)
 @click.pass_context
 def cancel_run(ctx: TQ42CliContext, exp_run_id: str) -> None:
+    """
+    Cancel a run that is QUEUED, PENDING, or RUNNING.
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#cancelling-an-experiment-run
+    """
     res = cli.cancel_exprun(ctx.obj.client, exp_run_id)
     click.echo(res)
 
@@ -26,6 +36,11 @@ def cancel_run(ctx: TQ42CliContext, exp_run_id: str) -> None:
 @click.argument("exp_run_id", required=True, type=str)
 @click.pass_context
 def poll_run(ctx: TQ42CliContext, exp_run_id: str) -> None:
+    """
+    Monitor an experiment run until it completes, then automatically display the results (if there are no errors).
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run
+    """
     res = cli.poll_exprun(ctx.obj.client, exp_run_id)
     click.echo(res)
 
@@ -34,13 +49,16 @@ def poll_run(ctx: TQ42CliContext, exp_run_id: str) -> None:
 @click.argument("exp_run_id", required=True, type=str)
 @click.pass_context
 def check_run(ctx: TQ42CliContext, exp_run_id: str) -> None:
+    """
+    Monitor run status.
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run
+    """
     res = cli.get_exprun(ctx.obj.client, exp_run_id)
     click.echo(res)
 
 
-@exp_run_group.command(
-    "list", help="e.g. tq42 exp run list --exp 98ccb1d2-a3d0-48c8-b172-022f6db9be01"
-)
+@exp_run_group.command("list")
 @click.option(
     "--exp",
     "exp_id",
@@ -50,14 +68,18 @@ def check_run(ctx: TQ42CliContext, exp_run_id: str) -> None:
 )
 @click.pass_context
 def list_runs(ctx: TQ42CliContext, exp_id: str) -> None:
+    """
+    List all the runs within an experiment you have permission to view.
+
+    e.g. tq42 exp run list --exp 98ccb1d2-a3d0-48c8-b172-022f6db9be01
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#list-all-runs-within-an-experiment
+    """
     res = cli.list_expruns(ctx.obj.client, exp_id)
     click.echo(res)
 
 
-@exp_run_group.command(
-    "create",
-    help="e.g. tq42 exp run create --exp 98ccb1d2-a3d0-48c8-b172-022f6db9be01  --compute small --algorithm TETRA_OPT --parameters \"{'parameters': {'dimensionality':6,'maximal_rank' :1, 'points_number': 1, 'quantization' : True , 'tolerance':3.9997,  'grid': [1,2,3], 'upper_limits':[1,2,3,4,6,6], 'lower_limits': [0,0,0,0,0,0] , 'objective_function':'https://terraquantum.swiss', 'iteration_number': 1}, 'inputs': {}}\"",
-)
+@exp_run_group.command("create")
 @click.option(
     "--exp",
     "exp_id",
@@ -90,6 +112,13 @@ def list_runs(ctx: TQ42CliContext, exp_id: str) -> None:
 def create_run(
     ctx: TQ42CliContext, exp_id: str, compute: str, algorithm: str, parameters: str
 ) -> None:
+    """
+    Begin an experiment run.
+
+    e.g. tq42 exp run create --exp 98ccb1d2-a3d0-48c8-b172-022f6db9be01  --compute small --algorithm TETRA_OPT --parameters \"{'parameters': {'dimensionality':6,'maximal_rank' :1, 'points_number': 1, 'quantization' : True , 'tolerance':3.9997,  'grid': [1,2,3], 'upper_limits':[1,2,3,4,6,6], 'lower_limits': [0,0,0,0,0,0] , 'objective_function':'https://terraquantum.swiss', 'iteration_number': 1}, 'inputs': {}}\"
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
+    """
     algo = AlgorithmProto.Value(algorithm.upper())
     compute_val = HardwareProto.Value(compute.upper())
     params = ast.literal_eval(parameters)
