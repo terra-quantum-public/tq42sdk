@@ -9,7 +9,7 @@ from tq42.cli import (
 )
 from tq42 import algorithm, organization
 import tq42.cli.utils.formatter as formatter
-from tq42.utils import dirs, utils
+from tq42.utils import dirs, misc
 from tq42.client import TQ42Client
 
 
@@ -27,7 +27,7 @@ class TestImports(unittest.TestCase):
     def test_utils_imports(self):
         self.assertIsNotNone(TQ42Client)
         self.assertIsNotNone(dirs)
-        self.assertIsNotNone(utils)
+        self.assertIsNotNone(misc)
 
     def test_cli_imports(self):
         self.assertIsNotNone(compute_group)

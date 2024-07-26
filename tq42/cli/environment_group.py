@@ -1,7 +1,7 @@
 import click
 
 from tq42.cli.utils.types import TQ42CliContext
-from tq42.utils.environment_utils import (
+from tq42.utils.environment import (
     get_environment,
     environment_default_set,
     environment_clear,

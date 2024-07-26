@@ -16,7 +16,7 @@ from com.terraquantum.organization.v1.organization import (
 from tq42.client import TQ42Client
 from tq42.organization import Organization
 from tq42.project import Project
-from tq42.exceptions import NoDefaultError, InvalidArgumentError
+from tq42.utils.exceptions import NoDefaultError, InvalidArgumentError
 
 
 class TestAPI(unittest.TestCase):

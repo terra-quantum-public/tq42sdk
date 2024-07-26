@@ -9,7 +9,7 @@ import requests
 import validators
 
 from tq42.client import TQ42Client
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 
 # This is important to re-export it!
 from com.terraquantum.storage.v1alpha1.storage_pb2 import (

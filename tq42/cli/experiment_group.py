@@ -1,7 +1,7 @@
 import click
 
 import tq42.cli.utils.cli_functions as cli
-import tq42.utils.utils_for_cache as cache_utils
+import tq42.utils.cache as cache_utils
 from .experiment_run_group import exp_run_group
 from .utils.types import TQ42CliContext
 

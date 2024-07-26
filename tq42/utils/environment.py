@@ -4,7 +4,7 @@ from typing import Optional
 from tq42.organization import Organization, list_all as list_all_organizations
 from tq42.project import Project, list_all as list_all_projects
 from tq42.utils import dirs, file_handling
-from tq42.utils.utils_for_cache import clear_cache
+from tq42.utils.cache import clear_cache
 
 from typing import TYPE_CHECKING
 

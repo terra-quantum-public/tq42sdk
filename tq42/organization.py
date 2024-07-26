@@ -6,7 +6,7 @@ from google.protobuf import empty_pb2
 from google.protobuf.json_format import MessageToJson
 
 from tq42.project import Project
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 
 from com.terraquantum.organization.v1.organization.organization_pb2 import (
     OrganizationProto,

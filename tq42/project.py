@@ -6,9 +6,9 @@ from google.protobuf.field_mask_pb2 import FieldMask
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.json_format import MessageToJson
 
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 from tq42.utils.pretty_list import PrettyList
-from tq42.utils.utils_for_cache import (
+from tq42.utils.cache import (
     get_current_value,
     write_key_value_to_cache,
     clear_cache,

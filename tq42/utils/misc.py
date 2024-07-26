@@ -13,7 +13,7 @@ from com.terraquantum.experiment.v1.experimentrun.algorithm import shared_pb2
 
 import tq42.utils.dirs as dirs
 from tq42.utils import file_handling
-from tq42.exceptions import NoMatchingAttributeError
+from tq42.utils.exceptions import NoMatchingAttributeError
 from keyring.errors import NoKeyringError, InitError, PasswordSetError, KeyringLocked
 
 

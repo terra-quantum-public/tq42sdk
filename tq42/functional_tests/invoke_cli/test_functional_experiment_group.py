@@ -1,7 +1,7 @@
 import unittest
 
 from tq42.project import Project
-from tq42.utils.utils_for_cache import clear_cache
+from tq42.utils.cache import clear_cache
 from tq42.functional_tests.functional_test_config import FunctionalCLITestConfig
 
 

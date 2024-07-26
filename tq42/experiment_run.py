@@ -6,11 +6,11 @@ from typing import Optional, List
 from google.protobuf.json_format import MessageToJson
 
 from tq42.client import TQ42Client
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 from tq42.compute import HardwareProto
 from tq42.algorithm import AlgorithmProto
-from tq42.exceptions import ExperimentRunCancelError, ExceedRetriesError
-from tq42.utils import utils
+from tq42.utils.exceptions import ExperimentRunCancelError, ExceedRetriesError
+from tq42.utils import misc
 
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
     ExperimentRunStatusProto,
@@ -95,7 +95,7 @@ class ExperimentRun:
         For details, see
         https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
         """
-        create_exp_run_request = utils.dynamic_create_exp_run_request(
+        create_exp_run_request = misc.dynamic_create_exp_run_request(
             parameters=parameters,
             algo=algorithm,
             exp_id=experiment_id,
@@ -106,7 +106,7 @@ class ExperimentRun:
             request=create_exp_run_request, metadata=client.metadata
         )
 
-        client.exp_run_id = utils.get_id(res).strip().replace('"', "")
+        client.exp_run_id = misc.get_id(res).strip().replace('"', "")
         return ExperimentRun.from_proto(client=client, msg=res)
 
     @handle_generic_sdk_errors

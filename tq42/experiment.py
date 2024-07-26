@@ -6,7 +6,7 @@ from google.protobuf.field_mask_pb2 import FieldMask
 from google.protobuf.json_format import MessageToJson
 
 from tq42.client import TQ42Client
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 
 from com.terraquantum.experiment.v3alpha1.experiment.experiment_pb2 import (
     ExperimentProto,
@@ -25,7 +25,7 @@ from com.terraquantum.experiment.v3alpha1.experiment.update_experiment_request_p
 )
 
 from tq42.utils.pretty_list import PrettyList
-from tq42.utils.utils_for_cache import get_current_value
+from tq42.utils.cache import get_current_value
 
 
 class Experiment:

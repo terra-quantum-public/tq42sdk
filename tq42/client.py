@@ -5,9 +5,9 @@ from datetime import datetime
 import grpc
 from grpc import aio
 import requests
-from tq42.utils import dirs, file_handling, utils
+from tq42.utils import dirs, file_handling, misc
 from tq42.utils.token_manager import TokenManager
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 import time
 
 from com.terraquantum.experiment.v3alpha1.experiment import (
@@ -28,8 +28,8 @@ from com.terraquantum.storage.v1alpha1 import (
 from com.terraquantum.channel.v1alpha1 import (
     channel_service_pb2_grpc as pb2_channel_grpc,
 )
-from tq42.utils.environment_utils import environment_default_set
-from tq42.exceptions import AuthenticationError
+from tq42.utils.environment import environment_default_set
+from tq42.utils.exceptions import AuthenticationError
 
 
 class ConfigEnvironment:
@@ -257,7 +257,7 @@ class TQ42Client(object):
             time.sleep(interval)
 
     def save_access_token(self, access_token: str):
-        save_location = utils.save_token(
+        save_location = misc.save_token(
             service_name="tq42_access_token",
             backup_save_path=self.token_file_path,
             token=access_token,
@@ -271,7 +271,7 @@ class TQ42Client(object):
         print(env_set)
 
     def save_refresh_token(self, refresh_token: str):
-        utils.save_token(
+        misc.save_token(
             service_name="tq42_refresh_token",
             backup_save_path=self.refresh_token_file_path,
             token=refresh_token,
@@ -297,7 +297,7 @@ class TQ42Client(object):
     @property
     def metadata(self):
         self.token_manager.renew_expring_token()
-        token = utils.get_token(
+        token = misc.get_token(
             service_name="tq42_access_token", backup_save_path=self.token_file_path
         )
         return (("authorization", "Bearer " + token),)

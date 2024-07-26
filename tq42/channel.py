@@ -6,7 +6,7 @@ from typing import List, Callable, Optional, Awaitable
 
 from google.protobuf import empty_pb2
 
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 from com.terraquantum.channel.v1alpha1.create_channel_pb2 import CreateChannelResponse
 
 # important for re-export
