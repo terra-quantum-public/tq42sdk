@@ -35,6 +35,7 @@ ruff = "^0.1.9"
 
 [tool.poetry.group.dev.dependencies]
 optimizationtestfunctions = "^1.0.1"
+numpy = { version = "^1.26.4", python = ">3.11" }
 
 [tool.ruff]
 exclude = [
