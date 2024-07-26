@@ -18,7 +18,7 @@ def list_all():
 
 
 @compute_group.command("show-details")
-@click.argument("compute", required=True)
+@click.option("--compute", "compute", required=False)
 def show_details(compute: str):
     # noinspection PyBroadException
     try:
@@ -31,3 +31,4 @@ def show_details(compute: str):
         options = ", ".join(options_list)
         example = f"tq42 compute show-details --compute=[{options}]"
         click.echo("Invalid command. \nUsage: " + example)
+        exit(2)

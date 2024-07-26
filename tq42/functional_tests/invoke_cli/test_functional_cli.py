@@ -4,12 +4,6 @@ from tq42.functional_tests.functional_test_config import FunctionalCLITestConfig
 
 
 class TestFunctionalCli(unittest.TestCase, FunctionalCLITestConfig):
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
     def test_proj_set(self):
         result = self.runner.invoke(self.cli_entry, ["proj", "set", self.proj])
         assert result is not None
