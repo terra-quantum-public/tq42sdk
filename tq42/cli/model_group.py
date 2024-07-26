@@ -13,7 +13,13 @@ def model_group() -> click.Group:
     "list",
     help="e.g.: tq42 proj model list --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01",
 )
-@click.option("--proj", "proj_id", required=True, type=str)
+@click.option(
+    "--proj",
+    "proj_id",
+    required=True,
+    type=str,
+    help="Attribute the command to a particular project",
+)
 @click.pass_context
 def list_models(ctx: TQ42CliContext, proj_id: str) -> None:
     click.echo(

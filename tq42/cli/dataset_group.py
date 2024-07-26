@@ -13,11 +13,31 @@ def dataset_group() -> click.Group:
     "create",
     help='e.g.: tq42 proj dataset create --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01 --name "Example Dataset Name" --desc "Example Description"  --url "https://mydata.com/drive/my-drive" --sensitivity "confidential"',
 )
-@click.option("--proj", "proj_id", required=True, type=str)
-@click.option("--name", "name", required=True, type=str)
-@click.option("--desc", "description", required=True, type=str)
-@click.option("--url", "url", required=True, type=str)
-@click.option("--sensitivity", "sensitivity", required=True, type=str)
+@click.option(
+    "--proj",
+    "proj_id",
+    required=True,
+    type=str,
+    help="Attribute the command to a particular project",
+)
+@click.option(
+    "--name", "name", required=True, type=str, help="The official name of the dataset"
+)
+@click.option(
+    "--desc",
+    "description",
+    required=True,
+    type=str,
+    help="A friendly description of the dataset",
+)
+@click.option("--url", "url", required=True, type=str, help="A URL to the dataset")
+@click.option(
+    "--sensitivity",
+    "sensitivity",
+    required=True,
+    type=str,
+    help="One of the following categories: PUBLIC, GENERAL, SENSITIVE, CONFIDENTIAL",
+)
 @click.pass_context
 def create_dataset(
     ctx: TQ42CliContext,
@@ -43,7 +63,13 @@ def create_dataset(
     "list",
     help="e.g.: tq42 proj dataset list --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01",
 )
-@click.option("--proj", "proj_id", required=True, type=str)
+@click.option(
+    "--proj",
+    "proj_id",
+    required=True,
+    type=str,
+    help="Attribute the command to a particular project",
+)
 @click.pass_context
 def list_datasets(ctx: TQ42CliContext, proj_id: str) -> None:
     click.echo(

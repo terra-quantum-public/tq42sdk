@@ -14,7 +14,13 @@ def project_group() -> click.Group:
 @project_group.command(
     "list", help="e.g.: tq42 proj list --org b0edfd26-0817-4818-a278-17ef6c14e3a5"
 )
-@click.option("--org", "org_id", required=False, type=str)
+@click.option(
+    "--org",
+    "org_id",
+    required=False,
+    type=str,
+    help="Attribute the command to a particular organization",
+)
 @click.pass_context
 def list_by_org(ctx: TQ42CliContext, org_id: str) -> None:
     click.echo(cli.list_proj_by_org(ctx.obj.client, org_id))
@@ -38,7 +44,13 @@ def set_default(ctx: TQ42CliContext, proj_id: str) -> None:
     help="tq42 proj set-friendly-name NEW_FRIENDLY_NAME --proj b0edfd26-0817-4818-a278-17ef6c14e3a5",
 )
 @click.argument("friendly_name", required=True, type=str)
-@click.option("--proj", "proj_id", required=True, type=str)
+@click.option(
+    "--proj",
+    "proj_id",
+    required=True,
+    type=str,
+    help="Attribute the command to a particular project",
+)
 @click.pass_context
 def proj_set_friendly_name(
     ctx: TQ42CliContext, friendly_name: str, proj_id: str

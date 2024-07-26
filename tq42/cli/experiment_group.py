@@ -14,7 +14,13 @@ def experiment_group() -> click.Group:
 @experiment_group.command(
     "list", help="e.g.: tq42 exp list --proj b0edfd26-0817-4818-a278-17ef6c14e3a5"
 )
-@click.option("--proj", "proj_id", required=False, type=str)
+@click.option(
+    "--proj",
+    "proj_id",
+    required=False,
+    type=str,
+    help="Attribute the command to a particular project",
+)
 @click.pass_context
 def list_by_proj(ctx: TQ42CliContext, proj_id: str) -> None:
     # TODO: Need to display error message to stderr when no proj is specified or set.
@@ -36,7 +42,13 @@ def list_by_proj(ctx: TQ42CliContext, proj_id: str) -> None:
     help="e.g.: tq42 exp set-friendly-name NEW_FRIENDLY_NAME --exp b0edfd26-0817-4818-a278-17ef6c14e3a5",
 )
 @click.argument("friendly_name", required=True, type=str)
-@click.option("--exp", "exp_id", required=True, type=str)
+@click.option(
+    "--exp",
+    "exp_id",
+    required=True,
+    type=str,
+    help="Attribute the command to a particular experiment",
+)
 @click.pass_context
 def set_friendly_name(ctx: TQ42CliContext, friendly_name: str, exp_id: str) -> None:
     click.echo(cli.exp_update(ctx.obj.client, exp_id=exp_id, name=friendly_name))

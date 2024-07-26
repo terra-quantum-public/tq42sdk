@@ -10,8 +10,30 @@ from .project_group import project_group
 from .environment_group import environment_group
 
 
-@click.group()
-@click.option("--config", "config_path", required=False)
+@click.group(
+    help=(
+        "Visit {} to access our help center, from where you can access help articles and video tutorials, report bugs, contact support and request improvements."
+        "\n\n"
+        "For TQ42SDK documentation, visit https://docs.tq42.com/en/latest/."
+        "\n\n"
+        "Mandatory commands:"
+        "\n\n"
+        "tq42 auth login"
+        "\n\n"
+        'tq42 exp run create --exp="EXP_ID" --compute="COMPUTE_NAME" --algorithm="ALGORITHM_NAME" --parameters="PARAMETERS_JSON"'
+        "\n\n"
+        "---"
+        "\n\n"
+        "All other command are optional."
+    )
+)
+@click.option(
+    "--config",
+    "config_path",
+    required=False,
+    help="Set path to alternate configuration file location",
+)
+@click.version_option()
 @click.pass_context
 def cli(ctx: TQ42CliContext, config_path: str):
     ctx.ensure_object(TQ42CliObject)
