@@ -1,7 +1,7 @@
 import unittest
 from dataclasses import dataclass
 
-from tq42.cli.output_format import formatter
+from tq42.cli.utils import formatter
 
 
 class MockWithID:
