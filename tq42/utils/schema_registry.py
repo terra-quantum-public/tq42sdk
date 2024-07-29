@@ -43,9 +43,16 @@ def _get_message_types(algorithm: str, version: str) -> Dict[str, Type[Message]]
 
         result: GetFileDescriptorSetResponse = service.GetFileDescriptorSet(
             request=GetFileDescriptorSetRequest(
-                module=f"{_REGISTRY_HOST}/{_REGISTRY_ACCOUNT}/{algorithm}",
+                module=f"{_REGISTRY_HOST}/{_REGISTRY_ACCOUNT}/{_algorithm_to_repository_name(algorithm)}",
                 version=version,
             ),
         )
 
         return message_factory.GetMessages(file_protos=result.file_descriptor_set.file)
+
+
+def _algorithm_to_repository_name(algorithm: str) -> str:
+    """
+    convert from SOME_ALGORITHM_NAME to some-algorithm-name
+    """
+    return algorithm.replace("_", "-").lower()
