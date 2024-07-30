@@ -1,4 +1,4 @@
-from tq42.cli.output_format.formatter import (
+from tq42.cli.utils.formatter import (
     org_formatter,
     proj_formatter,
     exp_formatter,
@@ -21,18 +21,15 @@ def list_orgs(client: TQ42Client) -> str:
     return result
 
 
-def proj_update(client: TQ42Client, args) -> str:
-    proj = args.proj
-    friendly_name = args.name
-    updated_proj = Project(client=client, id=proj).update(name=friendly_name)
+def proj_update(client: TQ42Client, proj_id: str, friendly_name: str) -> str:
+    updated_proj = Project(client=client, id=proj_id).update(name=friendly_name)
     result = proj_formatter.format(updated_proj)
     return result
 
 
-def exp_update(client: TQ42Client, args) -> str:
-    exp = args.exp
+def exp_update(client: TQ42Client, exp_id, name) -> str:
     result = exp_formatter.format(
-        Experiment(client=client, id=exp).update(name=args.name)
+        Experiment(client=client, id=exp_id).update(name=name)
     )
     return result
 

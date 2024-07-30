@@ -6,12 +6,20 @@ from typing import Any
 from unittest import mock
 from keyring.errors import InitError, NoKeyringError, PasswordSetError, KeyringLocked
 
-from tq42 import exceptions
-from tq42.utils import dirs, utils, file_handling
+from tq42.utils import dirs, file_handling, exceptions
+from tq42.utils.misc import (
+    get_id,
+    get_algo_num,
+    get_hardware_num,
+    dynamic_create_exp_run_request,
+    find_oneof_field_name,
+    save_token,
+    get_token,
+)
 from tq42.utils.token_manager import TokenManager
 import json
 from tq42.client import ConfigEnvironment, TQ42Client
-from tq42.exceptions import NoMatchingAttributeError
+from tq42.utils.exceptions import NoMatchingAttributeError
 from tq42.algorithm import AlgorithmProto
 from tq42.compute import HardwareProto
 from com.terraquantum.experiment.v1.experimentrun import (
@@ -26,55 +34,53 @@ class TestUtils(unittest.TestCase):
     def test_utils_get_id(self):
         filepath = dirs.full_path(dirs.test_data_dir(), "test_utils_get_id.txt")
         content = file_handling.read_file(filepath)
-        res = utils.get_id(content)
+        res = get_id(content)
         self.assertEqual('"64a35a73-3da2-4f44-bce3-9e5a8eac6d30"', res)
 
     def test_get_matching_algorithm(self):
-        self.assertEqual(AlgorithmProto.TOY, utils.get_algo_num("toy"))
-        self.assertEqual(AlgorithmProto.TOY, utils.get_algo_num("ToY"))
-        self.assertEqual(AlgorithmProto.TOY, utils.get_algo_num("TOY"))
+        self.assertEqual(AlgorithmProto.TOY, get_algo_num("toy"))
+        self.assertEqual(AlgorithmProto.TOY, get_algo_num("ToY"))
+        self.assertEqual(AlgorithmProto.TOY, get_algo_num("TOY"))
 
-        self.assertEqual(1, utils.get_algo_num(1))
+        self.assertEqual(1, get_algo_num(1))
 
-        self.assertEqual(AlgorithmProto.TOY, utils.get_algo_num(AlgorithmProto.TOY))
+        self.assertEqual(AlgorithmProto.TOY, get_algo_num(AlgorithmProto.TOY))
         self.assertEqual(
             AlgorithmProto.TOY,
-            utils.get_algo_num(AlgorithmProto.Name(AlgorithmProto.TOY)),
+            get_algo_num(AlgorithmProto.Name(AlgorithmProto.TOY)),
         )
 
     def test_no_matching_algorithm(self):
         self.assertRaises(
             exceptions.NoMatchingAttributeError,
-            utils.get_algo_num,
+            get_algo_num,
             "no-way-this-is-an-algo",
         )
-        self.assertRaises(exceptions.NoMatchingAttributeError, utils.get_algo_num, "")
+        self.assertRaises(exceptions.NoMatchingAttributeError, get_algo_num, "")
 
     def test_get_matching_hardware(self):
-        self.assertEqual(HardwareProto.SMALL, utils.get_hardware_num("small"))
-        self.assertEqual(HardwareProto.SMALL, utils.get_hardware_num("SmAlL"))
-        self.assertEqual(HardwareProto.SMALL, utils.get_hardware_num("SMALL"))
+        self.assertEqual(HardwareProto.SMALL, get_hardware_num("small"))
+        self.assertEqual(HardwareProto.SMALL, get_hardware_num("SmAlL"))
+        self.assertEqual(HardwareProto.SMALL, get_hardware_num("SMALL"))
 
-        self.assertEqual(1, utils.get_hardware_num(1))
+        self.assertEqual(1, get_hardware_num(1))
 
         self.assertEqual(
             HardwareProto.SMALL,
-            utils.get_hardware_num(HardwareProto.SMALL),
+            get_hardware_num(HardwareProto.SMALL),
         )
         self.assertEqual(
             HardwareProto.SMALL,
-            utils.get_hardware_num(HardwareProto.Name(HardwareProto.SMALL)),
+            get_hardware_num(HardwareProto.Name(HardwareProto.SMALL)),
         )
 
     def test_no_matching_hardware(self):
         self.assertRaises(
             exceptions.NoMatchingAttributeError,
-            utils.get_hardware_num,
+            get_hardware_num,
             "no-way-this-is-a-hardware-config",
         )
-        self.assertRaises(
-            exceptions.NoMatchingAttributeError, utils.get_hardware_num, ""
-        )
+        self.assertRaises(exceptions.NoMatchingAttributeError, get_hardware_num, "")
 
     @mock.patch("requests.post")
     def test_renew_expiring_token(self, post_mock):
@@ -130,7 +136,7 @@ class TestUtils(unittest.TestCase):
             "parameters": {"n": 4, "r": 1.1, "msg": "this is optimus prime"},
             "inputs": {},
         }
-        result = utils.dynamic_create_exp_run_request(
+        result = dynamic_create_exp_run_request(
             parameters=params,
             algo=AlgorithmProto.TOY,
             exp_id="random-uuid",
@@ -147,7 +153,7 @@ class TestUtils(unittest.TestCase):
             "inputs": {},
         }
         with self.assertRaises(NoMatchingAttributeError) as context:
-            utils.dynamic_create_exp_run_request(
+            dynamic_create_exp_run_request(
                 parameters=params,
                 algo=AlgorithmProto.TOY,
                 exp_id="random-uuid",
@@ -177,7 +183,7 @@ class TestUtils(unittest.TestCase):
         }
 
         with self.assertRaises(NoMatchingAttributeError) as context:
-            utils.dynamic_create_exp_run_request(
+            dynamic_create_exp_run_request(
                 parameters=params,
                 algo=AlgorithmProto.TETRA_OPT,
                 exp_id="random-uuid",
@@ -206,7 +212,7 @@ class TestUtils(unittest.TestCase):
             "inputs": {},
         }
 
-        result = utils.dynamic_create_exp_run_request(
+        result = dynamic_create_exp_run_request(
             parameters=parameters,
             algo=AlgorithmProto.TETRA_OPT,
             exp_id="random-uuid",
@@ -229,18 +235,18 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(tq42.config_file, alternative_json_path)
 
     def test_find_oneof_field_name(self):
-        res = utils.find_oneof_field_name("ToyMetadataProto")
+        res = find_oneof_field_name("ToyMetadataProto")
         self.assertEqual(res, "toy_metadata")
 
     def test_save_get_token_with_keyring_enabled(self):
         # keyring is working on Mac Sonoma 14.4 and Windows 11
         token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
-        utils.save_token(
+        save_token(
             service_name="tq42_access_token",
             backup_save_path=token_file_path,
             token="test_token",
         )
-        token = utils.get_token(
+        token = get_token(
             service_name="tq42_access_token", backup_save_path=token_file_path
         )
         self.assertEqual(token, "test_token")
@@ -252,12 +258,12 @@ class TestUtils(unittest.TestCase):
         token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
         mock_set_password.side_effect = InitError()
         mock_get_password.side_effect = InitError()
-        utils.save_token(
+        save_token(
             service_name="tq42_access_token",
             backup_save_path=token_file_path,
             token="test_token",
         )
-        token = utils.get_token(
+        token = get_token(
             service_name="tq42_access_token", backup_save_path=token_file_path
         )
         os.remove(token_file_path)
@@ -272,12 +278,12 @@ class TestUtils(unittest.TestCase):
         token_file_path = os.path.join(dirs.testdata(), "keyring_test.json")
         mock_set_password.side_effect = NoKeyringError()
         mock_get_password.side_effect = NoKeyringError()
-        utils.save_token(
+        save_token(
             service_name="tq42_access_token",
             backup_save_path=token_file_path,
             token="test_token",
         )
-        token = utils.get_token(
+        token = get_token(
             service_name="tq42_access_token", backup_save_path=token_file_path
         )
         os.remove(token_file_path)
@@ -292,13 +298,13 @@ class TestUtils(unittest.TestCase):
         mock_set_password.side_effect = PasswordSetError()
         mock_get_password.side_effect = KeyringLocked()
 
-        utils.save_token(
+        save_token(
             service_name="tq42_access_token",
             backup_save_path=token_file_path,
             token="test_token",
         )
 
-        token = utils.get_token(
+        token = get_token(
             service_name="tq42_access_token", backup_save_path=token_file_path
         )
         os.remove(token_file_path)

@@ -1,20 +1,41 @@
-import tq42.cli.cli_functions as cli
-from tq42.cli.parsers.params_checker import check_params
+import click
+
+import tq42.cli.utils.cli_functions as cli
+from tq42.cli.utils.types import TQ42CliContext
 
 
-def organization_group(client, args):
-    res = None
-    if args.command == "set":
-        res = org_set(client, args)
+@click.group("org")
+def organization_group() -> click.Group:
+    """
+    Class to manage organization
 
-    elif args.command == "list":
-        res = cli.list_orgs(client)
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings
+    """
+    pass
 
-    return res
+
+@organization_group.command("list")
+@click.pass_context
+def list_all(ctx: TQ42CliContext) -> None:
+    """
+    List all the organizations you have permission to view.
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#list-all-organizations
+    """
+    res = cli.list_orgs(ctx.obj.client)
+    click.echo(res)
 
 
-def org_set(client, args):
-    check_params("org set", args)
-    res = cli.set_org(client, args.org)
+@organization_group.command("set")
+@click.argument("org_id", required=True)
+@click.pass_context
+def org_set(ctx: TQ42CliContext, org_id: str) -> None:
+    """
+    Change the active organization.
 
-    return res
+    e.g.: tq42 org set 5bac0b60-48d0-45cd-bf0a-39505b058106
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project
+    """
+    res = cli.set_org(ctx.obj.client, org_id)
+    click.echo(res)

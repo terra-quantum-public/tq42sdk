@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 from typing import Any
 
+from click.testing import CliRunner
+
+from tq42.cli.entrypoint import cli
 from tq42.client import TQ42Client
 from tq42.organization import list_all as list_all_organizations
 from tq42.project import list_all as list_all_projects
@@ -132,6 +135,9 @@ class FunctionalTestConfig:
 
 
 class FunctionalCLITestConfig(FunctionalTestConfig):
+    runner = CliRunner()
+    cli_entry = cli
+
     @property
     def client(self):
         return self.get_client()
