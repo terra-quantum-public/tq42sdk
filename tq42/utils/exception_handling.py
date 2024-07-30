@@ -5,7 +5,7 @@ from grpc import StatusCode
 from grpc._channel import _InactiveRpcError as InactiveRpcError
 from grpc.aio import AioRpcError
 
-from tq42 import exceptions
+from tq42.utils import exceptions
 from functools import wraps
 
 from typing import Any, Callable, TypeVar, cast

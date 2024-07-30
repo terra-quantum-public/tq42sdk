@@ -6,9 +6,9 @@ from google.protobuf.field_mask_pb2 import FieldMask
 from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.json_format import MessageToJson
 
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 from tq42.utils.pretty_list import PrettyList
-from tq42.utils.utils_for_cache import (
+from tq42.utils.cache import (
     get_current_value,
     write_key_value_to_cache,
     clear_cache,
@@ -38,6 +38,8 @@ if TYPE_CHECKING:
 class Project:
     """
     Class to manage projects
+
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings
     """
 
     client: TQ42Client
@@ -122,6 +124,8 @@ class Project:
         """
         Returns the current default project.
         If no default proj can be found return NoDefaultError
+
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings
         """
         proj = get_current_value("proj")
         return Project(client=client, id=proj)
@@ -131,6 +135,8 @@ class Project:
         """
         If projectId is valid for the given user sets this projectId
         and the corresponding organizationId as the default
+
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project
         """
         clear_cache()
         write_key_value_to_cache("org", self.data.organization_id)

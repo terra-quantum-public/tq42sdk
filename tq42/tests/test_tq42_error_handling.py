@@ -3,7 +3,7 @@ import unittest
 from grpc import StatusCode
 from grpc._channel import _InactiveRpcError as InactiveRpcError, _RPCState as RPCState
 
-from tq42.exceptions import (
+from tq42.utils.exceptions import (
     NoDefaultError,
     InvalidArgumentError,
     PermissionDeniedError,
@@ -11,7 +11,7 @@ from tq42.exceptions import (
     ExceedRetriesError,
     LocalPermissionError,
 )
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 from tq42.utils.file_handling import read_file
 from tq42.utils.constants import (
     no_default_error_file,

@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import Dict, List
 
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 from tq42.utils.pretty_list import PrettyList
-from tq42.utils.utils import get_hw_configurations
+from tq42.utils.misc import get_hw_configurations
 
 # this import is also important for re-export!
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
@@ -21,6 +21,12 @@ class HardwareConfig:
 
 
 class Compute:
+    """
+    Class to manage compute configurations.
+
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Selecting_Compute_Resources.html#selecting-compute-resources-for-your-experiment-run
+    """
+
     hardware: HardwareProto
     config: HardwareConfig
 
