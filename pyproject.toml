@@ -5,7 +5,7 @@ include = ["utils/text_files/*.txt", "utils/text_files/config.json", "tests/test
 
 [tool.poetry]
 name = "tq42"
-version = "0.5.44"
+version = "0.6.0"
 description = "tq42 sdk"
 readme = "README.md"
 authors = ["Terra Quantum AG"]
@@ -20,17 +20,25 @@ keyring = "^25.0.0"
 tqdm = "^4.66.4"
 validators = "^0.28.3"
 pytest-asyncio = "^0.23.7"
+click = "^8.1.7"
 
 [[tool.poetry.source]]
 name = "PyPI"
 priority = "primary"
 
 [tool.poetry.scripts]
-tq42 = "tq42.__main__:main"
+tq42 = "tq42.cli.entrypoint:cli"
 
 [tool.poetry.group.styles.dependencies]
 black = "^23.12.1"
 ruff = "^0.1.9"
+
+[tool.poetry.group.dev.dependencies]
+optimizationtestfunctions = "^1.0.1"
+numpy = [
+    { version = "^1.26.4", python = ">3.11" },
+    { version = "^1.24.4", python = "<=3.11" }
+]
 
 [tool.ruff]
 exclude = [

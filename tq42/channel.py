@@ -6,7 +6,7 @@ from typing import List, Callable, Optional, Awaitable
 
 from google.protobuf import empty_pb2
 
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 from com.terraquantum.channel.v1alpha1.create_channel_pb2 import CreateChannelResponse
 
 # important for re-export
@@ -94,7 +94,6 @@ class Channel:
                         )
                         break
                     elif data_field_name == "ask_data":
-                        tell = await callback(incoming.ask_data)
                         if self.sequential_message_id >= incoming.sequential_message_id:
                             logging.debug(
                                 "Message id is not sequential. Ignoring message"
@@ -102,6 +101,7 @@ class Channel:
                             continue
                         self.sequential_message_id = incoming.sequential_message_id
                         await _acknowledge_message(msg=incoming)
+                        tell = await callback(incoming.ask_data)
                         tell_msg = ChannelMessage(
                             sequential_message_id=(incoming.sequential_message_id + 1),
                             tell_data=tell,

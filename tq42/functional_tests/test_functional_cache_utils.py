@@ -1,9 +1,9 @@
 import unittest
 
 from tq42.functional_tests.functional_test_config import FunctionalTestConfig
-from tq42.utils.utils_for_cache import clear_cache, get_current_value
+from tq42.utils.cache import clear_cache, get_current_value
 
-from tq42.utils.environment_utils import environment_default_set
+from tq42.utils.environment import environment_default_set
 
 
 class TestFunctionalCacheUtils(unittest.TestCase, FunctionalTestConfig):

@@ -6,7 +6,7 @@ from google.protobuf import empty_pb2
 from google.protobuf.json_format import MessageToJson
 
 from tq42.project import Project
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 
 from com.terraquantum.organization.v1.organization.organization_pb2 import (
     OrganizationProto,
@@ -28,6 +28,8 @@ if TYPE_CHECKING:
 class Organization:
     """
     Class to manage organization
+
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html
     """
 
     client: TQ42Client
@@ -73,6 +75,8 @@ class Organization:
     def set(self) -> Organization:
         """
         Sets the given organization as the default.
+
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project
         """
         project = Project.get_default(client=self.client, organization_id=self.id)
         if project:

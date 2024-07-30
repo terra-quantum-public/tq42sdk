@@ -4,7 +4,7 @@ from typing import Optional
 from tq42.organization import Organization, list_all as list_all_organizations
 from tq42.project import Project, list_all as list_all_projects
 from tq42.utils import dirs, file_handling
-from tq42.utils.utils_for_cache import clear_cache
+from tq42.utils.cache import clear_cache
 
 from typing import TYPE_CHECKING
 
@@ -13,25 +13,14 @@ if TYPE_CHECKING:
     from tq42.client import TQ42Client
 
 
-def environment_group(client: TQ42Client, args) -> Optional[str]:
-    if args.command == "print":
-        return environment_print()
-
-    elif args.command == "default":
-        return environment_default_set(client=client)
-
-    elif args.command == "clear":
-        return environment_clear()
-
-
-def environment_print() -> None:
+def get_environment() -> str:
     content = file_handling.read_file(dirs.cache_file())
-    print(content)
+    return content
 
 
-def environment_clear() -> None:
+def environment_clear() -> str:
     clear_cache()
-    environment_print()
+    return get_environment()
 
 
 def environment_default_set(

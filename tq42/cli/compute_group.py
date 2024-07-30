@@ -1,32 +1,50 @@
 from dataclasses import asdict
 
 import yaml
+import click
 
-from tq42.compute import Compute, list_all, HardwareProto
-
-
-def compute_group(args):
-    if args.command == "list":
-        return compute_list()
-
-    elif args.command == "show-details":
-        return compute_show_details(args)
+from tq42.compute import Compute, list_all as list_all_computes, HardwareProto
 
 
-def compute_list() -> str:
-    details = [asdict(hw.show_details()) for hw in list_all()]
-    return yaml.dump(details, default_flow_style=False, sort_keys=False)
+@click.group("compute")
+def compute_group() -> click.Group:
+    """
+    Class to show details about compute resources
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Selecting_Compute_Resources.html#
+    """
+    pass
 
 
-def compute_show_details(args):
+@compute_group.command("list")
+def list_all():
+    """
+    Show available compute configurations.
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Selecting_Compute_Resources.html#viewing-available-compute-resources-and-configuration-details
+    """
+    details = [asdict(hw.show_details()) for hw in list_all_computes()]
+    click.echo(yaml.dump(details, default_flow_style=False, sort_keys=False))
+
+
+@compute_group.command("show-details")
+@click.option("--compute", "compute", required=False)
+def show_details(compute: str):
+    """
+    Show details of compute configurations.
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Selecting_Compute_Resources.html#viewing-available-compute-resources-and-configuration-details
+    """
+
     # noinspection PyBroadException
     try:
-        hardware = args.compute.upper()
+        hardware = compute.upper()
         compute = Compute(hardware=HardwareProto.Value(hardware))
         details = asdict(compute.show_details())
-        return yaml.dump(details, default_flow_style=False, sort_keys=False)
+        click.echo(yaml.dump(details, default_flow_style=False, sort_keys=False))
     except Exception:
         options_list = [key for key, val in HardwareProto.items() if val != 0]
         options = ", ".join(options_list)
         example = f"tq42 compute show-details --compute=[{options}]"
-        return "Invalid command. \nUsage: " + example
+        click.echo("Invalid command. \nUsage: " + example)
+        exit(2)
