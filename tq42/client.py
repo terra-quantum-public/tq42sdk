@@ -31,6 +31,26 @@ from com.terraquantum.channel.v1alpha1 import (
 from tq42.utils.environment import environment_default_set
 from tq42.utils.exceptions import AuthenticationError
 
+_service_config = {
+    "methodConfig": [
+        {
+            "name": [
+                {
+                    "service": "com.terraquantum.channel.v1alpha1.ChannelService",
+                    "method": "ConnectChannelCustomer",
+                }
+            ],
+            "retryPolicy": {
+                "maxAttempts": 5,
+                "initialBackoff": "1s",
+                "maxBackoff": "10s",
+                "backoffMultiplier": 2,
+                "retryableStatusCodes": ["UNAVAILABLE", "INTERNAL", "DATA_LOSS"],
+            },
+        }
+    ]
+}
+
 
 class ConfigEnvironment:
     """
@@ -155,6 +175,8 @@ class TQ42Client(object):
             grpc.ssl_channel_credentials(),
             options=[
                 ("grpc.max_receive_message_length", 10_000_000),
+                ("grpc.enable_retries", 1),
+                ("grpc.service_config", json.dumps(_service_config)),
             ],
         )
         self.channels_channel = aio.secure_channel(
