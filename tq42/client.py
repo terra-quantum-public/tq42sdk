@@ -32,7 +32,7 @@ from tq42.utils.environment import environment_default_set
 from tq42.utils.exceptions import AuthenticationError
 
 _service_config = {
-    "method_config": [
+    "methodConfig": [
         {
             "name": [
                 {
