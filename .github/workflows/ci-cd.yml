@@ -92,6 +92,11 @@ jobs:
 
       - name: Check-out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install poetry
+        uses: snok/install-poetry@v1
 
       - name: Authenticate with GCP
         id: 'auth'
@@ -102,9 +107,6 @@ jobs:
           service_account: 'serviceaccount-github-actions@cryptic-hawk-387713.iam.gserviceaccount.com'
           access_token_lifetime: 300s
           create_credentials_file: true
-
-      - name: Install poetry
-        uses: snok/install-poetry@v1
 
       - name: Install package
         run: poetry install
@@ -123,3 +125,41 @@ jobs:
           POETRY_PYPI_TOKEN_PYPI: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
         run: |
           poetry publish
+
+      - name: Get tq42sdk version
+        id: sdk_version
+        run: echo "version=v$(poetry version --short)" >> $GITHUB_OUTPUT
+
+      - name: Build changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          toTag: ${{ github.sha }}
+          configurationJson: |
+            {
+              "template": "## Release ${{ steps.sdk_version.outputs.version }}\n\n#{{CHANGELOG}}",
+              "categories": [
+                {
+                    "title": "### Changes",
+                    "labels": []
+                }
+              ]
+            }
+
+      - name: Create tag with version
+        continue-on-error: true
+        env:
+          TAG: ${{ steps.sdk_version.outputs.version }}
+        run: |
+          git config user.name "GitHub"
+          git tag -a "$TAG" -m "Published version ${TAG}" "${GITHUB_SHA}"
+          git push origin "$TAG"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ steps.build_changelog.outputs.changelog }}
+          tag_name: ${{ steps.sdk_version.outputs.version }}
+
