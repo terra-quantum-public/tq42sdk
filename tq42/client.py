@@ -5,9 +5,9 @@ from datetime import datetime
 import grpc
 from grpc import aio
 import requests
-from tq42.utils import dirs, file_handling, utils
+from tq42.utils import dirs, file_handling, misc
 from tq42.utils.token_manager import TokenManager
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 import time
 
 from com.terraquantum.experiment.v3alpha1.experiment import (
@@ -28,8 +28,28 @@ from com.terraquantum.storage.v1alpha1 import (
 from com.terraquantum.channel.v1alpha1 import (
     channel_service_pb2_grpc as pb2_channel_grpc,
 )
-from tq42.utils.environment_utils import environment_default_set
-from tq42.exceptions import AuthenticationError
+from tq42.utils.environment import environment_default_set
+from tq42.utils.exceptions import AuthenticationError
+
+_service_config = {
+    "methodConfig": [
+        {
+            "name": [
+                {
+                    "service": "com.terraquantum.channel.v1alpha1.ChannelService",
+                    "method": "ConnectChannelCustomer",
+                }
+            ],
+            "retryPolicy": {
+                "maxAttempts": 5,
+                "initialBackoff": "1s",
+                "maxBackoff": "10s",
+                "backoffMultiplier": 2,
+                "retryableStatusCodes": ["UNAVAILABLE", "INTERNAL", "DATA_LOSS"],
+            },
+        }
+    ]
+}
 
 
 class ConfigEnvironment:
@@ -105,6 +125,8 @@ class TQ42Client(object):
     """
     Visit https://help.terraquantum.io/ to access our help center, from where you can access help articles and video tutorials, report bugs, contact support and request improvements.
     For TQ42SDK documentation, visit https://docs.tq42.com/en/latest/.
+
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#
     """
 
     def __call__(self, **kwargs):
@@ -153,6 +175,8 @@ class TQ42Client(object):
             grpc.ssl_channel_credentials(),
             options=[
                 ("grpc.max_receive_message_length", 10_000_000),
+                ("grpc.enable_retries", 1),
+                ("grpc.service_config", json.dumps(_service_config)),
             ],
         )
         self.channels_channel = aio.secure_channel(
@@ -197,6 +221,9 @@ class TQ42Client(object):
 
     @handle_generic_sdk_errors
     def login(self):
+        """
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#
+        """
         if self.credential_flow_client_id and self.credential_flow_client_secret:
             self.login_without_user_interaction()
         else:
@@ -257,7 +284,7 @@ class TQ42Client(object):
             time.sleep(interval)
 
     def save_access_token(self, access_token: str):
-        save_location = utils.save_token(
+        save_location = misc.save_token(
             service_name="tq42_access_token",
             backup_save_path=self.token_file_path,
             token=access_token,
@@ -271,7 +298,7 @@ class TQ42Client(object):
         print(env_set)
 
     def save_refresh_token(self, refresh_token: str):
-        utils.save_token(
+        misc.save_token(
             service_name="tq42_refresh_token",
             backup_save_path=self.refresh_token_file_path,
             token=refresh_token,
@@ -297,7 +324,7 @@ class TQ42Client(object):
     @property
     def metadata(self):
         self.token_manager.renew_expring_token()
-        token = utils.get_token(
+        token = misc.get_token(
             service_name="tq42_access_token", backup_save_path=self.token_file_path
         )
         return (("authorization", "Bearer " + token),)

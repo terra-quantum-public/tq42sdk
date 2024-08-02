@@ -1,7 +1,7 @@
 import unittest
 
 from tq42.utils import dirs, file_handling
-from tq42.utils.utils_for_cache import (
+from tq42.utils.cache import (
     clear_cache,
     write_key_value_to_cache,
     get_current_value,

@@ -9,7 +9,7 @@ import requests
 import validators
 
 from tq42.client import TQ42Client
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 
 # This is important to re-export it!
 from com.terraquantum.storage.v1alpha1.storage_pb2 import (
@@ -36,6 +36,8 @@ from tq42.utils.pretty_list import PrettyList
 class Dataset:
     """
     Class to create and view datasets
+
+    https://docs.tq42.com/en/latest/Python_Developer_Guide/Work_with_Datasets.html
     """
 
     id: str
@@ -111,6 +113,8 @@ class Dataset:
         """
         Export all files within the dataset.
         Returns a list of exported file paths
+
+        For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html
         """
         if not os.path.isdir(directory_path):
             raise ValueError(

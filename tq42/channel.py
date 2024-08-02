@@ -4,9 +4,10 @@ import asyncio
 import logging
 from typing import List, Callable, Optional, Awaitable
 
+import grpc.aio
 from google.protobuf import empty_pb2
 
-from tq42.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exception_handling import handle_generic_sdk_errors
 from com.terraquantum.channel.v1alpha1.create_channel_pb2 import CreateChannelResponse
 
 # important for re-export
@@ -27,6 +28,13 @@ if TYPE_CHECKING:
 
 from tq42.utils.timers import AsyncTimedIterable
 
+_RETRYABLE_ERROR_CODES = (
+    grpc.StatusCode.DATA_LOSS,
+    grpc.StatusCode.UNAVAILABLE,
+    grpc.StatusCode.INTERNAL,
+)
+_MAX_RECONNECT_RETRIES = 5
+
 
 class Channel:
     """
@@ -35,6 +43,7 @@ class Channel:
 
     id: str
     client: TQ42Client
+    sequential_message_id: int = 0
 
     def __init__(self, client: TQ42Client, id: str):
         self.client = client
@@ -72,7 +81,10 @@ class Channel:
         :param int message_timeout_in_sec: Timeout between messages in seconds. `None` -> no timeout between messages
         """
 
+        call = await self._establish_connection()
+
         async def _acknowledge_message(msg: ChannelMessage) -> None:
+            nonlocal call
             ack_msg = ChannelMessage(
                 acknowledge_data=DataAcknowledge(id=msg.sequential_message_id)
             )
@@ -80,6 +92,7 @@ class Channel:
             logging.debug(f"User Sent ack {msg.sequential_message_id=}")
 
         async def _handle():
+            nonlocal call
             try:
                 timed_stream = AsyncTimedIterable(call, timeout=message_timeout_in_sec)
                 incoming: ChannelMessage
@@ -93,8 +106,14 @@ class Channel:
                         )
                         break
                     elif data_field_name == "ask_data":
-                        tell = await callback(incoming.ask_data)
+                        if self.sequential_message_id >= incoming.sequential_message_id:
+                            logging.debug(
+                                "Message id is not sequential. Ignoring message"
+                            )
+                            continue
+                        self.sequential_message_id = incoming.sequential_message_id
                         await _acknowledge_message(msg=incoming)
+                        tell = await callback(incoming.ask_data)
                         tell_msg = ChannelMessage(
                             sequential_message_id=(incoming.sequential_message_id + 1),
                             tell_data=tell,
@@ -107,6 +126,20 @@ class Channel:
                     f"Channel was closed due to exceeding {message_timeout_in_sec}s timeout between messages"
                 ) from None
 
+            except grpc.aio.AioRpcError as e:
+                if e.code() in _RETRYABLE_ERROR_CODES:
+                    call = await self._reestablish_connection()
+                    if call:
+                        return await _handle()
+
+                raise e
+
+        await asyncio.wait_for(_handle(), timeout=max_duration_in_sec)
+        await call.done_writing()
+
+        finish_callback()
+
+    async def _establish_connection(self):
         metadata: tuple = (
             *self.client.metadata,
             ("channel-id", self.id),
@@ -114,10 +147,24 @@ class Channel:
         call = self.client.channel_client.ConnectChannelCustomer(metadata=metadata)
 
         await call.write(ChannelMessage())
-        await asyncio.wait_for(_handle(), timeout=max_duration_in_sec)
-        await call.done_writing()
+        return call
 
-        finish_callback()
+    async def _reestablish_connection(self):
+        for i in range(1, _MAX_RECONNECT_RETRIES):
+            logging.warning(
+                f"Lost connection to channel, retrying (attempt {i}, max attempts: {_MAX_RECONNECT_RETRIES})"
+            )
+            try:
+                await asyncio.wait_for(
+                    self.client.channels_channel.channel_ready(), i * 2
+                )
+                call = await self._establish_connection()
+                logging.info("Reconnected to channel.")
+                return call
+            except asyncio.TimeoutError:
+                logging.error("Failed to reconnect.")
+
+        return None
 
 
 @handle_generic_sdk_errors
