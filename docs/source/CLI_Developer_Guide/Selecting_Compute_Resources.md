@@ -5,10 +5,8 @@
 TQ42 offers several configurations for compute resources to accommodate a variety of experiment run sizes. To prepare your experiment run for submission, indicate a pre-configured compute resource. The options are:
 
 - `compute="small"`
-- `compute="medium"`
 - `compute="large"`
 - `compute="small_gpu"`
-- `compute="medium_gpu"`
 - `compute="large_gpu"`
 
 One of these compute references must be included in your run command as a _flag_. For example, 
@@ -29,10 +27,8 @@ tq42 compute list
 The system will return the results:
 ```bash
 SMALL
-MEDIUM
 LARGE
 SMALL_GPU
-MEDIUM_GPU
 LARGE_GPU
 ```
 
@@ -50,12 +46,6 @@ Memory = (#)
 Storage = (enter text)
 GPU = (N/A)
 
-MEDIUM
-CPUs = (#)
-Memory = (#)
-Storage = (enter text)
-GPU = (N/A)
-
 LARGE
 CPUs = (#)
 Memory = (#)
@@ -63,12 +53,6 @@ Storage = (enter text)
 GPU = (N/A)
 
 SMALL_GPU
-CPUs = (#)
-Memory = (#)
-Storage = (enter text)
-GPU = (details about type)
-
-MEDIUM_GPU
 CPUs = (#)
 Memory = (#)
 Storage = (enter text)
