@@ -14,7 +14,10 @@ with TQ42Client() as client:
         project_id="PROJECT_ID",
         name="NAME",
         description="DESCRIPTION",
+        # either
         url="BUCKET_URL",
+        # or
+        file="LOCAL_FILE_PATH",
         sensitivity=DatasetSensitivityProto.SENSITIVE
     )
 ```
@@ -28,6 +31,10 @@ The preceding command consists of the following elements:
 - `description` is the description of the newly created dataset.
 
 - `url` is the url for the newly created dataset. This is where the data is pulled from.
+
+- `file` is the file path to upload to the newly created dataset. This is where the data is pulled from.
+
+NOTE: Only choose one, url or file
 
 - `sensitivity` is a flag set to indicate the sensitivity of the newly created dataset. Values can be found in the enum `DatasetSensitivityProto`.
 
