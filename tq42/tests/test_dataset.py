@@ -3,7 +3,6 @@ import uuid
 import pytest
 
 from tq42.dataset import Dataset, StorageProto, DatasetSensitivityProto
-from tq42.utils.exceptions import LocalPermissionError
 
 
 def test__get_file_name_from_signed_url():
@@ -77,7 +76,7 @@ def test_create_dataset_should_raise_error_if_none_of_url_and_file_present():
 
 
 def test_create_dataset_should_raise_error_if_file_is_not_a_valid_path():
-    with pytest.raises(LocalPermissionError):
+    with pytest.raises(FileNotFoundError):
         Dataset.create(
             client={},
             project_id=str(uuid.uuid4()),
