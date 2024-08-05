@@ -37,9 +37,8 @@ For example:
 
 ```python
 from tq42.algorithm import AlgorithmProto
-from tq42.compute import HardwareProto
 from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
+from tq42.experiment_run import ExperimentRun, HardwareProto
 
 params = {
     'parameters': {

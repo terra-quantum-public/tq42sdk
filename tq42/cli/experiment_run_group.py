@@ -4,9 +4,8 @@ import click
 
 import tq42.cli.utils.cli_functions as cli
 from tq42.cli.utils.types import TQ42CliContext
-from tq42.experiment_run import ExperimentRun
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import AlgorithmProto
-from tq42.compute import HardwareProto
 
 
 @click.group("run")

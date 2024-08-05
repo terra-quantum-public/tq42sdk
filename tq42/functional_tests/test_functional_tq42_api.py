@@ -1,11 +1,14 @@
 import unittest
 import uuid
 
-from tq42.compute import list_all as list_all_computes
 from tq42.organization import list_all as list_all_organizations, Organization
 from tq42.project import Project, list_all as list_all_projects
 from tq42.experiment import Experiment, list_all as list_all_experiments
-from tq42.experiment_run import ExperimentRun, list_all as list_all_experiment_runs
+from tq42.experiment_run import (
+    ExperimentRun,
+    list_all as list_all_experiment_runs,
+    HardwareProto,
+)
 from tq42.functional_tests.functional_test_config import FunctionalTestConfig
 from tq42.algorithm import (
     ToyMetadataProto,
@@ -13,7 +16,6 @@ from tq42.algorithm import (
     ToyInputsProto,
     AlgorithmProto,
 )
-from tq42.compute import HardwareProto
 from google.protobuf.json_format import MessageToDict
 
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
@@ -44,12 +46,6 @@ class TestFunctionalTQ42API(unittest.TestCase, FunctionalTestConfig):
         # TODO: We need the appropriate enum for status
         self.assertEqual(1, org.data.state)
         self.assertTrue(org.data.default_org)
-
-    def test_compute_show(self):
-        # TODO: Currently compute show does nothing real. Improve test once fully implemented.
-
-        compute = list_all_computes()
-        self.assertIsNotNone(compute)
 
     def test_proj_list(self):
         proj_list = list_all_projects(

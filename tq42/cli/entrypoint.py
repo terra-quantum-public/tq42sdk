@@ -3,7 +3,6 @@ import click
 from tq42.cli.utils.types import TQ42CliContext, TQ42CliObject
 from tq42.client import TQ42Client
 from .auth_group import auth_group
-from .compute_group import compute_group
 from .organization_group import organization_group
 from .experiment_group import experiment_group
 from .project_group import project_group
@@ -41,7 +40,6 @@ def cli(ctx: TQ42CliContext, config_path: str):
 
 
 cli.add_command(auth_group)
-cli.add_command(compute_group)
 cli.add_command(organization_group)
 cli.add_command(experiment_group)
 cli.add_command(project_group)

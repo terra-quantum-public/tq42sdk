@@ -1,11 +1,10 @@
 import time
 import unittest
 
-from tq42.experiment_run import ExperimentRun
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.functional_tests.functional_test_config import FunctionalCLITestConfig
 
 from tq42.algorithm import AlgorithmProto
-from tq42.compute import HardwareProto
 
 
 class TestFunctionalInvokeCliExperimentRunGroup(
