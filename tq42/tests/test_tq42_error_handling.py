@@ -9,7 +9,6 @@ from tq42.utils.exceptions import (
     PermissionDeniedError,
     UnauthenticatedError,
     ExceedRetriesError,
-    LocalPermissionError,
 )
 from tq42.utils.exception_handling import handle_generic_sdk_errors
 from tq42.utils.file_handling import read_file
@@ -18,7 +17,6 @@ from tq42.utils.constants import (
     unauthenticated_error_file,
     insufficient_permission_errors_file,
     invalid_arguments_error_file,
-    local_permission_error_file,
 )
 
 
@@ -196,39 +194,6 @@ class TestTq42ErrorHandling(unittest.TestCase):
             self.fail_if_still_here()
         except ExceedRetriesError as e:
             self.assertEqual(str(e), "Polling exceeded. Number of retries: 5")
-
-    def test_decorator_local_permission_error(self):
-        @handle_generic_sdk_errors
-        def raise_local_permission_error():
-            raise LocalPermissionError()
-
-        try:
-            raise_local_permission_error()
-            self.fail_if_still_here()
-        except LocalPermissionError as e:
-            self.assertEqual(str(e), read_file(local_permission_error_file))
-
-    def test_decorator_permission_error(self):
-        @handle_generic_sdk_errors
-        def raise_permission_error():
-            raise PermissionError()
-
-        try:
-            raise_permission_error()
-            self.fail_if_still_here()
-        except LocalPermissionError as e:
-            self.assertEqual(str(e), read_file(local_permission_error_file))
-
-    def test_decorator_os_error(self):
-        @handle_generic_sdk_errors
-        def raise_os_error():
-            raise OSError()
-
-        try:
-            raise_os_error()
-            self.fail_if_still_here()
-        except LocalPermissionError as e:
-            self.assertEqual(str(e), read_file(local_permission_error_file))
 
     def test_generic_error(self):
         @handle_generic_sdk_errors

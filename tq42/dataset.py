@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import base64
+import hashlib
 import os.path
+from pathlib import Path
 from typing import Optional, List
+from urllib.error import HTTPError
 
 from google.protobuf.json_format import MessageToJson
 from tqdm import tqdm
@@ -16,6 +20,10 @@ from com.terraquantum.storage.v1alpha1.storage_pb2 import (
     DatasetSensitivityProto,
     StorageProto,
     StorageType,
+)
+from com.terraquantum.storage.v1alpha1.create_storage_from_file_pb2 import (
+    CreateStorageFromFileRequest,
+    CreateStorageFromFileResponse,
 )
 from com.terraquantum.storage.v1alpha1.create_storage_from_external_pb2 import (
     CreateStorageFromExternalBucketRequest,
@@ -86,14 +94,104 @@ class Dataset:
         project_id: str,
         name: str,
         description: str,
-        url: str,
         sensitivity: DatasetSensitivityProto,
+        file: str = None,
+        url: str = None,
     ) -> Dataset:
         """
         Create a dataset for a project.
 
         For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html
         """
+
+        if (file and url) or (not file and not url):
+            raise ValueError("Please provide (only) one of: file or url")
+
+        if url:
+            res = Dataset._create_from_external_bucket(
+                client=client,
+                project_id=project_id,
+                name=name,
+                description=description,
+                url=url,
+                sensitivity=sensitivity,
+            )
+            return Dataset.from_proto(client=client, msg=res)
+
+        res = Dataset._create_from_file(
+            client=client,
+            project_id=project_id,
+            name=name,
+            description=description,
+            file=file,
+            sensitivity=sensitivity,
+        )
+        return Dataset.from_proto(client=client, msg=res)
+
+    @staticmethod
+    def _create_from_file(
+        client: TQ42Client,
+        project_id: str,
+        name: str,
+        description: str,
+        file: str,
+        sensitivity: DatasetSensitivityProto,
+    ) -> StorageProto:
+        file_path = Path(file)
+        if not file_path.exists():
+            raise FileNotFoundError("The specified file does not exist")
+
+        with file_path.open(mode="rb") as f:
+            data = f.read()
+            file_hash = hashlib.md5(data).digest()
+            file_hash_b64 = base64.b64encode(file_hash).decode("utf-8")
+
+            create_dataset_request = CreateStorageFromFileRequest(
+                project_id=project_id,
+                name=name,
+                description=description,
+                hash_md5=file_hash_b64,
+                file_name=file_path.name,
+                sensitivity=sensitivity,
+            )
+
+            res: CreateStorageFromFileResponse = (
+                client.storage_client.CreateStorageFromFile(
+                    request=create_dataset_request, metadata=client.metadata
+                )
+            )
+
+            headers = {
+                "Content-Type": "application/octet-stream",
+                "Content-MD5": file_hash_b64,
+            }
+            file_upload_response = requests.put(
+                url=res.signed_url,
+                headers=headers,
+                data=data,
+            )
+
+            if not file_upload_response.ok:
+                raise HTTPError(
+                    url=res.signed_url,
+                    code=file_upload_response.status_code,
+                    msg=f"Upload of file {file} to storage failed. Please make sure your network is working. "
+                    "If issues persist please get in touch via https://help.terraquantum.io/en",
+                    fp=None,
+                    hdrs=file_upload_response.headers,
+                )
+
+        return res.storage
+
+    @staticmethod
+    def _create_from_external_bucket(
+        client: TQ42Client,
+        project_id: str,
+        name: str,
+        description: str,
+        url: str,
+        sensitivity: DatasetSensitivityProto,
+    ) -> StorageProto:
         create_dataset_request = CreateStorageFromExternalBucketRequest(
             project_id=project_id,
             name=name,
@@ -102,11 +200,9 @@ class Dataset:
             sensitivity=sensitivity,
         )
 
-        res: StorageProto = client.storage_client.CreateStorageFromExternalBucket(
+        return client.storage_client.CreateStorageFromExternalBucket(
             request=create_dataset_request, metadata=client.metadata
         )
-
-        return Dataset.from_proto(client=client, msg=res)
 
     @handle_generic_sdk_errors
     def export(self, directory_path: str) -> List[str]:

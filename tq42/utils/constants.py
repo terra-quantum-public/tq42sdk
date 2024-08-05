@@ -9,6 +9,3 @@ no_default_error_file = dirs.full_path(text_files_dir, "no_default_error.txt")
 invalid_arguments_error_file = dirs.full_path(
     text_files_dir, "invalid_arguments_error.txt"
 )
-local_permission_error_file = dirs.full_path(
-    text_files_dir, "local_permission_error.txt"
-)
