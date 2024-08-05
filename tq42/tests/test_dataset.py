@@ -1,6 +1,9 @@
+import uuid
+
 import pytest
 
-from tq42.dataset import Dataset, StorageProto
+from tq42.dataset import Dataset, StorageProto, DatasetSensitivityProto
+from tq42.utils.exceptions import LocalPermissionError
 
 
 def test__get_file_name_from_signed_url():
@@ -36,3 +39,51 @@ def test_dataset_export_non_valid_directory():
     dataset = Dataset.from_proto(client={}, msg=data)
     with pytest.raises(ValueError):
         dataset.export(directory_path="/Users/definitely-not-a-valid-user/directory")
+
+
+def test_create_dataset_should_raise_error_if_both_url_and_file_present():
+    with pytest.raises(ValueError):
+        Dataset.create(
+            client={},
+            project_id=str(uuid.uuid4()),
+            name="pseudo-dataset-data",
+            description="pseudo description",
+            sensitivity=DatasetSensitivityProto.SENSITIVE,
+            file="/valid/file/path",
+            url="gs://bucket/path",
+        )
+
+
+def test_create_dataset_should_raise_error_if_none_of_url_and_file_present():
+    with pytest.raises(ValueError):
+        Dataset.create(
+            client={},
+            project_id=str(uuid.uuid4()),
+            name="pseudo-dataset-data",
+            description="pseudo description",
+            sensitivity=DatasetSensitivityProto.SENSITIVE,
+        )
+
+    with pytest.raises(ValueError):
+        Dataset.create(
+            client={},
+            project_id=str(uuid.uuid4()),
+            name="pseudo-dataset-data",
+            description="pseudo description",
+            file="",
+            url="",
+            sensitivity=DatasetSensitivityProto.SENSITIVE,
+        )
+
+
+def test_create_dataset_should_raise_error_if_file_is_not_a_valid_path():
+    with pytest.raises(LocalPermissionError):
+        Dataset.create(
+            client={},
+            project_id=str(uuid.uuid4()),
+            name="pseudo-dataset-data",
+            description="pseudo description",
+            file="/this/is/a/path/file.gg",
+            # file="/Users/stevenbeckers/Documents/projects/tq42sdk/tq42/utils/text_files/gg.json"
+            sensitivity=DatasetSensitivityProto.SENSITIVE,
+        )

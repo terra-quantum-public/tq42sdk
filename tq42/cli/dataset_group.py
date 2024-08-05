@@ -32,7 +32,6 @@ def dataset_group() -> click.Group:
     type=str,
     help="A friendly description of the dataset",
 )
-@click.option("--url", "url", required=True, type=str, help="A URL to the dataset")
 @click.option(
     "--sensitivity",
     "sensitivity",
@@ -40,19 +39,30 @@ def dataset_group() -> click.Group:
     type=str,
     help="One of the following categories: PUBLIC, GENERAL, SENSITIVE, CONFIDENTIAL",
 )
+@click.option("--url", "url", required=False, type=str, help="A URL to the dataset")
+@click.option(
+    "--file",
+    "file",
+    required=False,
+    type=str,
+    help="A file (path) to upload to the dataset",
+)
 @click.pass_context
 def create_dataset(
     ctx: TQ42CliContext,
     proj_id: str,
     name: str,
     description: str,
-    url: str,
     sensitivity: str,
+    url: str = None,
+    file: str = None,
 ) -> None:
     """
     Create a dataset within a project.
 
-    e.g.: tq42 proj dataset create --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01 --name "Example Dataset Name" --desc "Example Description"  --url "https://mydata.com/drive/my-drive" --sensitivity "confidential"
+    e.g.:
+    - File upload: tq42 proj dataset create --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01 --name "Example Dataset Name" --desc "Example Description"  --file "/local/file/path/file.txt" --sensitivity "confidential"
+    - Bucket transfer: tq42 proj dataset create --proj 98ccb1d2-a3d0-48c8-b172-022f6db9be01 --name "Example Dataset Name" --desc "Example Description"  --url "https://mydata.com/drive/my-drive" --sensitivity "confidential"
 
     https://docs.tq42.com/en/latest/CLI_Developer_Guide/Working_with_Datasets.html
     """
@@ -64,6 +74,7 @@ def create_dataset(
             name=name,
             description=description,
             url=url,
+            file=file,
             sensitivity=DatasetSensitivityProto.Value(sensitivity.upper()),
         ).data
     )
