@@ -84,6 +84,5 @@ def test_create_dataset_should_raise_error_if_file_is_not_a_valid_path():
             name="pseudo-dataset-data",
             description="pseudo description",
             file="/this/is/a/path/file.gg",
-            # file="/Users/stevenbeckers/Documents/projects/tq42sdk/tq42/utils/text_files/gg.json"
             sensitivity=DatasetSensitivityProto.SENSITIVE,
         )
