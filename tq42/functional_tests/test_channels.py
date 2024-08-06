@@ -3,10 +3,9 @@ import numpy as np
 from pytest import mark, fixture
 
 from tq42.channel import Channel, Ask, Tell
-from tq42.experiment_run import ExperimentRun
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.functional_tests.functional_test_config import FunctionalTestConfig
 from tq42.algorithm import AlgorithmProto
-from tq42.compute import HardwareProto
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
     ExperimentRunStatusProto,
 )

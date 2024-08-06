@@ -41,8 +41,7 @@ tq42 exp run create --exp  0ba18e6f-65e6-4c0a-bda3-091c5a45312d --compute small 
 
 ```python
 from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
-from tq42.compute import HardwareProto
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import AlgorithmProto
 
 parameters = {
@@ -94,8 +93,7 @@ tq42 exp run create --exp c385c53b-38c2-4036-9823-50ce932a9b34  --compute small 
 
 ```python
 from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
-from tq42.compute import HardwareProto
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import AlgorithmProto
 
 parameters = {

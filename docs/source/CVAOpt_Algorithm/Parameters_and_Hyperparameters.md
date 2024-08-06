@@ -50,9 +50,8 @@ The number of offsprings created in a iteration
 
 ```python
 from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import AlgorithmProto
-from tq42.compute import HardwareProto
 import asyncio
 import numpy as np
 from tq42.channel import Channel, Ask, Tell

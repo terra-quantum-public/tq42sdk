@@ -21,8 +21,7 @@ Typically, these individual modules (e.g. `tq42.organization`) contain the follo
 
 ```python
 from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
-from tq42.compute import HardwareProto
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import AlgorithmProto
 
 with TQ42Client() as client:

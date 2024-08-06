@@ -7,7 +7,11 @@ from google.protobuf.json_format import MessageToJson
 
 from tq42.client import TQ42Client
 from tq42.utils.exception_handling import handle_generic_sdk_errors
-from tq42.compute import HardwareProto
+
+# important for re-export
+from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
+    HardwareProto,
+)
 from tq42.algorithm import AlgorithmProto
 from tq42.utils.exceptions import ExperimentRunCancelError, ExceedRetriesError
 from tq42.utils import misc

@@ -27,11 +27,6 @@ class TestDirs(unittest.TestCase):
         self.assertTrue(os.path.exists(dirs.text_files_dir()))
         self.assertTrue(
             os.path.isfile(
-                dirs.full_path(dirs.text_files_dir(), "hardware_configs.json")
-            )
-        )
-        self.assertTrue(
-            os.path.isfile(
                 dirs.full_path(dirs.text_files_dir(), "unauthenticated_error.txt")
             )
         )

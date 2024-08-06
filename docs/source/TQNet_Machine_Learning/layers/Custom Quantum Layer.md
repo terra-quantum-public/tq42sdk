@@ -57,8 +57,7 @@ The following example trains a custom time series prediction problem using a cus
 ```python
 from google.protobuf.json_format import MessageToDict
 from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
-from tq42.compute import HardwareProto
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import (
     TrainDataProcessingParametersProto,
     OptimProto,

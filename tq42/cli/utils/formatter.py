@@ -11,7 +11,7 @@ from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
 
 from ...project import Project
 from tq42.algorithm import AlgorithmProto
-from tq42.compute import HardwareProto
+from tq42.experiment_run import HardwareProto
 
 
 class ItemWithIDFormatter(metaclass=ABCMeta):

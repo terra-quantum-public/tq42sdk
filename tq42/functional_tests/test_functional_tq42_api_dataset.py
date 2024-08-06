@@ -79,7 +79,7 @@ class TestFunctionalTQ42APIDataset(unittest.TestCase, FunctionalTestConfig):
             project_id=self.proj,
             name="upload_file_dataset",
             description="Dataset description test 1 via file",
-            file="tq42/utils/text_files/hardware_configs.json",
+            file="tq42/utils/text_files/no_default_error.txt",
             sensitivity=DatasetSensitivityProto.CONFIDENTIAL,
         )
         assert "upload_file_dataset" == dataset.data.name

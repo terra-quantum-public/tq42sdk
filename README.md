@@ -133,9 +133,8 @@ After creating the available metadata and retrieving an experiment id the last s
 
 ```python
 from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import AlgorithmProto
-from tq42.compute import HardwareProto
 
 with TQ42Client() as client:
     run = ExperimentRun.create(
