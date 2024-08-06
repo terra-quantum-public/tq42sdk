@@ -64,12 +64,9 @@ def handle_generic_sdk_errors(func: F) -> F:
             exceptions.InvalidArgumentError,
             exceptions.NoDefaultError,
             exceptions.ExceedRetriesError,
-            exceptions.LocalPermissionError,
             exceptions.ExperimentRunCancelError,
         ) as e:
             raise e from None
-        except (PermissionError, OSError):
-            raise exceptions.LocalPermissionError() from None
         except Exception as e:
             # are there generic errors we are not catching here?
             logging.debug(

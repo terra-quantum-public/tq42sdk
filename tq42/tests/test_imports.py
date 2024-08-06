@@ -1,7 +1,6 @@
 import unittest
 
 from tq42.cli import (
-    compute_group,
     experiment_group,
     experiment_run_group,
     organization_group,
@@ -30,7 +29,6 @@ class TestImports(unittest.TestCase):
         self.assertIsNotNone(misc)
 
     def test_cli_imports(self):
-        self.assertIsNotNone(compute_group)
         self.assertIsNotNone(experiment_group)
         self.assertIsNotNone(experiment_run_group)
         self.assertIsNotNone(organization_group)

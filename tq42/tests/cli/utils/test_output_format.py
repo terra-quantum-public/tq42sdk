@@ -133,7 +133,7 @@ class TestOutputFormat(unittest.TestCase):
         exp_run = MockWithID("RUN_ID")
         exp_run.status = 1
         exp_run.algorithm = 6
-        exp_run.hardware = 5
+        exp_run.hardware = 6
         exp_run.result = "ERROR"
         exp_run.error_message = ""
 
@@ -141,7 +141,7 @@ class TestOutputFormat(unittest.TestCase):
             'run="RUN_ID"',
             'status="QUEUED"',
             'algorithm="TOY"',
-            'compute="MEDIUM_GPU"',
+            'compute="LARGE_GPU"',
             'result="ERROR"',
             #'' signifies no error message expected as status is QUEUED
             # if error expected, this field should show:

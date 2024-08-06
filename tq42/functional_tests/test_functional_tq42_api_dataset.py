@@ -72,3 +72,15 @@ class TestFunctionalTQ42APIDataset(unittest.TestCase, FunctionalTestConfig):
             pass
 
         assert not os.path.exists(dataset_export[0])
+
+    def test_proj_dataset_create_from_file(self):
+        dataset = Dataset.create(
+            client=self.get_client(),
+            project_id=self.proj,
+            name="upload_file_dataset",
+            description="Dataset description test 1 via file",
+            file="tq42/utils/text_files/no_default_error.txt",
+            sensitivity=DatasetSensitivityProto.CONFIDENTIAL,
+        )
+        assert "upload_file_dataset" == dataset.data.name
+        assert dataset.data.status == StorageStatusProto.COMPLETED

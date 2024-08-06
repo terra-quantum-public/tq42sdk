@@ -11,7 +11,7 @@ QuEnc returns a binary vector where the same values of the vector mean the verti
 
 We can create a Quantum Circuit using QuEnc and run it on different Quantum Processing Unit (QPU) providers.
 
-To obtain a solution, we must first create a circuit using QuEnc and then run that circuit using an IONQ, IBM or CIRQ_SIMULATOR QPU.  
+To obtain a solution, we must first create a circuit using QuEnc and then run that circuit using an IONQ, IBM, IBM_SIMULATOR or CIRQ_SIMULATOR QPU.  
 
 # Parameters
 The following parameters are required for the TQ42 QuEnc Algorithm to create a circuit:
@@ -41,8 +41,7 @@ tq42 exp run create --exp  0ba18e6f-65e6-4c0a-bda3-091c5a45312d --compute small 
 
 ```python
 from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
-from tq42.compute import HardwareProto
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import AlgorithmProto
 
 parameters = {
@@ -80,28 +79,27 @@ For the parameters required for the CIRCUIT_RUN Algorithm:
 - shots: int  
 
 - backend: string   
-('IBM', 'IONQ', 'CIRQ_SIMULATOR')
+('IBM', 'IBM_SIMULATOR', 'IONQ', 'CIRQ_SIMULATOR')
 
-Currently we can run on either an IBM, IONQ or CIRQ_SIMULATOR backend. To choose, we need to specify it using the "backend" parameters:  
+Currently we can run on either an IBM, IBM_SIMULATOR, IONQ or CIRQ_SIMULATOR backend. To choose, we need to specify it using the "backend" parameters:  
 
 ## Using the CLI:
 
 ```bash
-tq42 exp run create --exp c385c53b-38c2-4036-9823-50ce932a9b34  --compute small --algorithm CIRCUIT_RUN --parameters "{'parameters': {'shots':500, 'backend':'IONQ'}, 'inputs': {'circuit': {'storage_id': 'CIRCUIT_BUCKET_UUID'}}}"
+tq42 exp run create --exp c385c53b-38c2-4036-9823-50ce932a9b34  --compute small --algorithm CIRCUIT_RUN --parameters "{'parameters': {'shots':500, 'backend':'IBM'}, 'inputs': {'circuit': {'storage_id': 'CIRCUIT_BUCKET_UUID'}}}"
 ```
 
 ## Using the API:
 
 ```python
 from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
-from tq42.compute import HardwareProto
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import AlgorithmProto
 
 parameters = {
     'parameters': {
         'shots': 500,
-        'backend': 'IONQ'
+        'backend': 'IBM'
     },
     'inputs': {
         'circuit': {'storage_id': 'CIRCUIT_BUCKET_UUID'}

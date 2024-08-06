@@ -4,7 +4,6 @@ from tq42.utils.constants import (
     invalid_arguments_error_file,
     no_default_error_file,
     unauthenticated_error_file,
-    local_permission_error_file,
 )
 
 
@@ -62,11 +61,6 @@ class InvalidInputCliError(TQ42APIError):
 class NoMatchingAttributeError(TQ42APIError):
     def __init__(self, details: str):
         self.details = details
-
-
-class LocalPermissionError(TQ42APIError):
-    def __str__(self):
-        return read_file(local_permission_error_file)
 
 
 class ExperimentRunCancelError(TQ42APIError):

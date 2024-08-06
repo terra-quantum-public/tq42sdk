@@ -21,7 +21,7 @@ import json
 from tq42.client import ConfigEnvironment, TQ42Client
 from tq42.utils.exceptions import NoMatchingAttributeError
 from tq42.algorithm import AlgorithmProto
-from tq42.compute import HardwareProto
+from tq42.experiment_run import HardwareProto
 from com.terraquantum.experiment.v1.experimentrun import (
     create_experiment_run_request_pb2 as create_exp_run,
 )

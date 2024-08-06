@@ -20,4 +20,4 @@ Here's a table summarizing the libraries and their supported circuit formats:
 | Qiskit       | QASM (Quantum Assembly Language)                         |
 | Cirq         | Native Cirq format, OpenQASM, TensorFlow Quantum's Cirq  |
 
-Note: TQ42 currently support only Qiskit and Cirq for circuit creation and IBM, IONQ and CIRQ_SIMULATOR backends to run them.
+Note: TQ42 currently support only Qiskit and Cirq for circuit creation and IBM, IBM_SIMULATOR, IONQ and CIRQ_SIMULATOR backends to run them.

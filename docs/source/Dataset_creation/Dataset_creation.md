@@ -1,6 +1,14 @@
-# Instructions for Creating a GCP Dataset for TQ42
+# Dataset creation
 
-## Initial Setup Requirements
+## Instructions for uploading a file
+
+To see the documentation to upload a file to create a dataset see the following resources:
+- ![Python Developer Guide: Working with Datasets](../Python_Developer_Guide/Working_with_Datasets.md)
+- ![CLI Developer Guide: Working with Datasets](../CLI_Developer_Guide/Working_with_Datasets.md)
+
+## Instructions for Creating a GCP Dataset for TQ42
+
+### Initial Setup Requirements
 
 1. **URI/URL Format**:
    - Format: `[storage_type]://[bucket_name]`.
@@ -14,7 +22,7 @@
    - Current Account: `project-988275624279@storage-transfer-service.iam.gserviceaccount.com`.
    - Note: This may change in the future. A single service account is shared across all customers.
 
-## Sample Upload Workflow
+### Sample Upload Workflow
 
 1. **Create and Upload to Bucket**:
    - The user creates a bucket in their cloud environment and uploads the required files.

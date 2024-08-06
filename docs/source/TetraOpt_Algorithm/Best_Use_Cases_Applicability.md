@@ -105,8 +105,7 @@ Your objective function URL you provide in the sample code will contain the dist
 
 ```python
 from tq42.client import TQ42Client
-from tq42.experiment_run import ExperimentRun
-from tq42.compute import HardwareProto
+from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import AlgorithmProto
 
 parameters = {
