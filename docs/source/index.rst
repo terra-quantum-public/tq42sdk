@@ -78,7 +78,7 @@ Welcome to TQ42SDK's Documentation
 
    QuEnc_Algorithm/Introduction.md
    QuEnc_Algorithm/Parameters_and_Hyperparameters.md
-   QuEnc_Algorithm/Output_Format.md
+   QuEnc_Algorithm/Example_Problem.md
 
 
 Indices and tables
