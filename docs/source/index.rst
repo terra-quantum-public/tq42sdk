@@ -11,6 +11,8 @@ Welcome to TQ42SDK's Documentation
    :caption: Introduction:
 
    README.md
+   Quick_Start.md
+   Help_Center.md
 
 .. toctree::
    :maxdepth: 4
