@@ -51,6 +51,15 @@ This code snippet initiates a QuEnc experiment on a small hardware configuration
 
 ## Step 2: Sample from the Resulting Circuit
 Once the circuit is created, sample it using a quantum simulator to gather a distribution of possible solutions.
+Note: For the 'backend' parameter of CIRCUIT_RUN, you can choose between the following:
+
+Simulators:
+1. CIRQ_SIMULATOR
+2. QISKIT_SIMULATOR
+3. CIRQ_SIMULATOR
+
+Actual QPUs:
+1. IBM
 
 ```python
 
