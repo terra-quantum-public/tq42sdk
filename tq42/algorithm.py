@@ -24,6 +24,7 @@ from com.terraquantum.experiment.v1.experimentrun.algorithm.cva_opt_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.tetra_opt_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.tetra_quenc_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.toy_pb2 import *
+from com.terraquantum.experiment.v1.experimentrun.algorithm.routing_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.generic_ml_train_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.generic_ml_infer_pb2 import *
 from com.terraquantum.experiment.v1.experimentrun.algorithm.ml_layers.standard_pb2 import *
