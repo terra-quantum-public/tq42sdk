@@ -13,7 +13,7 @@ import time
 from com.terraquantum.experiment.v3alpha1.experiment import (
     experiment_service_pb2_grpc as pb2_exp_grpc,
 )
-from com.terraquantum.experiment.v3alpha1.experimentrun import (
+from com.terraquantum.experiment.v3alpha2.experimentrun import (
     experiment_run_service_pb2_grpc as pb2_exp_run_grpc,
 )
 from com.terraquantum.organization.v1.organization import (
