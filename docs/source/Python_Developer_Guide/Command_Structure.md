@@ -22,14 +22,14 @@ Typically, these individual modules (e.g. `tq42.organization`) contain the follo
 ```python
 from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun, HardwareProto
-from tq42.algorithm import AlgorithmProto
 
 with TQ42Client() as client:
     ExperimentRun.create(
         client=client,
         experiment_id="EXP_ID",
         compute=HardwareProto.SMALL,
-        algorithm=AlgorithmProto.TOY,
+        algorithm='TOY',
+        version='0.1.0',
         parameters={}
     )
 ```

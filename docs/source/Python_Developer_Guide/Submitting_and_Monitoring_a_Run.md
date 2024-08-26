@@ -36,7 +36,6 @@ The result of this experiment creation is an `ExperimentRun` instance.
 For example:
 
 ```python
-from tq42.algorithm import AlgorithmProto
 from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun, HardwareProto
 
@@ -58,7 +57,8 @@ params = {
 with TQ42Client() as client:
     run = ExperimentRun.create(
         client=client,
-        algorithm=AlgorithmProto.TETRA_OPT,
+        algorithm='TETRA_OPT',
+        version='0.1.0',
         experiment_id="<YOUR_EXP_ID>",
         compute=HardwareProto.SMALL,
         parameters=params

@@ -91,25 +91,14 @@ After retrieving the experiment id the next step is to create the metadata for t
 For this example the toy algorithm and its corresponding metadata is chosen but any other algorithm can
 be used according to the general setup available here.
 
-Importing the protobuf definitions of the metadata helps with typings and makes the development experience easier.
-The TQ42 Python SDK, however, expects you to pass in the metadata as a dictionary and so using the `MessageToDict` function
-is helpful to create the perfect matching dictionary while getting type hints.
-
-Note: You can find all types corresponding to the algorithms within `tq42.algorithm`.
-
 ```python
-from google.protobuf.json_format import MessageToDict
-from tq42.algorithm import (
-    ToyMetadataProto,
-    ToyParametersProto,
-    ToyInputsProto
-)
-
-toy_params = ToyMetadataProto(
-    parameters=ToyParametersProto(n=1, r=1.5, msg='This is my first experiment run'),
-    inputs=ToyInputsProto()
-)
-toy_params = MessageToDict(toy_params, preserving_proto_field_name=True)
+toy_params = {
+    'parameters': {
+        'n': 1,
+        'r': 1.5,
+        'msg': 'This is my first experiment run'
+    }
+}
 ```
 
 After creating the available metadata and retrieving an experiment id the last step is to actually create the experiment run.
@@ -117,14 +106,14 @@ After creating the available metadata and retrieving an experiment id the last s
 ```python
 from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun, HardwareProto
-from tq42.algorithm import AlgorithmProto
 
 with TQ42Client() as client:
     run = ExperimentRun.create(
         client=client,
-        # you can configure the algorithm to run here via the supplied enum
-        # be sure to choose matching algorithm and parameters as this will be validated by our backend
-        algorithm=AlgorithmProto.TOY,
+        # you can configure the algorithm to run here
+        # be sure to choose matching algorithm, version and parameters as this will be validated by our backend
+        algorithm='TOY',
+        version='0.1.0',
         # pass in your experiment id here
         experiment_id=exp_id,
         # you can configure the hardware choice here via the supplied enum

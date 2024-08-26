@@ -58,79 +58,82 @@ The following example trains a custom time series prediction problem using a cus
 from google.protobuf.json_format import MessageToDict
 from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun, HardwareProto
-from tq42.algorithm import (
-    TrainDataProcessingParametersProto,
-    OptimProto,
-    LossFuncProto,
-    DatasetStorageInfoProto,
-    GenericMLTrainMetadataProto,
-    GenericMLTrainParametersProto,
-    Layer,
-    ClassicalDenseLayer,
-    MLModelType,
-    TrainModelInfoProto,
-    MLTrainInputsProto,
-    AlgorithmProto,
-    MeasureProto,
-    CustomQuantumLayer,
-    CnotGate,
-    HadamardGate,
-    VariationalGate,
-    EncodingGate,
-    MeasurementGate,
-    Gate
-)
 
-custom_quantum_layer_msg = CustomQuantumLayer(
-    num_qubits=2,
-    gates=[
-        Gate(hadamard=HadamardGate(wire=0)),
-        Gate(hadamard=HadamardGate(wire=1)),
-        Gate(variational=VariationalGate(wire=0, rotation=MeasureProto.X)),
-        Gate(
-            encoding=EncodingGate(wire=1, rotation=MeasureProto.Y, feature_id=0)
-        ),
-        Gate(cnot=CnotGate(wire1=0, wire2=1)),
-        Gate(variational=VariationalGate(wire=1, rotation=MeasureProto.X)),
-        Gate(measurement=MeasurementGate(wire=0, pauli=MeasureProto.X)),
-        Gate(measurement=MeasurementGate(wire=1, pauli=MeasureProto.X)),
-    ],
-)
+#%%
+# Create and design the Custom Quantum Layer. This is an example, however this sequence is customizable
 
-env_msg = GenericMLTrainMetadataProto(
-    parameters=GenericMLTrainParametersProto(
-        model_type=MLModelType.MLP,
-        layers=[
-            Layer(custom_quantum_layer=custom_quantum_layer_msg),
-            Layer(classical_dense_layer=ClassicalDenseLayer(hidden_size=1, bias=True)),
+ROTATION_X = 1
+ROTATION_Y = 2
+ROTATION_Z = 3
+
+custom_quantum_layer = {
+    'num_qubits': 2,
+    'gates': [
+        # Apply Hadamard gates to create superposition
+        {'hadamard': {'wire': 0}},
+        {'hadamard': {'wire': 1}},
+        # Apply a variational gate for parameter optimization
+        {'variational': {'wire': 0, 'rotation': ROTATION_X}},
+        # Encode classical data into the quantum circuit
+        {'encoding': {'wire': 1, 'rotation': ROTATION_Y, 'feature_id': 1}},
+        # Encode classical feature 0 as Y rotation on qubit 1
+        # Apply entanglement between qubits
+        {'cnot': {'wire1': 0, 'wire2': 1}},  # CNOT gate with control qubit 0 and target qubit 1
+        # Apply another variational gate
+        {'variational': {'wire': 1, 'rotation': ROTATION_X}},
+        # Measure the qubits
+        {'measurement', {'wire': 0, 'pauli': ROTATION_X}},
+        {'measurement', {'wire': 1, 'pauli': ROTATION_X}},
+    ]
+}
+
+MLP_MODEL_TYPE = 1
+ADAM_OPTIMIZER = 1
+MAE_LOSS_FUNC = 2
+
+parameters = {
+    'parameters': {
+        'model_type': MLP_MODEL_TYPE,
+        'layers': [
+            {'custom_quantum_layer': custom_quantum_layer},
+            {'classical_dense_layer': {'hidden_size': 1, 'bias': True}}
         ],
-        num_epochs=1,
-        k_fold=1,
-        batch_size=128,
-        learning_rate=0.01,
-        optim=OptimProto.ADAM,
-        loss_func=LossFuncProto.MAE,
-        train_model_info=TrainModelInfoProto(
-            name="local_test",
-            description="a_description",
-        ),
-        data_processing_parameters=TrainDataProcessingParametersProto(
-            input_columns=[0, 1, 2, 3], output_columns=[4], timestamp_columns=[]
-        ),
-    ),
-    inputs=MLTrainInputsProto(
-        data=DatasetStorageInfoProto(storage_id="ENTER_DATASET_STORAGE_ID_HERE")
-    ),
-)
+        'num_epochs': 1,
+        'k_fold': 1,
+        'batch_size': 128,
+        'learning_rate': 0.01,
+        'optim': ADAM_OPTIMIZER,
+        'loss_func': MAE_LOSS_FUNC,
+        'train_model_info': {
+            # Provide a unique name to identify your trained model
+            'name': 'local_test',
+            # Add a brief description to help users understand the purpose or functionality of this trained model
+            'description': 'a_description',
+        },
+        # Specify the input and output columns for your dataset
+        'data_processing_parameters': {
+            'input_columns': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            'output_columns': [13]
+        }
+    },
+    'inputs': {
+        'data': {
+            # Provide the specific dataset storage ID of the data you uploaded to TQ42
+            'storage_id': 'STORAGE_ID'
+        }
+    }
+}
+
 
 with TQ42Client() as client:
     client.login()
     run = ExperimentRun.create(
         client=client,
-        algorithm=AlgorithmProto.GENERIC_ML_TRAIN,
+        algorithm='GENERIC_ML_TRAIN',
+        version='0.1.0',
         experiment_id=exp.id,
         compute=HardwareProto.SMALL,
-        parameters=MessageToDict(env_msg, preserving_proto_field_name=True)
+        parameters=parameters
     )
 
     print(run.data)
