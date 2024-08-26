@@ -4,8 +4,6 @@ import unittest
 from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.functional_tests.functional_test_config import FunctionalCLITestConfig
 
-from tq42.algorithm import AlgorithmProto
-
 
 class TestFunctionalInvokeCliExperimentRunGroup(
     unittest.TestCase, FunctionalCLITestConfig
@@ -48,7 +46,8 @@ class TestFunctionalInvokeCliExperimentRunGroup(
         parameters = {"parameters": {"n": 2, "r": 1, "msg": "correct"}, "inputs": {}}
         exp_run = ExperimentRun.create(
             client=self.client,
-            algorithm=AlgorithmProto.TOY,
+            algorithm="TOY",
+            version="0.1.0",
             experiment_id=self.exp,
             compute=HardwareProto.SMALL,
             parameters=parameters,
