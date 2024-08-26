@@ -33,7 +33,6 @@ from google.protobuf import struct_pb2
 from google.protobuf.json_format import MessageToJson, ParseDict
 
 from tq42.client import TQ42Client
-from tq42.utils import misc
 from tq42.utils.exception_handling import handle_generic_sdk_errors
 from tq42.utils.exceptions import ExperimentRunCancelError, ExceedRetriesError
 from tq42.utils.pretty_list import PrettyList
@@ -116,7 +115,6 @@ class ExperimentRun:
             request=request, metadata=client.metadata
         )
 
-        client.exp_run_id = misc.get_id(res).strip().replace('"', "")
         return ExperimentRun.from_proto(client=client, msg=res)
 
     @handle_generic_sdk_errors

@@ -5,7 +5,6 @@ import click
 import tq42.cli.utils.cli_functions as cli
 from tq42.cli.utils.types import TQ42CliContext
 from tq42.experiment_run import ExperimentRun, HardwareProto
-from tq42.algorithm import AlgorithmProto
 
 
 @click.group("run")
@@ -101,6 +100,13 @@ def list_runs(ctx: TQ42CliContext, exp_id: str) -> None:
     help="Specify the algorithm to apply to the command",
 )
 @click.option(
+    "--version",
+    "version",
+    required=True,
+    type=str,
+    help="Specify the version of the algorithm to apply to the command",
+)
+@click.option(
     "--parameters",
     "parameters",
     required=True,
@@ -109,22 +115,27 @@ def list_runs(ctx: TQ42CliContext, exp_id: str) -> None:
 )
 @click.pass_context
 def create_run(
-    ctx: TQ42CliContext, exp_id: str, compute: str, algorithm: str, parameters: str
+    ctx: TQ42CliContext,
+    exp_id: str,
+    compute: str,
+    algorithm: str,
+    version: str,
+    parameters: str,
 ) -> None:
     """
     Begin an experiment run.
 
-    e.g. tq42 exp run create --exp 98ccb1d2-a3d0-48c8-b172-022f6db9be01  --compute small --algorithm TETRA_OPT --parameters \"{'parameters': {'dimensionality':6,'maximal_rank' :1, 'points_number': 1, 'quantization' : True , 'tolerance':3.9997,  'grid': [1,2,3], 'upper_limits':[1,2,3,4,6,6], 'lower_limits': [0,0,0,0,0,0] , 'objective_function':'https://terraquantum.swiss', 'iteration_number': 1}, 'inputs': {}}\"
+    e.g. tq42 exp run create --exp 98ccb1d2-a3d0-48c8-b172-022f6db9be01  --compute small --algorithm TETRA_OPT --version 0.1.0 --parameters \"{'parameters': {'dimensionality':6,'maximal_rank' :1, 'points_number': 1, 'quantization' : True , 'tolerance':3.9997,  'grid': [1,2,3], 'upper_limits':[1,2,3,4,6,6], 'lower_limits': [0,0,0,0,0,0] , 'objective_function':'https://terraquantum.swiss', 'iteration_number': 1}, 'inputs': {}}\"
 
     https://docs.tq42.com/en/latest/CLI_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
     """
-    algo = AlgorithmProto.Value(algorithm.upper())
     compute_val = HardwareProto.Value(compute.upper())
     params = ast.literal_eval(parameters)
     click.echo(
         ExperimentRun.create(
             client=ctx.obj.client,
-            algorithm=algo,
+            algorithm=algorithm,
+            version=version,
             experiment_id=exp_id,
             compute=compute_val,
             parameters=params,

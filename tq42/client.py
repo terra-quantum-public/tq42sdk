@@ -168,7 +168,6 @@ class TQ42Client(object):
         self.channels_host = environment.channels_host
         self.server_port = 443
 
-        self.exp_run_id = None
         # instantiate a channel
         self.api_channel = grpc.secure_channel(
             self.api_host,
