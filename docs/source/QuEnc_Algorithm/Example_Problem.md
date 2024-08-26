@@ -1,5 +1,3 @@
-from xml.sax.handler import versionfrom fontTools import version
-
 # Example problem: Max-cut
 
 ![img.png](../images/maxcut.png)  

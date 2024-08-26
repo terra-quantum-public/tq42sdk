@@ -132,7 +132,7 @@ class TestOutputFormat(unittest.TestCase):
     def test_exp_run_checked_lines(self):
         exp_run = MockWithID("RUN_ID")
         exp_run.status = 1
-        exp_run.algorithm = 6
+        exp_run.algorithm = "TOY"
         exp_run.hardware = 6
         exp_run.result = "ERROR"
         exp_run.error_message = ""
