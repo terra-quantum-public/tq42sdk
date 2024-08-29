@@ -1,6 +1,4 @@
 import unittest
-import time
-import functools
 from google.protobuf.json_format import MessageToDict
 from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import AlgorithmProto, ToyMetadataProto, ToyParametersProto, ToyInputsProto
@@ -63,7 +61,6 @@ class TestToyAlgorithm(unittest.TestCase, FunctionalTestConfig):
         final_status = exp_run.poll().data.status
         self.assertEqual(ExperimentRunStatusProto.FAILED, final_status)
         self.assertIsNotNone(exp_run.data.error_message)
-        print(exp_run.data.error_message)
         self.assertEqual(
             exp_run.data.error_message,
             '{"error": "That\'s wrong!"}'
