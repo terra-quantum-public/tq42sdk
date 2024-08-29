@@ -1,5 +1,4 @@
 import unittest
-from google.protobuf.json_format import MessageToDict
 from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.algorithm import AlgorithmProto
 from tq42.functional_tests.functional_test_config import FunctionalTestConfig
