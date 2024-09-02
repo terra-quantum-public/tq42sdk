@@ -1,17 +1,17 @@
 from abc import ABCMeta, abstractmethod
 from typing import List
 
+from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
+    ExperimentRunStatusProto,
+)
+from com.terraquantum.experiment.v3alpha2.experimentrun.experiment_run_pb2 import (
+    ExperimentRunProto,
+)
 from google.protobuf.json_format import MessageToJson
 from google.protobuf.message import Message
 
-from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
-    ExperimentRunProto,
-    ExperimentRunStatusProto,
-)
-
-from ...project import Project
-from tq42.algorithm import AlgorithmProto
 from tq42.experiment_run import HardwareProto
+from ...project import Project
 
 
 class ItemWithIDFormatter(metaclass=ABCMeta):
@@ -83,7 +83,7 @@ class ExpRunFormatter(ItemWithIDFormatter):
         return [self.format(run), status_line]
 
     def run_checked_lines(self, run: ExperimentRunProto):
-        algo_line = 'algorithm="{}"'.format(AlgorithmProto.Name(run.algorithm))
+        algo_line = 'algorithm="{}"'.format(run.algorithm)
         compute_line = 'compute="{}"'.format(HardwareProto.Name(run.hardware))
 
         json_msg = (

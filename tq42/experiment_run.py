@@ -1,40 +1,40 @@
 from __future__ import annotations
 
 import time
-from typing import Optional, List
+from typing import Optional, List, Mapping, Any
 
-from google.protobuf.json_format import MessageToJson
-
-from tq42.client import TQ42Client
-from tq42.utils.exception_handling import handle_generic_sdk_errors
+from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
+    ExperimentRunStatusProto,
+)
 
 # important for re-export
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
     HardwareProto,
 )
-from tq42.algorithm import AlgorithmProto
-from tq42.utils.exceptions import ExperimentRunCancelError, ExceedRetriesError
-from tq42.utils import misc
-
-from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
-    ExperimentRunStatusProto,
-)
-from com.terraquantum.experiment.v3alpha1.experimentrun.experiment_run_pb2 import (
-    ExperimentRunProto,
-)
-from com.terraquantum.experiment.v3alpha1.experimentrun.cancel_experiment_run_request_pb2 import (
+from com.terraquantum.experiment.v3alpha2.experimentrun.cancel_experiment_run_request_pb2 import (
     CancelExperimentRunRequest,
 )
-from com.terraquantum.experiment.v3alpha1.experimentrun.get_experiment_run_request_pb2 import (
+from com.terraquantum.experiment.v3alpha2.experimentrun.create_experiment_run_request_pb2 import (
+    CreateExperimentRunRequest,
+)
+from com.terraquantum.experiment.v3alpha2.experimentrun.experiment_run_pb2 import (
+    ExperimentRunProto,
+)
+from com.terraquantum.experiment.v3alpha2.experimentrun.get_experiment_run_request_pb2 import (
     GetExperimentRunRequest,
 )
-from com.terraquantum.experiment.v3alpha1.experimentrun.list_experiment_runs_pb2 import (
+from com.terraquantum.experiment.v3alpha2.experimentrun.list_experiment_runs_pb2 import (
     ListExperimentRunsRequest,
 )
-from com.terraquantum.experiment.v3alpha1.experimentrun.list_experiment_runs_pb2 import (
+from com.terraquantum.experiment.v3alpha2.experimentrun.list_experiment_runs_pb2 import (
     ListExperimentRunsResponse,
 )
+from google.protobuf import struct_pb2
+from google.protobuf.json_format import MessageToJson, ParseDict
 
+from tq42.client import TQ42Client
+from tq42.utils.exception_handling import handle_generic_sdk_errors
+from tq42.utils.exceptions import ExperimentRunCancelError, ExceedRetriesError
 from tq42.utils.pretty_list import PrettyList
 
 
@@ -90,10 +90,11 @@ class ExperimentRun:
     @handle_generic_sdk_errors
     def create(
         client: TQ42Client,
-        algorithm: AlgorithmProto,
+        algorithm: str,
+        version: str,
         experiment_id: str,
         compute: HardwareProto,
-        parameters: dict,
+        parameters: Mapping[str, Any],
     ) -> ExperimentRun:
         """
         Create an experiment run.
@@ -101,18 +102,19 @@ class ExperimentRun:
         For details, see
         https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
         """
-        create_exp_run_request = misc.dynamic_create_exp_run_request(
-            parameters=parameters,
-            algo=algorithm,
-            exp_id=experiment_id,
+
+        request = CreateExperimentRunRequest(
+            experiment_id=experiment_id,
+            algorithm=algorithm,
+            version=version,
             hardware=compute,
+            metadata=ParseDict(parameters, struct_pb2.Struct()),
         )
 
         res: ExperimentRunProto = client.experiment_run_client.CreateExperimentRun(
-            request=create_exp_run_request, metadata=client.metadata
+            request=request, metadata=client.metadata
         )
 
-        client.exp_run_id = misc.get_id(res).strip().replace('"', "")
         return ExperimentRun.from_proto(client=client, msg=res)
 
     @handle_generic_sdk_errors
