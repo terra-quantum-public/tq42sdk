@@ -30,6 +30,7 @@ class TestFunctionalInvokeCliExperimentRunGroup(
                 "--exp=" + self.exp,
                 "--compute=SMALL",
                 "--algorithm=TOY",
+                "--version=0.1.0",
                 "--parameters=" + parameters,
             ],
         )

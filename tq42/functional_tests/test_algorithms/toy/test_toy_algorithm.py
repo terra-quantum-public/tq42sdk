@@ -1,9 +1,9 @@
 import unittest
-from google.protobuf.json_format import MessageToDict
 from tq42.experiment_run import ExperimentRun, HardwareProto
-from tq42.algorithm import AlgorithmProto, ToyMetadataProto, ToyParametersProto, ToyInputsProto
 from tq42.functional_tests.functional_test_config import FunctionalTestConfig
-from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import ExperimentRunStatusProto
+from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
+    ExperimentRunStatusProto,
+)
 from tq42.utils.decorators import timeout
 
 
@@ -16,16 +16,19 @@ class TestToyAlgorithm(unittest.TestCase, FunctionalTestConfig):
 
     @timeout(180)
     def test_toy_algorithm_successfully_runs(self):
-        parameters = ToyMetadataProto(
-            parameters=ToyParametersProto(n=2, r=1, msg="Toy algorithm test"),
-            inputs=ToyInputsProto(),
-        )
-        parameters = MessageToDict(
-            parameters, preserving_proto_field_name=True)
+        parameters = {
+            "parameters": {
+                "n": 2,
+                "r": 1,
+                "msg": "Toy algorithm test",
+            },
+            "inputs": {},
+        }
 
         exp_run = ExperimentRun.create(
             client=self.get_client(),
-            algorithm=AlgorithmProto.TOY,
+            algorithm="TOY",
+            version="0.1.0",
             experiment_id=self.exp,
             compute=HardwareProto.SMALL,
             parameters=parameters,
@@ -40,16 +43,18 @@ class TestToyAlgorithm(unittest.TestCase, FunctionalTestConfig):
 
     @timeout(180)
     def test_toy_algorithm_fails_with_wrong_message(self):
-        parameters = ToyMetadataProto(
-            parameters=ToyParametersProto(n=2, r=1, msg="wrong"),
-            inputs=ToyInputsProto(),
-        )
-        parameters = MessageToDict(
-            parameters, preserving_proto_field_name=True)
-
+        parameters = {
+            "parameters": {
+                "n": 2,
+                "r": 1,
+                "msg": "wrong",
+            },
+            "inputs": {},
+        }
         exp_run = ExperimentRun.create(
             client=self.get_client(),
-            algorithm=AlgorithmProto.TOY,
+            algorithm="TOY",
+            version="0.1.0",
             experiment_id=self.exp,
             compute=HardwareProto.SMALL,
             parameters=parameters,
@@ -61,11 +66,8 @@ class TestToyAlgorithm(unittest.TestCase, FunctionalTestConfig):
         final_status = exp_run.poll().data.status
         self.assertEqual(ExperimentRunStatusProto.FAILED, final_status)
         self.assertIsNotNone(exp_run.data.error_message)
-        self.assertEqual(
-            exp_run.data.error_message,
-            '{"error": "That\'s wrong!"}'
-        )
+        self.assertEqual(exp_run.data.error_message, '{"error": "That\'s wrong!"}')
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

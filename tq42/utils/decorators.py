@@ -16,5 +16,7 @@ def timeout(seconds):
             finally:
                 signal.alarm(0)
             return result
+
         return wrapper
+
     return decorator
