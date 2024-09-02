@@ -38,7 +38,8 @@ parameters = {
 with TQ42Client() as client:
 	quenc_run = ExperimentRun.create(
     	client=client,
-    	algorithm=AlgorithmProto.TETRA_QUENC,
+    	algorithm='QUENC',
+        version='0.4.0',
     	experiment_id=selector.experiment.id,
     	compute=HardwareProto.SMALL,
     	parameters=parameters
@@ -62,8 +63,7 @@ Actual QPUs:
 1. IBM
 
 ```python
-
-circuit_storage_id = quenc_result.data.result.tetra_qu_enc_outcome.outputs.circuit.storage_id
+circuit_storage_id = quenc_result.data.result.outcome['outputs']['circuit']['storage_id']
 
 parameters = {
 	'parameters': {
@@ -78,7 +78,8 @@ parameters = {
 with TQ42Client() as client:
 	run = ExperimentRun.create(
     	client=client,
-    	algorithm=AlgorithmProto.CIRCUIT_RUN,
+    	algorithm='CIRCUIT_RUN',
+        version='0.2.0',
     	experiment_id=selector.experiment.id,
     	compute=HardwareProto.SMALL,
     	parameters=parameters

@@ -5,7 +5,6 @@ from pytest import mark, fixture
 from tq42.channel import Channel, Ask, Tell
 from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.functional_tests.functional_test_config import FunctionalTestConfig
-from tq42.algorithm import AlgorithmProto
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
     ExperimentRunStatusProto,
 )
@@ -37,7 +36,8 @@ async def test_exp_run_with_channel(functional_test_config):
 
     exp_run = ExperimentRun.create(
         client=functional_test_config.get_client(),
-        algorithm=AlgorithmProto.CVA_OPT,
+        algorithm="CVA_OPT",
+        version="0.1.0",
         experiment_id=functional_test_config.exp,
         compute=HardwareProto.SMALL,
         parameters={"parameters": cva_params, "inputs": {}},

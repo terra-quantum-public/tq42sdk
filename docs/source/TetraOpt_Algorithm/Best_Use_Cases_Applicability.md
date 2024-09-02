@@ -106,7 +106,6 @@ Your objective function URL you provide in the sample code will contain the dist
 ```python
 from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun, HardwareProto
-from tq42.algorithm import AlgorithmProto
 
 parameters = {
    "parameters": {
@@ -132,7 +131,8 @@ parameters = {
 with TQ42Client() as client:
    run = ExperimentRun.create(
       client=client,
-      algorithm=AlgorithmProto.TETRA_OPT,
+      algorithm='TETRA_OPT',
+      version='0.1.0',
       experiment_id="EXP_ID",
       compute=HardwareProto.SMALL,
       parameters=parameters,

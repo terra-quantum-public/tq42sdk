@@ -6,7 +6,7 @@ from tq42.cli import (
     organization_group,
     project_group,
 )
-from tq42 import algorithm, organization
+from tq42 import organization
 import tq42.cli.utils.formatter as formatter
 from tq42.utils import dirs, misc
 from tq42.client import TQ42Client
@@ -20,7 +20,6 @@ class TestImports(unittest.TestCase):
         pass
 
     def test_tq42_imports(self):
-        self.assertIsNotNone(algorithm)
         self.assertIsNotNone(organization)
 
     def test_utils_imports(self):

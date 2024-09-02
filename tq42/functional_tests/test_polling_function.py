@@ -1,13 +1,9 @@
 import unittest
 from pytest import mark
 
-from google.protobuf.json_format import MessageToDict
-
 from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.functional_tests.functional_test_config import FunctionalTestConfig
 
-from tq42.algorithm import ToyMetadataProto, ToyParametersProto, ToyInputsProto
-from tq42.algorithm import AlgorithmProto
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
     ExperimentRunStatusProto,
 )
@@ -22,15 +18,19 @@ class TestFunctionalPollingTQ42API(unittest.TestCase, FunctionalTestConfig):
         pass
 
     def test_exp_run_poll(self):
-        parameters = ToyMetadataProto(
-            parameters=ToyParametersProto(n=2, r=1, msg="correct"),
-            inputs=ToyInputsProto(),
-        )
-        parameters = MessageToDict(parameters, preserving_proto_field_name=True)
+        parameters = {
+            "parameters": {
+                "n": 1,
+                "r": 1,
+                "msg": "correct",
+            },
+            "inputs": {},
+        }
 
         exp_run = ExperimentRun.create(
             client=self.get_client(),
-            algorithm=AlgorithmProto.TOY,
+            algorithm="TOY",
+            version="0.1.0",
             experiment_id=self.exp,
             compute=HardwareProto.SMALL,
             parameters=parameters,

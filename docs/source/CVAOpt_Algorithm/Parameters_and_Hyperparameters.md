@@ -51,7 +51,6 @@ The number of offsprings created in a iteration
 ```python
 from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun, HardwareProto
-from tq42.algorithm import AlgorithmProto
 import asyncio
 import numpy as np
 from tq42.channel import Channel, Ask, Tell
@@ -79,7 +78,8 @@ async def run_exp_with_channel(client, experiment_id, params):
   # create the experiment run
   run = ExperimentRun.create(
     client=client,
-    algorithm=AlgorithmProto.CVA_OPT,
+    algorithm='CVA_OPT',
+    version='0.1.0',
     experiment_id=experiment_id,
     compute=HardwareProto.SMALL,
     parameters={'parameters': params, 'inputs': {}}

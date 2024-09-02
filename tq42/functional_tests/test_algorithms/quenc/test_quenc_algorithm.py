@@ -1,8 +1,12 @@
 import unittest
+
+from google.protobuf.json_format import MessageToDict
+
 from tq42.experiment_run import ExperimentRun, HardwareProto
-from tq42.algorithm import AlgorithmProto
 from tq42.functional_tests.functional_test_config import FunctionalTestConfig
-from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import ExperimentRunStatusProto
+from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
+    ExperimentRunStatusProto,
+)
 from tq42.utils.decorators import timeout
 
 
@@ -16,19 +20,46 @@ class TestQuencAlgorithm(unittest.TestCase, FunctionalTestConfig):
     @timeout(240)
     def test_quenc_algorithm_successfully_runs(self):
         parameters = {
-            'parameters': {
-                'qubo': [0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],  
-                'number_layers': 5,
-                'steps': 25,
-                'velocity': 0.05,
-                'optimizer': 'ADAM'
+            "parameters": {
+                "qubo": [
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                ],
+                "number_layers": 5,
+                "steps": 25,
+                "velocity": 0.05,
+                "optimizer": "ADAM",
             },
-            'inputs': {}
+            "inputs": {},
         }
 
         exp_run = ExperimentRun.create(
             client=self.get_client(),
-            algorithm=AlgorithmProto.TETRA_QUENC,
+            algorithm="QUENC",
+            version="0.4.0",
             experiment_id=self.exp,
             compute=HardwareProto.SMALL,
             parameters=parameters,
@@ -40,9 +71,10 @@ class TestQuencAlgorithm(unittest.TestCase, FunctionalTestConfig):
         final_status = exp_run.poll().data.status
         self.assertEqual(ExperimentRunStatusProto.COMPLETED, final_status)
         self.assertIsNotNone(exp_run.data.result)
-        self.assertIsNotNone(exp_run.data.result.tetra_qu_enc_outcome.outputs.circuit.storage_id)
-        self.assertIsNotNone(exp_run.data.result.tetra_qu_enc_outcome.result)
+        outcome = MessageToDict(exp_run.data.result.outcome)
+        self.assertIsNotNone(outcome["outputs"]["circuit"]["storage_id"])
+        self.assertIsNotNone(outcome["result"])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
