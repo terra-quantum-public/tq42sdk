@@ -55,7 +55,6 @@ Here is an example of how to apply the custom quantum layer within a custom mode
 The following example trains a custom time series prediction problem using a custom quantum layer with a classical dense layer. -> regression problem
 
 ```python
-from google.protobuf.json_format import MessageToDict
 from tq42.client import TQ42Client
 from tq42.experiment_run import ExperimentRun, HardwareProto
 

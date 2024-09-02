@@ -63,8 +63,7 @@ Actual QPUs:
 1. IBM
 
 ```python
-
-circuit_storage_id = quenc_result.data.result.tetra_qu_enc_outcome.outputs.circuit.storage_id
+circuit_storage_id = quenc_result.data.result.outcome['outputs']['circuit']['storage_id']
 
 parameters = {
 	'parameters': {
