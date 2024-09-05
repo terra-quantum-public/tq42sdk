@@ -29,7 +29,7 @@ from com.terraquantum.channel.v1alpha1 import (
     channel_service_pb2_grpc as pb2_channel_grpc,
 )
 from tq42.utils.environment import environment_default_set
-from tq42.utils.exceptions import AuthenticationError
+from tq42.exceptions import AuthenticationError
 
 _service_config = {
     "methodConfig": [
