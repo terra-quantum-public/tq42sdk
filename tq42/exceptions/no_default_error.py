@@ -15,6 +15,13 @@ For a list of available commands, type `tq42 --help` or consult the documentatio
 
 
 class NoDefaultError(TQ42APIError):
+    """
+    Raised when the default organisation and/or project cannot be detected
+
+    Attributes:
+        command (str): the command for which the error occurred
+    """
+
     def __init__(self, command: str):
         self.command = command
 

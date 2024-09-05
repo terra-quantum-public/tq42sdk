@@ -9,6 +9,14 @@ We were unable to execute the given command as it violates certain constraints f
 
 
 class InvalidArgumentError(TQ42APIError):
+    """
+    Raised when providing wrong arguments / parameters.
+
+    Attributes:
+        command (str): Where the error occurred.
+        details (str): Details about the error.
+    """
+
     def __init__(self, command: str, details: str):
         self.command = command
         self.details = details

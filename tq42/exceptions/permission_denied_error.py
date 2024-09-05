@@ -11,5 +11,9 @@ Ensure that you are logged in with the correct user account.
 
 
 class PermissionDeniedError(TQ42APIError):
+    """
+    Raised when the user does not have access to the requested resource
+    """
+
     def __str__(self):
         return _MESSAGE

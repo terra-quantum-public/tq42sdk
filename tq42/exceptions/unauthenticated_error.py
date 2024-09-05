@@ -9,5 +9,9 @@ If you need further assistance, please visit https://help.terraquantum.io/.
 
 
 class UnauthenticatedError(TQ42APIError):
+    """
+    Raised when the user is not authenticated
+    """
+
     def __str__(self):
         return _MESSAGE

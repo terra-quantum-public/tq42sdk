@@ -48,10 +48,6 @@ def handle_generic_sdk_errors(func: F) -> F:
             raise exceptions.NoDefaultError(
                 command=traceback.extract_stack()[0].line
             ) from None
-        except exceptions.NoMatchingAttributeError as e:
-            raise exceptions.InvalidArgumentError(
-                command=traceback.extract_stack()[0].line, details=e.details
-            )
         except FileExistsError as e:
             raise exceptions.InvalidArgumentError(
                 command=traceback.extract_stack()[0].line,
