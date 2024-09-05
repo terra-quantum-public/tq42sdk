@@ -38,10 +38,15 @@ _MAX_RECONNECT_RETRIES = 5
 
 class Channel:
     """
-    Class to create and connect to a channel
+    Reference an existing channel with its `id`. A channel can be created with :py:func:`create`.
+
+
+    :param client: a client instance
+    :param id: existing channel id
     """
 
     id: str
+    """ID of the channel"""
     _client: TQ42Client
     _sequential_message_id: int = 0
 
@@ -58,6 +63,13 @@ class Channel:
     @staticmethod
     @handle_generic_sdk_errors
     async def create(client: TQ42Client) -> Channel:
+        """
+        Create a new channel
+
+        :param client: a client instance
+        :returns: a new channel
+        """
+
         empty = empty_pb2.Empty()
         res: CreateChannelResponse = await client.channel_client.CreateChannel(
             request=empty, metadata=client.metadata
@@ -175,6 +187,6 @@ def list_all(client: TQ42Client) -> List[Channel]:
     """
     List all channels for a given user.
 
-    For details, see (TODO: update link once a new documentation URL is created)
+    :meta private: # FIXME remove once implemented
     """
     raise NotImplementedError("This is a functionality still to come")

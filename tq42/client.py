@@ -121,12 +121,15 @@ class _ConfigEnvironment:
         }
 
 
-class TQ42Client(object):
+class TQ42Client:
     """
-    Visit https://help.terraquantum.io/ to access our help center, from where you can access help articles and video tutorials, report bugs, contact support and request improvements.
-    For TQ42SDK documentation, visit https://docs.tq42.com/en/latest/.
+    Create a new instance of the TQ42Client to pass to any resource
 
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#
+    Example:
+        >>> from tq42.experiment import list_all
+        ...
+        ... with TQ42Client() as client:
+        ...     print(list_all(client=client, project_id="some-project-id"))
     """
 
     def __call__(self, **kwargs):
@@ -199,7 +202,10 @@ class TQ42Client(object):
     @handle_generic_sdk_errors
     def login(self):
         """
-        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#
+        This method will open a window in your browser where you must confirm the MFA code, then enter your TQ42
+        username and password to authenticate. The authentication validity will keep extending as long as you are
+        using it within a 30 day period. To access TQ42 services with Python commands, you need a TQ42 account.
+        When running TQ42 Python commands, your environment needs to have access to your TQ42 account credentials.
         """
         if self.credential_flow_client_id and self.credential_flow_client_secret:
             self._login_without_user_interaction()
@@ -229,15 +235,6 @@ class TQ42Client(object):
         self._save_access_token(access_token)
 
     def _login_with_user_interaction(self):
-        """
-        This command will open a window in your browser where you must confirm the MFA code, then enter your TQ42
-        username and password to authenticate. The authentication validity will keep extending as long as you are
-        using it within a 30 day period. To access TQ42 services with Python commands, you need a TQ42 account.
-        When running TQ42 Python commands, your environment needs to have access to your TQ42 account credentials.
-
-        For details, see
-         https://docs.tq42.com/en/latest/README.html#authentication
-        """
         # Send the POST request and print the response
         response = requests.post(
             self.environment.auth_url_code,

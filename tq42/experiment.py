@@ -30,14 +30,18 @@ from tq42.utils.cache import get_current_value
 
 class Experiment:
     """
-    Class to manage experiments
+    Reference an existing experiment.
 
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
+    :param client: a client instance
+    :param id: the id of the existing experiment
+    :param data: only used internally
     """
 
     _client: TQ42Client
     id: str
+    """ID of the experiment"""
     data: ExperimentProto
+    """Object containing all attributes of the experiment"""
 
     def __init__(
         self, client: TQ42Client, id: str, data: Optional[ExperimentProto] = None
@@ -85,7 +89,10 @@ class Experiment:
     @handle_generic_sdk_errors
     def update(self, name: str) -> Experiment:
         """
-        Updates this specific experiment
+        Update the name of the experiment
+
+        :param name: new name for the experiment
+        :returns: the updated experiment
         """
         # Create a new FieldMask instance
         field_mask = FieldMask()
@@ -106,9 +113,10 @@ class Experiment:
     @handle_generic_sdk_errors
     def set_friendly_name(self, friendly_name: str) -> Experiment:
         """
-        Set a friendly name for an experiment.
+        Set the friendly name of the experiment
 
-        For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments
+        :param friendly_name: new friendly name for the experiment
+        :returns: the updated experiment
         """
         return self.update(name=friendly_name)
 
@@ -119,7 +127,9 @@ def list_all(client: TQ42Client, project_id: Optional[str] = None) -> List[Exper
     List all the experiments you have permission to view within a specific project.
     If no project_id is specified the currently set project id will be used for this.
 
-    For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-experiments
+    :param client: a client instance
+    :param project_id: the id of the project to list experiments for (defaults to the currently set project)
+    :returns: a list of all experiments
     """
     if not project_id:
         project_id = get_current_value("proj")

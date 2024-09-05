@@ -27,14 +27,18 @@ if TYPE_CHECKING:
 
 class Organization:
     """
-    Class to manage organization
+    Reference an existing organization.
 
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html
+    :param client: a client instance
+    :param id: the id of the existing organization
+    :param data: only used internally
     """
 
     _client: TQ42Client
     id: str
+    """ID of the organization"""
     data: OrganizationProto
+    """Object containing all attributes of the organization"""
 
     def __init__(
         self, client: TQ42Client, id: str, data: Optional[OrganizationProto] = None
@@ -75,9 +79,9 @@ class Organization:
 
     def set(self) -> Organization:
         """
-        Sets the given organization as the default.
+        Sets the current organization as the default organization.
 
-        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project
+        :returns: organization instance
 
         .. deprecated:: 0.8.1
            Use :py:func:`set_as_default` instead.
@@ -91,9 +95,9 @@ class Organization:
     @handle_generic_sdk_errors
     def set_as_default(self) -> Organization:
         """
-        Sets the given organization as the default.
+        Sets the current organization as the default organization.
 
-        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project
+        :returns: organization instance
         """
         project = Project.get_default(client=self._client, organization_id=self.id)
         if project:
@@ -107,6 +111,8 @@ class Organization:
     def get_default_org(client: TQ42Client) -> Optional[Organization]:
         """
         Gets the default organization for this user based on the default_org field
+
+        :returns: the default organization if one is set as a default
         """
         org_list = list_all(client=client)
         for org in org_list:
@@ -120,8 +126,8 @@ def list_all(client: TQ42Client) -> List[Organization]:
     """
     List all the organizations you have permission to view.
 
-    For details, see
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-organizations
+    :param client: a client instance
+    :returns: a list of all organizations
     """
     empty = empty_pb2.Empty()
     res: ListOrganizationsResponse = (

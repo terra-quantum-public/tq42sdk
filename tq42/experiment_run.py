@@ -40,15 +40,18 @@ from tq42.utils.pretty_list import PrettyList
 
 class ExperimentRun:
     """
-    Class to run experiments and view results
+    Reference an existing experiment run.
 
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
-
+    :param client: a client instance
+    :param id: the id of the existing experiment run
+    :param data: only used internally
     """
 
     _client: TQ42Client
     id: str
+    """ID of the experiment run"""
     data: ExperimentRunProto
+    """Object containing all attributes of the experiment run"""
 
     def __init__(
         self, client: TQ42Client, id: str, data: Optional[ExperimentRunProto] = None
@@ -100,10 +103,16 @@ class ExperimentRun:
         parameters: Mapping[str, Any],
     ) -> ExperimentRun:
         """
-        Create an experiment run.
+        Start a new experiment run in an experiment
 
-        For details, see
-        https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
+        :param client: a client instance
+        :param algorithm: name of the algorithm (e.g. `'TOY'`)
+        :param version: version of the algorithm in the format `x.y.z`
+        :param experiment_id: id of the experiment in which the run should be started
+        :param compute: the hardware specification on which the run should be started (e.g. `HardwareProto.SMALL`)
+        :param parameters: dict with parameters for the algorithm
+        :returns: the created experiment run
+
         """
 
         request = CreateExperimentRunRequest(
@@ -123,10 +132,9 @@ class ExperimentRun:
     @handle_generic_sdk_errors
     def check(self) -> ExperimentRun:
         """
-        Monitor run status.
+        Update the state of the experiment run
 
-        For details, see
-        https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run
+        :returns: the updated experiment run
         """
         self.data = self._get_data()
         return self
@@ -138,8 +146,12 @@ class ExperimentRun:
         """
         Monitor an experiment run until it completes, then automatically display the results (if there are no errors).
 
-        For details, see
-        https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#monitoring-an-experiment-run
+        :param tries: how many retries until the poll loop is cancelled (default: 1000)
+        :param initial_delay: initial delay before starting poll loop (default: 1 second)
+        :param delay: initial delay between retries (default: 1 second)
+        :param backoff: backoff factor between retries (default: 1)
+        :returns: the finished experiment run
+        :raises: ExceedRetriesError if `tries` are exceeded
         """
         time.sleep(initial_delay)
 
@@ -162,8 +174,8 @@ class ExperimentRun:
         """
         Cancel a run that is QUEUED, PENDING, or RUNNING.
 
-        For details, see
-        https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#cancelling-an-experiment-run
+        :returns: the cancelled experiment run
+        :raises: ExperimentRunCancelError if the experiment run is not queued, pending or running
         """
         try:
             cancel_exp_runs_response = CancelExperimentRunRequest(
@@ -182,8 +194,9 @@ def list_all(client: TQ42Client, experiment_id: str) -> List[ExperimentRun]:
     """
     List all the runs within an experiment you have permission to view.
 
-    For details, see
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-runs-within-an-experiment
+    :param client: a client instance
+    :param experiment_id: id of the experiment
+    :returns: a list of experiment runs
     """
     list_exp_run_request = ListExperimentRunsRequest(experiment_id=experiment_id)
 

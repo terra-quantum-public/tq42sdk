@@ -22,13 +22,17 @@ from tq42.utils.pretty_list import PrettyList
 
 class Model:
     """
-    Class to view models
+    Reference an existing model.
 
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Models.html
+    :param client: a client instance
+    :param id: the id of the existing model
+    :param data: only used internally
     """
 
     id: str
+    """ID of the model"""
     data: StorageProto
+    """Object containing all attributes of the model"""
     _client: TQ42Client
 
     def __init__(
@@ -74,7 +78,8 @@ def list_all(client: TQ42Client, project_id: str) -> List[Model]:
     """
     List all models for a project.
 
-    For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Models.html
+    :param client: a client instance
+    :param project_id: the id of a project
     """
     list_models_request = ListStoragesRequest(
         project_id=project_id, type=StorageType.MODEL

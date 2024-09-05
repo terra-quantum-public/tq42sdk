@@ -43,13 +43,17 @@ from tq42.utils.pretty_list import PrettyList
 
 class Dataset:
     """
-    Class to create and view datasets
+    Reference an existing dataset.
 
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Work_with_Datasets.html
+    :param client: a client instance
+    :param id: the id of the existing dataset
+    :param data: only used internally
     """
 
     id: str
+    """ID of the dataset"""
     data: StorageProto
+    """Object containing all attributes of the dataset"""
     _client: TQ42Client
 
     def __init__(
@@ -103,7 +107,16 @@ class Dataset:
         """
         Create a dataset for a project.
 
-        For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html
+        :params client: a client instance
+        :param project_id: the id of the project where the dataset should be created in
+        :param name: name for the dataset
+        :param description: description for the dataset
+        :param sensitivity: sensitivity of the dataset (e.g. `DatasetSensitivityProto.SENSITIVE` for a sensitive dataset)
+        :param file: path to local file that should be uploaded to the dataset
+        :param url: url to remote file that should be uploaded to the dataset
+        :returns: the created dataset
+
+        Only one of `url` or `file` can be specified.
         """
 
         if (file and url) or (not file and not url):
@@ -209,10 +222,10 @@ class Dataset:
     @handle_generic_sdk_errors
     def export(self, directory_path: str) -> List[str]:
         """
-        Export all files within the dataset.
-        Returns a list of exported file paths
+        Export all files within a dataset to a local path
 
-        For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html
+        :param directory_path: local path where all files should be exported to (must exist and be a directory)
+        :returns: a list of exported file paths
         """
         if not os.path.isdir(directory_path):
             raise ValueError(
@@ -260,9 +273,11 @@ class Dataset:
 @handle_generic_sdk_errors
 def list_all(client: TQ42Client, project_id: str) -> List[Dataset]:
     """
-    List all datasets for a project.
+    List all datasets in a project.
 
-    For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Datasets.html
+    :param client: a client instance
+    :param project_id: the id of a project
+    :returns: a list of datasets
     """
     list_datasets_request = ListStoragesRequest(
         project_id=project_id, type=StorageType.DATASET
