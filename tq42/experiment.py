@@ -77,6 +77,8 @@ class Experiment:
     def from_proto(client: TQ42Client, msg: ExperimentProto) -> Experiment:
         """
         Creates Experiment instance from a protobuf message.
+
+        :meta private:
         """
         return Experiment(client=client, id=msg.id, data=msg)
 

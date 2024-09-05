@@ -8,7 +8,7 @@ from unittest import mock
 
 from keyring.errors import InitError, NoKeyringError, PasswordSetError, KeyringLocked
 
-from tq42.client import ConfigEnvironment, TQ42Client
+from tq42.client import _ConfigEnvironment, TQ42Client
 from tq42.utils import dirs, file_handling
 from tq42.utils.misc import (
     save_token,
@@ -45,7 +45,7 @@ class TestUtils(unittest.TestCase):
         token_timestamp = datetime.strptime(token_timestamp, "%Y-%m-%d %H:%M:%S.%f")
         # force expire timestamp
         file_handling.write_to_file(
-            self.client.timestamp_file_path, str(token_timestamp)
+            self.client._timestamp_file_path, str(token_timestamp)
         )
 
         # load config file
@@ -53,7 +53,7 @@ class TestUtils(unittest.TestCase):
         with open(alt_config_file, encoding="utf-8") as f:
             config_data = json.load(f)
 
-        environment = ConfigEnvironment(
+        environment = _ConfigEnvironment(
             config_data["base_url"],
             config_data["client_id"],
             config_data["scope"],

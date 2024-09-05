@@ -42,11 +42,11 @@ class Channel:
     """
 
     id: str
-    client: TQ42Client
-    sequential_message_id: int = 0
+    _client: TQ42Client
+    _sequential_message_id: int = 0
 
     def __init__(self, client: TQ42Client, id: str):
-        self.client = client
+        self._client = client
         self.id = id
 
     def __repr__(self) -> str:
@@ -106,12 +106,15 @@ class Channel:
                         )
                         break
                     elif data_field_name == "ask_data":
-                        if self.sequential_message_id >= incoming.sequential_message_id:
+                        if (
+                            self._sequential_message_id
+                            >= incoming.sequential_message_id
+                        ):
                             logging.debug(
                                 "Message id is not sequential. Ignoring message"
                             )
                             continue
-                        self.sequential_message_id = incoming.sequential_message_id
+                        self._sequential_message_id = incoming.sequential_message_id
                         await _acknowledge_message(msg=incoming)
                         tell = await callback(incoming.ask_data)
                         tell_msg = ChannelMessage(
@@ -141,10 +144,10 @@ class Channel:
 
     async def _establish_connection(self):
         metadata: tuple = (
-            *self.client.metadata,
+            *self._client.metadata,
             ("channel-id", self.id),
         )
-        call = self.client.channel_client.ConnectChannelCustomer(metadata=metadata)
+        call = self._client.channel_client.ConnectChannelCustomer(metadata=metadata)
 
         await call.write(ChannelMessage())
         return call
@@ -156,7 +159,7 @@ class Channel:
             )
             try:
                 await asyncio.wait_for(
-                    self.client.channels_channel.channel_ready(), i * 2
+                    self._client.channels_channel.channel_ready(), i * 2
                 )
                 call = await self._establish_connection()
                 logging.info("Reconnected to channel.")

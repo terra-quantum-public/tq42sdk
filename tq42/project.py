@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import warnings
 from typing import Optional, List
 
 from google.protobuf.field_mask_pb2 import FieldMask
@@ -42,14 +43,14 @@ class Project:
     https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings
     """
 
-    client: TQ42Client
+    _client: TQ42Client
     id: str
     data: ProjectProto
 
     def __init__(
         self, client: TQ42Client, id: str, data: Optional[ProjectProto] = None
     ) -> None:
-        self.client = client
+        self._client = client
         self.id = id
 
         if data:
@@ -69,8 +70,8 @@ class Project:
         Gets the data corresponding to this project id.
         """
         get_proj_request = GetProjectRequest(id=self.id)
-        res = self.client.project_client.GetProject(
-            request=get_proj_request, metadata=self.client.metadata
+        res = self._client.project_client.GetProject(
+            request=get_proj_request, metadata=self._client.metadata
         )
         return res
 
@@ -78,6 +79,8 @@ class Project:
     def from_proto(client: TQ42Client, msg: ProjectProto) -> Project:
         """
         Creates Project instance from a protobuf message.
+
+        :meta private:
         """
         return Project(client=client, id=msg.id, data=msg)
 
@@ -103,8 +106,8 @@ class Project:
             update_mask=field_mask,
             request_id=None,
         )
-        self.data = self.client.project_client.UpdateProject(
-            request=update_proj_request, metadata=self.client.metadata
+        self.data = self._client.project_client.UpdateProject(
+            request=update_proj_request, metadata=self._client.metadata
         )
         return self
 
@@ -130,8 +133,24 @@ class Project:
         proj = get_current_value("proj")
         return Project(client=client, id=proj)
 
-    @handle_generic_sdk_errors
     def set(self) -> Project:
+        """
+        If projectId is valid for the given user sets this projectId
+        and the corresponding organizationId as the default
+
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project
+
+        .. deprecated:: 0.8.1
+           Use :py:func:`set_as_default` instead.
+        """
+        warnings.warn(
+            "Use of deprecated function set(). Use set_as_default() instead",
+            DeprecationWarning,
+        )
+        return self.set_as_default()
+
+    @handle_generic_sdk_errors
+    def set_as_default(self) -> Project:
         """
         If projectId is valid for the given user sets this projectId
         and the corresponding organizationId as the default

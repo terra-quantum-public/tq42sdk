@@ -17,7 +17,7 @@ class TestFunctionalInvokeCliExperimentGroup(
         assert result.output is not None
 
         # need a default set for just running exp list
-        Project(client=self.get_client(), id=self.proj).set()
+        Project(client=self.get_client(), id=self.proj).set_as_default()
         result = self.runner.invoke(self.cli_entry, ["exp", "list"])
         assert result.exit_code == 0
         assert result.output is not None

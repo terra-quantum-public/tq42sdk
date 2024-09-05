@@ -17,7 +17,7 @@ from com.terraquantum.organization.v1.organization.get_organization_request_pb2 
 )
 
 from typing import TYPE_CHECKING
-
+import warnings
 from tq42.utils.pretty_list import PrettyList
 
 # only import the stuff for type hints -> avoid circular imports
@@ -32,14 +32,14 @@ class Organization:
     https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html
     """
 
-    client: TQ42Client
+    _client: TQ42Client
     id: str
     data: OrganizationProto
 
     def __init__(
         self, client: TQ42Client, id: str, data: Optional[OrganizationProto] = None
     ) -> None:
-        self.client = client
+        self._client = client
         self.id = id
 
         if data:
@@ -59,8 +59,8 @@ class Organization:
         Gets the information about the provided organization
         """
         get_org_request = GetOrganizationRequest(id=self.id)
-        res: OrganizationProto = self.client.organization_client.GetOrganization(
-            request=get_org_request, metadata=self.client.metadata
+        res: OrganizationProto = self._client.organization_client.GetOrganization(
+            request=get_org_request, metadata=self._client.metadata
         )
         return res
 
@@ -68,19 +68,36 @@ class Organization:
     def from_proto(client: TQ42Client, msg: OrganizationProto) -> Organization:
         """
         Creates organization instance from a protobuf message.
+
+        :meta private:
         """
         return Organization(client=client, id=msg.id, data=msg)
 
-    @handle_generic_sdk_errors
     def set(self) -> Organization:
         """
         Sets the given organization as the default.
 
         https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project
+
+        .. deprecated:: 0.8.1
+           Use :py:func:`set_as_default` instead.
         """
-        project = Project.get_default(client=self.client, organization_id=self.id)
+        warnings.warn(
+            "Use of deprecated function set(). Use set_as_default() instead",
+            DeprecationWarning,
+        )
+        return self.set_as_default()
+
+    @handle_generic_sdk_errors
+    def set_as_default(self) -> Organization:
+        """
+        Sets the given organization as the default.
+
+        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project
+        """
+        project = Project.get_default(client=self._client, organization_id=self.id)
         if project:
-            project.set()
+            project.set_as_default()
             return self
 
         raise KeyError()

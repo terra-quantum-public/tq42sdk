@@ -29,7 +29,7 @@ def environment_default_set(
     if organization is None:
         organization = Organization.get_default_org(client=client)
 
-    organization.set()
+    organization.set_as_default()
 
     content = file_handling.read_file(dirs.cache_file())
     return content

@@ -43,16 +43,17 @@ class ExperimentRun:
     Class to run experiments and view results
 
     https://docs.tq42.com/en/latest/Python_Developer_Guide/Submitting_and_Monitoring_a_Run.html#submitting-an-experiment-run
+
     """
 
+    _client: TQ42Client
     id: str
-    client: TQ42Client
     data: ExperimentRunProto
 
     def __init__(
         self, client: TQ42Client, id: str, data: Optional[ExperimentRunProto] = None
     ):
-        self.client = client
+        self._client = client
         self.id = id
 
         if data:
@@ -73,8 +74,8 @@ class ExperimentRun:
         """
         get_exp_run_request = GetExperimentRunRequest(experiment_run_id=self.id)
 
-        res = self.client.experiment_run_client.GetExperimentRun(
-            request=get_exp_run_request, metadata=self.client.metadata
+        res = self._client.experiment_run_client.GetExperimentRun(
+            request=get_exp_run_request, metadata=self._client.metadata
         )
 
         return res
@@ -83,6 +84,8 @@ class ExperimentRun:
     def from_proto(client: TQ42Client, msg: ExperimentRunProto) -> ExperimentRun:
         """
         Creates ExperimentRun instance from a protobuf message.
+
+        :meta private:
         """
         return ExperimentRun(client=client, id=msg.id, data=msg)
 
@@ -166,8 +169,8 @@ class ExperimentRun:
             cancel_exp_runs_response = CancelExperimentRunRequest(
                 experiment_run_id=self.id
             )
-            self.client.experiment_run_client.CancelExperimentRun(
-                request=cancel_exp_runs_response, metadata=self.client.metadata
+            self._client.experiment_run_client.CancelExperimentRun(
+                request=cancel_exp_runs_response, metadata=self._client.metadata
             )
             return self
         except Exception:

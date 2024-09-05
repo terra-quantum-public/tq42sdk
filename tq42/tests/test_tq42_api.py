@@ -99,7 +99,7 @@ class TestAPI(unittest.TestCase):
 
         project = ParseDict(project, proj_def.ProjectProto())
         self.client.project_client.GetProject = MagicMock(return_value=project)
-        Project(client=self.client, id="new-project-uuid-we-wanna-set").set()
+        Project(client=self.client, id="new-project-uuid-we-wanna-set").set_as_default()
 
         self.assertEqual(1, clear_cache_mock.call_count)
         self.assertEqual(2, write_key_value_to_cache_mock.call_count)
@@ -179,7 +179,9 @@ class TestAPI(unittest.TestCase):
 
         self.client.project_client.ListProjects = MagicMock(return_value=projects)
 
-        Organization(client=self.client, id="new-org-uuid-we-wanna-set").set()
+        Organization(
+            client=self.client, id="new-org-uuid-we-wanna-set"
+        ).set_as_default()
 
         self.assertEqual(1, clear_cache_mock.call_count)
         self.assertEqual(2, write_key_value_to_cache_mock.call_count)

@@ -29,12 +29,12 @@ class Model:
 
     id: str
     data: StorageProto
-    client: TQ42Client
+    _client: TQ42Client
 
     def __init__(
         self, client: TQ42Client, id: str, data: Optional[StorageProto] = None
     ):
-        self.client = client
+        self._client = client
         self.id = id
 
         if data:
@@ -51,8 +51,8 @@ class Model:
     @handle_generic_sdk_errors
     def _get(self) -> StorageProto:
         get_storage_request = GetStorageRequest(storage_id=self.id)
-        storage_data: StorageProto = self.client.storage_client.GetStorage(
-            request=get_storage_request, metadata=self.client.metadata
+        storage_data: StorageProto = self._client.storage_client.GetStorage(
+            request=get_storage_request, metadata=self._client.metadata
         )
         return storage_data
 
@@ -63,6 +63,8 @@ class Model:
     def from_proto(client: TQ42Client, msg: StorageProto) -> Model:
         """
         Creates model instance from a protobuf message.
+
+        :meta private:
         """
         return Model(client=client, id=msg.id, data=msg)
 

@@ -50,12 +50,12 @@ class Dataset:
 
     id: str
     data: StorageProto
-    client: TQ42Client
+    _client: TQ42Client
 
     def __init__(
         self, client: TQ42Client, id: str, data: Optional[StorageProto] = None
     ):
-        self.client = client
+        self._client = client
         self.id = id
 
         if data:
@@ -72,8 +72,8 @@ class Dataset:
     @handle_generic_sdk_errors
     def _get(self) -> StorageProto:
         get_storage_request = GetStorageRequest(storage_id=self.id)
-        storage_data: StorageProto = self.client.storage_client.GetStorage(
-            request=get_storage_request, metadata=self.client.metadata
+        storage_data: StorageProto = self._client.storage_client.GetStorage(
+            request=get_storage_request, metadata=self._client.metadata
         )
         return storage_data
 
@@ -84,6 +84,8 @@ class Dataset:
     def from_proto(client: TQ42Client, msg: StorageProto) -> Dataset:
         """
         Creates Dataset instance from a protobuf message.
+
+        :meta private:
         """
         return Dataset(client=client, id=msg.id, data=msg)
 
@@ -219,8 +221,8 @@ class Dataset:
 
         export_storage_request = ExportStorageRequest(storage_id=self.id)
 
-        res: ExportStorageResponse = self.client.storage_client.ExportStorage(
-            request=export_storage_request, metadata=self.client.metadata
+        res: ExportStorageResponse = self._client.storage_client.ExportStorage(
+            request=export_storage_request, metadata=self._client.metadata
         )
 
         exported_file_paths = []
