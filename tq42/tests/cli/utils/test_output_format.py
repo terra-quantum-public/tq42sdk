@@ -1,7 +1,19 @@
 import unittest
 from dataclasses import dataclass
+from typing import cast
+
+from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
+    ExperimentRunStatusProto,
+)
+from com.terraquantum.experiment.v3alpha2.experimentrun.experiment_run_pb2 import (
+    ExperimentRunProto,
+    ExperimentRunResultProto,
+)
+from google.protobuf import struct_pb2
 
 from tq42.cli.utils import formatter
+from tq42.client import TQ42Client
+from tq42.experiment_run import ExperimentRun, HardwareProto
 
 
 class MockWithID:
@@ -130,12 +142,13 @@ class TestOutputFormat(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_exp_run_checked_lines(self):
-        exp_run = MockWithID("RUN_ID")
-        exp_run.status = 1
-        exp_run.algorithm = "TOY"
-        exp_run.hardware = 6
-        exp_run.result = "ERROR"
-        exp_run.error_message = ""
+        exp_run_data = MockWithID("RUN_ID")
+        exp_run_data.status = 1
+        exp_run_data.algorithm = "TOY"
+        exp_run_data.hardware = 6
+        exp_run_data.result = "ERROR"
+        exp_run_data.error_message = ""
+        exp_run = ExperimentRun(client=None, id="RUN_ID", data=exp_run_data)
 
         expected = [
             'run="RUN_ID"',
@@ -143,10 +156,55 @@ class TestOutputFormat(unittest.TestCase):
             'algorithm="TOY"',
             'compute="LARGE_GPU"',
             'result="ERROR"',
-            #'' signifies no error message expected as status is QUEUED
-            # if error expected, this field should show:
-            # error_message="Example error message."
-            "",
+        ]
+        actual = formatter.run_formatter.run_checked_lines(exp_run)
+        self.assertEqual(expected, actual)
+
+    def test_exp_run_checked_lines_completed(self):
+        outcome = struct_pb2.Struct()
+        outcome.update(
+            {"result": {"y": 123}, "outputs": {"data": {"storage_id": "some-id"}}}
+        )
+
+        data = ExperimentRunProto(
+            id="RUN_ID",
+            experiment_id="exp_id",
+            algorithm="TOY",
+            status=ExperimentRunStatusProto.COMPLETED,
+            hardware=HardwareProto.LARGE,
+            result=ExperimentRunResultProto(outcome=outcome),
+        )
+        exp_run = ExperimentRun(client=cast(TQ42Client, None), id="RUN_ID", data=data)
+
+        expected = [
+            'run="RUN_ID"',
+            'status="COMPLETED"',
+            'algorithm="TOY"',
+            'compute="LARGE"',
+            'result="{"y": 123.0}"',
+            'outputs="{"data": {"storage_id": "some-id"}}"',
+        ]
+        actual = formatter.run_formatter.run_checked_lines(exp_run)
+        self.assertEqual(expected, actual)
+
+    def test_exp_run_checked_lines_failed(self):
+        data = ExperimentRunProto(
+            id="RUN_ID",
+            experiment_id="exp_id",
+            algorithm="TOY",
+            status=ExperimentRunStatusProto.FAILED,
+            hardware=HardwareProto.LARGE,
+            error_message="error message",
+        )
+        exp_run = ExperimentRun(client=cast(TQ42Client, None), id="RUN_ID", data=data)
+
+        expected = [
+            'run="RUN_ID"',
+            'status="FAILED"',
+            'algorithm="TOY"',
+            'compute="LARGE"',
+            'result="ERROR"',
+            'error_message="error message"',
         ]
         actual = formatter.run_formatter.run_checked_lines(exp_run)
         self.assertEqual(expected, actual)
