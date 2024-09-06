@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import time
 from typing import Optional, List, Mapping, Any
 
@@ -30,7 +31,7 @@ from com.terraquantum.experiment.v3alpha2.experimentrun.list_experiment_runs_pb2
     ListExperimentRunsResponse,
 )
 from google.protobuf import struct_pb2
-from google.protobuf.json_format import MessageToJson, ParseDict
+from google.protobuf.json_format import MessageToJson, ParseDict, MessageToDict
 
 from tq42.client import TQ42Client
 from tq42.utils.exception_handling import handle_generic_sdk_errors
@@ -69,6 +70,52 @@ class ExperimentRun:
 
     def __str__(self) -> str:
         return f"ExperimentRun: {MessageToJson(self.data, preserving_proto_field_name=True)}"
+
+    @property
+    def completed(self) -> bool:
+        """
+        Check if the experiment run is completed
+
+        :returns: true if the experiment run is in the state `COMPLETED`
+        """
+
+        return self.data.status == ExperimentRunStatusProto.COMPLETED
+
+    @property
+    def result(self) -> Optional[dict[str, Any]]:
+        """
+        Get the result of the experiment run if the run is completed.
+
+        If the result contains a results_string or if the result is a string, it will be parsed and returned.
+
+        :returns: a dict with the result of the experiment run. If the run is not completed yet, returns `None`.
+        """
+
+        if not self.completed:
+            return None
+
+        result: dict[str, Any] | str = MessageToDict(self.data.result.outcome).get(
+            "result", {}
+        )
+        if isinstance(result, str):
+            return json.loads(result)
+        elif "results_string" in result:
+            return json.loads(result.get("results_string"))
+
+        return result
+
+    @property
+    def outputs(self) -> Optional[dict[str, Any]]:
+        """
+        Get the outputs of the experiment run if the run is completed.
+
+        :returns: a dict with the outputs of the experiment run. If the run is not completed yet, returns `None`.
+        """
+
+        if not self.completed:
+            return None
+
+        return MessageToDict(self.data.result.outcome).get("outputs", {})
 
     @handle_generic_sdk_errors
     def _get_data(self) -> ExperimentRunProto:
