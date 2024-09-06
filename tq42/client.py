@@ -202,10 +202,9 @@ class TQ42Client:
     @handle_generic_sdk_errors
     def login(self):
         """
-        This method will open a window in your browser where you must confirm the MFA code, then enter your TQ42
-        username and password to authenticate. The authentication validity will keep extending as long as you are
-        using it within a 30 day period. To access TQ42 services with Python commands, you need a TQ42 account.
-        When running TQ42 Python commands, your environment needs to have access to your TQ42 account credentials.
+        Trigger authentication flow. This opens a new browser window to authenticate the sdk.
+
+        If the environment variables `TQ42_AUTH_CLIENT_ID` and `TQ42_AUTH_CLIENT_SECRET` are set the flow is performed without user interaction.
         """
         if self.credential_flow_client_id and self.credential_flow_client_secret:
             self._login_without_user_interaction()
@@ -228,13 +227,17 @@ class TQ42Client:
         access_token = response_json.get("access_token")
 
         if not access_token:
-            raise AuthenticationError(
-                "No access token can be retrieved from the response."
-            )
+            raise AuthenticationError()
 
         self._save_access_token(access_token)
 
     def _login_with_user_interaction(self):
+        """
+        This method will open a window in your browser where you must confirm the MFA code, then enter your TQ42
+        username and password to authenticate. The authentication validity will keep extending as long as you are
+        using it within a 30 day period. To access TQ42 services with Python commands, you need a TQ42 account.
+        When running TQ42 Python commands, your environment needs to have access to your TQ42 account credentials.
+        """
         # Send the POST request and print the response
         response = requests.post(
             self.environment.auth_url_code,

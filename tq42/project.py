@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import warnings
 from typing import Optional, List
 
 from google.protobuf.field_mask_pb2 import FieldMask
@@ -136,27 +135,13 @@ class Project:
 
         :param client: a client instance
         :raises: NoDefaultError if no default project is set
+        :returns: the current default project
         """
         proj = get_current_value("proj")
         return Project(client=client, id=proj)
 
-    def set(self) -> Project:
-        """
-        Set this project as the default project
-
-        :returns: the project
-
-        .. deprecated:: 0.8.1
-           Use :py:func:`set_as_default` instead.
-        """
-        warnings.warn(
-            "Use of deprecated function set(). Use set_as_default() instead",
-            DeprecationWarning,
-        )
-        return self.set_as_default()
-
     @handle_generic_sdk_errors
-    def set_as_default(self) -> Project:
+    def set(self) -> Project:
         """
         Set this project as the default project
 

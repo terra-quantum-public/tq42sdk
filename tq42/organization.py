@@ -17,7 +17,6 @@ from com.terraquantum.organization.v1.organization.get_organization_request_pb2 
 )
 
 from typing import TYPE_CHECKING
-import warnings
 from tq42.utils.pretty_list import PrettyList
 
 # only import the stuff for type hints -> avoid circular imports
@@ -77,23 +76,8 @@ class Organization:
         """
         return Organization(client=client, id=msg.id, data=msg)
 
-    def set(self) -> Organization:
-        """
-        Sets the current organization as the default organization.
-
-        :returns: organization instance
-
-        .. deprecated:: 0.8.1
-           Use :py:func:`set_as_default` instead.
-        """
-        warnings.warn(
-            "Use of deprecated function set(). Use set_as_default() instead",
-            DeprecationWarning,
-        )
-        return self.set_as_default()
-
     @handle_generic_sdk_errors
-    def set_as_default(self) -> Organization:
+    def set(self) -> Organization:
         """
         Sets the current organization as the default organization.
 
@@ -101,7 +85,7 @@ class Organization:
         """
         project = Project.get_default(client=self._client, organization_id=self.id)
         if project:
-            project.set_as_default()
+            project.set()
             return self
 
         raise KeyError()

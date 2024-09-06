@@ -80,7 +80,7 @@ def set_org(client: TQ42Client, org_id: str) -> str:
 
 
 def set_project(client: TQ42Client, proj_id: str) -> str:
-    project = Project(client=client, id=proj_id).set_as_default()
+    project = Project(client=client, id=proj_id).set()
     result = set_proj_lines(project)
     result = "\n".join(result)
     return result
