@@ -1,6 +1,6 @@
 import unittest
 
-from tq42.client import ConfigEnvironment
+from tq42.client import _ConfigEnvironment
 
 
 class TestConfigEnvironment(unittest.TestCase):
@@ -10,7 +10,7 @@ class TestConfigEnvironment(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def code_data_test(self, env: ConfigEnvironment):
+    def code_data_test(self, env: _ConfigEnvironment):
         expected = {
             "client_id": env.client_id,
             "scope": env.scope,
@@ -23,7 +23,7 @@ class TestConfigEnvironment(unittest.TestCase):
         actual = env.headers
         self.assertEqual(expected, actual)
 
-    def token_data_test(self, env: ConfigEnvironment):
+    def token_data_test(self, env: _ConfigEnvironment):
         expected = {
             "grant_type": "urn:ietf:params:oauth:grant-type:device_code",
             "device_code": "DEVICE CODE",
@@ -33,7 +33,7 @@ class TestConfigEnvironment(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_int_urls(self):
-        env = ConfigEnvironment(
+        env = _ConfigEnvironment(
             "int.terraquantum.io",
             "CLIENT ID",
             "openid profile email",
@@ -52,7 +52,7 @@ class TestConfigEnvironment(unittest.TestCase):
         self.token_data_test(env)
 
     def test_staging_urls(self):
-        env = ConfigEnvironment(
+        env = _ConfigEnvironment(
             "staging.terraquantum.io",
             "CLIENT ID",
             "openid profile email",

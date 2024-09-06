@@ -22,19 +22,23 @@ from tq42.utils.pretty_list import PrettyList
 
 class Model:
     """
-    Class to view models
+    Reference an existing model.
 
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Models.html
+    :param client: a client instance
+    :param id: the id of the existing model
+    :param data: only used internally
     """
 
     id: str
+    """ID of the model"""
     data: StorageProto
-    client: TQ42Client
+    """Object containing all attributes of the model"""
+    _client: TQ42Client
 
     def __init__(
         self, client: TQ42Client, id: str, data: Optional[StorageProto] = None
     ):
-        self.client = client
+        self._client = client
         self.id = id
 
         if data:
@@ -51,8 +55,8 @@ class Model:
     @handle_generic_sdk_errors
     def _get(self) -> StorageProto:
         get_storage_request = GetStorageRequest(storage_id=self.id)
-        storage_data: StorageProto = self.client.storage_client.GetStorage(
-            request=get_storage_request, metadata=self.client.metadata
+        storage_data: StorageProto = self._client.storage_client.GetStorage(
+            request=get_storage_request, metadata=self._client.metadata
         )
         return storage_data
 
@@ -63,6 +67,8 @@ class Model:
     def from_proto(client: TQ42Client, msg: StorageProto) -> Model:
         """
         Creates model instance from a protobuf message.
+
+        :meta private:
         """
         return Model(client=client, id=msg.id, data=msg)
 
@@ -72,7 +78,8 @@ def list_all(client: TQ42Client, project_id: str) -> List[Model]:
     """
     List all models for a project.
 
-    For details, see https://docs.tq42.com/en/latest/Python_Developer_Guide/Working_with_Models.html
+    :param client: a client instance
+    :param project_id: the id of a project
     """
     list_models_request = ListStoragesRequest(
         project_id=project_id, type=StorageType.MODEL

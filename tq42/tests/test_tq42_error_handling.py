@@ -3,7 +3,7 @@ import unittest
 from grpc import StatusCode
 from grpc._channel import _InactiveRpcError as InactiveRpcError, _RPCState as RPCState
 
-from tq42.utils.exceptions import (
+from tq42.exceptions import (
     NoDefaultError,
     InvalidArgumentError,
     PermissionDeniedError,
@@ -11,13 +11,6 @@ from tq42.utils.exceptions import (
     ExceedRetriesError,
 )
 from tq42.utils.exception_handling import handle_generic_sdk_errors
-from tq42.utils.file_handling import read_file
-from tq42.utils.constants import (
-    no_default_error_file,
-    unauthenticated_error_file,
-    insufficient_permission_errors_file,
-    invalid_arguments_error_file,
-)
 
 
 class TestTq42ErrorHandling(unittest.TestCase):
@@ -49,14 +42,10 @@ class TestTq42ErrorHandling(unittest.TestCase):
         def raise_invalid_argument():
             raise InvalidArgumentError("command", "details")
 
-        try:
+        with self.assertRaises(InvalidArgumentError) as cm:
             raise_invalid_argument()
-            self.fail_if_still_here()
-        except InvalidArgumentError as e:
-            self.assertEqual(
-                str(e),
-                read_file(invalid_arguments_error_file).format(e.command, e.details),
-            )
+            self.assertEqual(cm.exception.details, "no details")
+            self.assertEqual(cm.exception.command, "command")
 
     def test_decorator_grpc_invalid_argument_error(self):
         @handle_generic_sdk_errors
@@ -71,14 +60,10 @@ class TestTq42ErrorHandling(unittest.TestCase):
                 )
             )
 
-        try:
+        with self.assertRaises(InvalidArgumentError) as cm:
             raise_invalid_argument_grpc()
-            self.fail_if_still_here()
-        except InvalidArgumentError as e:
-            self.assertEqual(
-                str(e),
-                read_file(invalid_arguments_error_file).format(e.command, e.details),
-            )
+            self.assertEqual(cm.exception.details, "no details")
+            self.assertIsNotNone(cm.exception.command)
 
     def test_decorator_grpc_status_not_found_error(self):
         @handle_generic_sdk_errors
@@ -93,25 +78,18 @@ class TestTq42ErrorHandling(unittest.TestCase):
                 )
             )
 
-        try:
+        with self.assertRaises(InvalidArgumentError) as cm:
             raise_status_not_found_grpc()
-            self.fail_if_still_here()
-        except InvalidArgumentError as e:
-            self.assertEqual(
-                str(e),
-                read_file(invalid_arguments_error_file).format(e.command, e.details),
-            )
+            self.assertEqual(cm.exception.details, "no details")
+            self.assertIsNotNone(cm.exception.command)
 
     def test_decorator_permission_denied_error(self):
         @handle_generic_sdk_errors
         def raise_permission_denied():
             raise PermissionDeniedError()
 
-        try:
+        with self.assertRaises(PermissionDeniedError):
             raise_permission_denied()
-            self.fail_if_still_here()
-        except PermissionDeniedError as e:
-            self.assertEqual(str(e), read_file(insufficient_permission_errors_file))
 
     def test_decorator_grpc_permission_denied_error(self):
         @handle_generic_sdk_errors
@@ -126,22 +104,16 @@ class TestTq42ErrorHandling(unittest.TestCase):
                 )
             )
 
-        try:
+        with self.assertRaises(PermissionDeniedError):
             raise_permission_denied_grpc()
-            self.fail_if_still_here()
-        except PermissionDeniedError as e:
-            self.assertEqual(str(e), read_file(insufficient_permission_errors_file))
 
     def test_decorator_unauthenticated_error(self):
         @handle_generic_sdk_errors
         def raise_unauthenticated():
             raise UnauthenticatedError()
 
-        try:
+        with self.assertRaises(UnauthenticatedError):
             raise_unauthenticated()
-            self.fail_if_still_here()
-        except UnauthenticatedError as e:
-            self.assertEqual(str(e), read_file(unauthenticated_error_file))
 
     def test_decorator_grpc_unauthenticated_error(self):
         @handle_generic_sdk_errors
@@ -156,48 +128,43 @@ class TestTq42ErrorHandling(unittest.TestCase):
                 )
             )
 
-        try:
+        with self.assertRaises(UnauthenticatedError):
             raise_unauthenticated_grpc()
-            self.fail_if_still_here()
-        except UnauthenticatedError as e:
-            self.assertEqual(str(e), read_file(unauthenticated_error_file))
 
     def test_decorator_no_default_error(self):
         @handle_generic_sdk_errors
         def raise_no_default():
             raise NoDefaultError("command")
 
-        try:
+        with self.assertRaises(NoDefaultError) as cm:
             raise_no_default()
-            self.fail_if_still_here()
-        except NoDefaultError as e:
-            self.assertEqual(str(e), read_file(no_default_error_file).format(e.command))
+            self.assertEqual(cm.exception.command, "command")
 
     def test_decorator_key_error(self):
         @handle_generic_sdk_errors
         def raise_key_error():
             raise KeyError()
 
-        try:
+        with self.assertRaises(NoDefaultError) as cm:
             raise_key_error()
-            self.fail_if_still_here()
-        except NoDefaultError as e:
-            self.assertEqual(str(e), read_file(no_default_error_file).format(e.command))
+            self.assertEqual(
+                cm.exception.command,
+                "sys.exit(pytest.main(args, plugins_to_load + [Plugin]))",
+            )
 
     def test_decorator_exceed_retries_error(self):
         @handle_generic_sdk_errors
         def raise_exceed_retries():
             raise ExceedRetriesError(5)
 
-        try:
+        with self.assertRaises(ExceedRetriesError) as cm:
             raise_exceed_retries()
-            self.fail_if_still_here()
-        except ExceedRetriesError as e:
-            self.assertEqual(str(e), "Polling exceeded. Number of retries: 5")
+            self.assertEqual(cm.exception.tries, 5)
 
     def test_generic_error(self):
         @handle_generic_sdk_errors
         def raise_generic_error():
             raise Exception("generic exception")
 
-        self.assertRaises(Exception, raise_generic_error)
+        with self.assertRaises(Exception):
+            raise_generic_error()

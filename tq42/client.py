@@ -29,7 +29,7 @@ from com.terraquantum.channel.v1alpha1 import (
     channel_service_pb2_grpc as pb2_channel_grpc,
 )
 from tq42.utils.environment import environment_default_set
-from tq42.utils.exceptions import AuthenticationError
+from tq42.exceptions import AuthenticationError
 
 _service_config = {
     "methodConfig": [
@@ -52,7 +52,7 @@ _service_config = {
 }
 
 
-class ConfigEnvironment:
+class _ConfigEnvironment:
     """
     URLs determining environment
     """
@@ -121,12 +121,15 @@ class ConfigEnvironment:
         }
 
 
-class TQ42Client(object):
+class TQ42Client:
     """
-    Visit https://help.terraquantum.io/ to access our help center, from where you can access help articles and video tutorials, report bugs, contact support and request improvements.
-    For TQ42SDK documentation, visit https://docs.tq42.com/en/latest/.
+    Create a new instance of the TQ42Client to pass to any resource
 
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#
+    Example:
+        >>> from tq42.experiment import list_all
+        ...
+        ... with TQ42Client() as client:
+        ...     print(list_all(client=client, project_id="some-project-id"))
     """
 
     def __call__(self, **kwargs):
@@ -148,7 +151,7 @@ class TQ42Client(object):
         self.config_file = self.default_config_file
         self.config_folder = dirs.get_config_folder_path()
 
-        if alt_config_file is not None and not self.is_config_filepath_default(
+        if alt_config_file is not None and not self._is_config_filepath_default(
             alt_config_file
         ):
             self.config_file = alt_config_file
@@ -157,7 +160,7 @@ class TQ42Client(object):
         with open(self.config_file, encoding="utf-8") as f:
             config_data = json.load(f)
 
-        environment = ConfigEnvironment(
+        environment = _ConfigEnvironment(
             config_data["base_url"], config_data["client_id"], config_data["scope"]
         )
 
@@ -197,7 +200,19 @@ class TQ42Client(object):
         self.credential_flow_client_secret = os.getenv("TQ42_AUTH_CLIENT_SECRET")
 
     @handle_generic_sdk_errors
-    def login_without_user_interaction(self):
+    def login(self):
+        """
+        Trigger authentication flow. This opens a new browser window to authenticate the sdk.
+
+        If the environment variables `TQ42_AUTH_CLIENT_ID` and `TQ42_AUTH_CLIENT_SECRET` are set the flow is performed without user interaction.
+        """
+        if self.credential_flow_client_id and self.credential_flow_client_secret:
+            self._login_without_user_interaction()
+        else:
+            self._login_with_user_interaction()
+
+    @handle_generic_sdk_errors
+    def _login_without_user_interaction(self):
         response = requests.post(
             self.environment.auth_url_token,
             data=self.environment.client_credentials_data(
@@ -212,31 +227,16 @@ class TQ42Client(object):
         access_token = response_json.get("access_token")
 
         if not access_token:
-            raise AuthenticationError(
-                "No access token can be retrieved from the response."
-            )
+            raise AuthenticationError()
 
-        self.save_access_token(access_token)
+        self._save_access_token(access_token)
 
-    @handle_generic_sdk_errors
-    def login(self):
+    def _login_with_user_interaction(self):
         """
-        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#
-        """
-        if self.credential_flow_client_id and self.credential_flow_client_secret:
-            self.login_without_user_interaction()
-        else:
-            self.login_with_user_interaction()
-
-    def login_with_user_interaction(self):
-        """
-        This command will open a window in your browser where you must confirm the MFA code, then enter your TQ42
+        This method will open a window in your browser where you must confirm the MFA code, then enter your TQ42
         username and password to authenticate. The authentication validity will keep extending as long as you are
         using it within a 30 day period. To access TQ42 services with Python commands, you need a TQ42 account.
         When running TQ42 Python commands, your environment needs to have access to your TQ42 account credentials.
-
-        For details, see
-         https://docs.tq42.com/en/latest/README.html#authentication
         """
         # Send the POST request and print the response
         response = requests.post(
@@ -275,17 +275,17 @@ class TQ42Client(object):
 
             # If we received an access token, print it and break out of the loop
             if refresh_token and access_token:
-                self.save_access_token(access_token)
-                self.save_refresh_token(refresh_token)
+                self._save_access_token(access_token)
+                self._save_refresh_token(refresh_token)
                 break
 
             # Otherwise, wait for the specified interval before polling again
             time.sleep(interval)
 
-    def save_access_token(self, access_token: str):
+    def _save_access_token(self, access_token: str):
         save_location = misc.save_token(
             service_name="tq42_access_token",
-            backup_save_path=self.token_file_path,
+            backup_save_path=self._token_file_path,
             token=access_token,
         )
 
@@ -296,34 +296,38 @@ class TQ42Client(object):
         env_set = environment_default_set(client=self)
         print(env_set)
 
-    def save_refresh_token(self, refresh_token: str):
+    def _save_refresh_token(self, refresh_token: str):
         misc.save_token(
             service_name="tq42_refresh_token",
-            backup_save_path=self.refresh_token_file_path,
+            backup_save_path=self._refresh_token_file_path,
             token=refresh_token,
         )
         current_datetime = datetime.now()
-        file_handling.write_to_file(self.timestamp_file_path, current_datetime)
+        file_handling.write_to_file(self._timestamp_file_path, current_datetime)
 
-    def is_config_filepath_default(self, config_file):
+    def _is_config_filepath_default(self, config_file):
         return config_file == self.default_config_file
 
     @property
-    def token_file_path(self):
+    def _token_file_path(self):
         return self.token_manager.token_file_path
 
     @property
-    def timestamp_file_path(self):
+    def _timestamp_file_path(self):
         return self.token_manager.timestamp_file_path
 
     @property
-    def refresh_token_file_path(self):
+    def _refresh_token_file_path(self):
         return self.token_manager.refresh_token_file_path
 
     @property
     def metadata(self):
+        """
+        :meta private:
+        """
+
         self.token_manager.renew_expring_token()
         token = misc.get_token(
-            service_name="tq42_access_token", backup_save_path=self.token_file_path
+            service_name="tq42_access_token", backup_save_path=self._token_file_path
         )
         return (("authorization", "Bearer " + token),)

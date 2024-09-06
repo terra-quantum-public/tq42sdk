@@ -37,19 +37,23 @@ if TYPE_CHECKING:
 
 class Project:
     """
-    Class to manage projects
+    Reference an existing project.
 
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings
+    :param client: a client instance
+    :param id: the id of the existing project
+    :param data: only used internally
     """
 
-    client: TQ42Client
+    _client: TQ42Client
     id: str
+    """ID of the dataset"""
     data: ProjectProto
+    """Object containing all attributes of the project"""
 
     def __init__(
         self, client: TQ42Client, id: str, data: Optional[ProjectProto] = None
     ) -> None:
-        self.client = client
+        self._client = client
         self.id = id
 
         if data:
@@ -69,8 +73,8 @@ class Project:
         Gets the data corresponding to this project id.
         """
         get_proj_request = GetProjectRequest(id=self.id)
-        res = self.client.project_client.GetProject(
-            request=get_proj_request, metadata=self.client.metadata
+        res = self._client.project_client.GetProject(
+            request=get_proj_request, metadata=self._client.metadata
         )
         return res
 
@@ -78,13 +82,18 @@ class Project:
     def from_proto(client: TQ42Client, msg: ProjectProto) -> Project:
         """
         Creates Project instance from a protobuf message.
+
+        :meta private:
         """
         return Project(client=client, id=msg.id, data=msg)
 
     @handle_generic_sdk_errors
     def update(self, name: str) -> Project:
         """
-        Updates this specific project
+        Update the name of the project
+
+        :param name: new name for the project
+        :returns: the updated project
         """
         project = {
             "id": self.id,
@@ -103,8 +112,8 @@ class Project:
             update_mask=field_mask,
             request_id=None,
         )
-        self.data = self.client.project_client.UpdateProject(
-            request=update_proj_request, metadata=self.client.metadata
+        self.data = self._client.project_client.UpdateProject(
+            request=update_proj_request, metadata=self._client.metadata
         )
         return self
 
@@ -113,8 +122,8 @@ class Project:
         """
         Set a friendly name for a project.
 
-        For details, see
-        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#setting-friendly-names-for-projects-and-experiments
+        :param friendly_name: new friendly name for the project
+        :returns: the updated project
         """
         return self.update(name=friendly_name)
 
@@ -123,9 +132,10 @@ class Project:
     def show(client: TQ42Client) -> Project:
         """
         Returns the current default project.
-        If no default proj can be found return NoDefaultError
 
-        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#check-your-current-organization-and-project-settings
+        :param client: a client instance
+        :raises: NoDefaultError if no default project is set
+        :returns: the current default project
         """
         proj = get_current_value("proj")
         return Project(client=client, id=proj)
@@ -133,10 +143,9 @@ class Project:
     @handle_generic_sdk_errors
     def set(self) -> Project:
         """
-        If projectId is valid for the given user sets this projectId
-        and the corresponding organizationId as the default
+        Set this project as the default project
 
-        https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#changing-your-workspace-to-a-different-organization-or-project
+        :returns: the project
         """
         clear_cache()
         write_key_value_to_cache("org", self.data.organization_id)
@@ -148,7 +157,11 @@ class Project:
     @handle_generic_sdk_errors
     def get_default(client: TQ42Client, organization_id: str) -> Optional[Project]:
         """
-        Gets the default project for this user and organization_id based on the default_project field
+        Gets the default project in an organization
+
+        :param client: a client instance
+        :param organization_id: the id of the organization
+        :returns: the default project if there is at least one project in the organization
         """
         project_list = list_all(client=client, organization_id=organization_id)
         if len(project_list) == 0:
@@ -170,10 +183,11 @@ def list_all(
     client: TQ42Client, organization_id: Optional[str] = None
 ) -> List[Project]:
     """
-    List all the projects you have permission to view within the organization that is currently set.
+    List all the projects you have permission to view within the organization.
 
-    For details, see
-    https://docs.tq42.com/en/latest/Python_Developer_Guide/Setting_Up_Your_Environment.html#list-all-projects
+    :param client: a client instance
+    :param organization_id: optionally an id of an organization, defaults to the default organization
+    :returns: a list of projects
     """
 
     if not organization_id:
