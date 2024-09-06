@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import time
-from typing import Optional, List, Mapping, Any
+from typing import Optional, List, Mapping, Any, Union
 
 from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
     ExperimentRunStatusProto,
@@ -94,9 +94,9 @@ class ExperimentRun:
         if not self.completed:
             return None
 
-        result: dict[str, Any] | str = MessageToDict(self.data.result.outcome).get(
-            "result", {}
-        )
+        result: Union[dict[str, Any], str] = MessageToDict(
+            self.data.result.outcome
+        ).get("result", {})
         if isinstance(result, str):
             return json.loads(result)
         elif "results_string" in result:
