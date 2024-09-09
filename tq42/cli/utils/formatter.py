@@ -1,3 +1,4 @@
+import json
 from abc import ABCMeta, abstractmethod
 from typing import List
 
@@ -7,10 +8,8 @@ from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
 from com.terraquantum.experiment.v3alpha2.experimentrun.experiment_run_pb2 import (
     ExperimentRunProto,
 )
-from google.protobuf.json_format import MessageToJson
-from google.protobuf.message import Message
 
-from tq42.experiment_run import HardwareProto
+from tq42.experiment_run import HardwareProto, ExperimentRun
 from ...project import Project
 
 
@@ -82,26 +81,37 @@ class ExpRunFormatter(ItemWithIDFormatter):
         status_line = 'status="{}"'.format(ExperimentRunStatusProto.Name(run.status))
         return [self.format(run), status_line]
 
-    def run_checked_lines(self, run: ExperimentRunProto):
-        algo_line = 'algorithm="{}"'.format(run.algorithm)
-        compute_line = 'compute="{}"'.format(HardwareProto.Name(run.hardware))
+    def run_checked_lines(self, run: ExperimentRun):
+        data = run.data
+        algo_line = 'algorithm="{}"'.format(data.algorithm)
+        compute_line = 'compute="{}"'.format(HardwareProto.Name(data.hardware))
 
-        json_msg = (
-            MessageToJson(run.result) if isinstance(run.result, Message) else "ERROR"
-        )
-        result_line = 'result="{}"'.format(json_msg)
+        result_line = 'result="ERROR"'
+        if data.status == ExperimentRunStatusProto.COMPLETED:
+            result_line = f'result="{json.dumps(run.result)}"'
+
+        outputs_line = ""
+        if data.status == ExperimentRunStatusProto.COMPLETED:
+            outputs_line = f'outputs="{json.dumps(run.outputs)}"'
 
         error_message = (
-            'error_message="{}"'.format(run.error_message)
-            if run.error_message != ""
+            'error_message="{}"'.format(data.error_message)
+            if data.error_message
             else ""
         )
-        return self.run_created_lines(run) + [
-            algo_line,
-            compute_line,
-            result_line,
-            error_message,
-        ]
+
+        return self.run_created_lines(data) + list(
+            filter(
+                None,
+                [
+                    algo_line,
+                    compute_line,
+                    result_line,
+                    outputs_line,
+                    error_message,
+                ],
+            )
+        )
 
 
 org_formatter = OrganizationFormatter()

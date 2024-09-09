@@ -43,9 +43,7 @@ def list_proj_by_org(client: TQ42Client, org: str) -> str:
 
 
 def get_exprun(client: TQ42Client, run_id: str) -> str:
-    result = run_formatter.run_checked_lines(
-        ExperimentRun(client=client, id=run_id).data
-    )
+    result = run_formatter.run_checked_lines(ExperimentRun(client=client, id=run_id))
     result = "\n".join(result)
     return result
 
@@ -96,7 +94,7 @@ def proj_show(client: TQ42Client) -> str:
 def poll_exprun(client: TQ42Client, run_id: str) -> str:
     try:
         result = ExperimentRun(client=client, id=run_id).poll()
-        result = run_formatter.run_checked_lines(result.data)
+        result = run_formatter.run_checked_lines(result)
         result = "\n".join(result)
         return result
 
