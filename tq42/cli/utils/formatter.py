@@ -86,12 +86,10 @@ class ExpRunFormatter(ItemWithIDFormatter):
         algo_line = 'algorithm="{}"'.format(data.algorithm)
         compute_line = 'compute="{}"'.format(HardwareProto.Name(data.hardware))
 
-        result_line = 'result="ERROR"'
-        if data.status == ExperimentRunStatusProto.COMPLETED:
-            result_line = f'result="{json.dumps(run.result)}"'
-
+        result_line = ""
         outputs_line = ""
         if data.status == ExperimentRunStatusProto.COMPLETED:
+            result_line = f'result="{json.dumps(run.result)}"'
             outputs_line = f'outputs="{json.dumps(run.outputs)}"'
 
         error_message = (

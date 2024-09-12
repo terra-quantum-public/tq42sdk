@@ -146,7 +146,6 @@ class TestOutputFormat(unittest.TestCase):
         exp_run_data.status = 1
         exp_run_data.algorithm = "TOY"
         exp_run_data.hardware = 6
-        exp_run_data.result = "ERROR"
         exp_run_data.error_message = ""
         exp_run = ExperimentRun(client=None, id="RUN_ID", data=exp_run_data)
 
@@ -155,7 +154,6 @@ class TestOutputFormat(unittest.TestCase):
             'status="QUEUED"',
             'algorithm="TOY"',
             'compute="LARGE_GPU"',
-            'result="ERROR"',
         ]
         actual = formatter.run_formatter.run_checked_lines(exp_run)
         self.assertEqual(expected, actual)
@@ -203,8 +201,26 @@ class TestOutputFormat(unittest.TestCase):
             'status="FAILED"',
             'algorithm="TOY"',
             'compute="LARGE"',
-            'result="ERROR"',
             'error_message="error message"',
+        ]
+        actual = formatter.run_formatter.run_checked_lines(exp_run)
+        self.assertEqual(expected, actual)
+
+    def test_exp_run_checked_lines_not_done(self):
+        data = ExperimentRunProto(
+            id="RUN_ID",
+            experiment_id="exp_id",
+            algorithm="TOY",
+            status=ExperimentRunStatusProto.RUNNING,
+            hardware=HardwareProto.LARGE,
+        )
+        exp_run = ExperimentRun(client=cast(TQ42Client, None), id="RUN_ID", data=data)
+
+        expected = [
+            'run="RUN_ID"',
+            'status="RUNNING"',
+            'algorithm="TOY"',
+            'compute="LARGE"',
         ]
         actual = formatter.run_formatter.run_checked_lines(exp_run)
         self.assertEqual(expected, actual)
