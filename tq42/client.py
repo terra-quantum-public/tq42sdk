@@ -28,6 +28,7 @@ from com.terraquantum.storage.v1alpha1 import (
 from com.terraquantum.channel.v1alpha1 import (
     channel_service_pb2_grpc as pb2_channel_grpc,
 )
+import com.terraquantum.plan.v1.plan.plan_service_pb2_grpc as pb2_plan_grpc
 from tq42.utils.environment import environment_default_set
 from tq42.exceptions import AuthenticationError
 
@@ -195,6 +196,7 @@ class TQ42Client:
         self.experiment_run_client = pb2_exp_run_grpc.ExperimentRunServiceStub(
             self.api_channel
         )
+        self.plan_client = pb2_plan_grpc.PlanServiceStub(self.api_channel)
         self.channel_client = pb2_channel_grpc.ChannelServiceStub(self.channels_channel)
         self.credential_flow_client_id = os.getenv("TQ42_AUTH_CLIENT_ID")
         self.credential_flow_client_secret = os.getenv("TQ42_AUTH_CLIENT_SECRET")
