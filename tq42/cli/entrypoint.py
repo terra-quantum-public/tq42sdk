@@ -1,5 +1,6 @@
 import click
 
+from tq42.cli.completion import generate_completion
 from tq42.cli.utils.types import TQ42CliContext, TQ42CliObject
 from tq42.client import TQ42Client
 from .auth_group import auth_group
@@ -44,6 +45,7 @@ cli.add_command(organization_group)
 cli.add_command(experiment_group)
 cli.add_command(project_group)
 cli.add_command(environment_group)
+cli.add_command(generate_completion)
 
 
 if __name__ == "__main__":
