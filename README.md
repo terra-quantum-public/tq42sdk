@@ -1,5 +1,11 @@
 ![](banner.png)
 
+<div align="center">
+  <a href="https://api-reference.terraquantum.io">API Reference</a>
+  &middot; 
+  <a href="https://pypi.org/project/tq42/">TQ42SDK on PyPI</a>
+</div>
+
 # Introduction to TQ42
 
 The [TQ42 Python SDK](https://github.com/terra-quantum-public/tq42sdk) puts the power in your hands to accelerate
@@ -51,8 +57,8 @@ List of commands to execute to have a conda environment ready to work with the s
 After having installed [conda](https://docs.anaconda.com/free/anaconda/install/index.html):
 
 ```bash
-conda create -n "my_env_name" python=3.9  # create the conda enviroment, it needs to be python 3.8 or higher
-conda activate my_env_name                # activate your conda enviroment
+conda create -n "my_env_name" python=3.9  # create the conda environment, it needs to be python 3.8 or higher
+conda activate my_env_name                # activate your conda environment
 pip install -U tq42                       # install the sdk using the newest available version
 pip install jupyter                       # install jupyter if you work with notebook
 pip install jupyter matplotlib            # install matplotlib for visualization purpose
@@ -167,7 +173,7 @@ with TQ42Client() as client:
 The experiment run can now be found via the UI and checked for its status.
 
 Alternatively, you can also use either the SDK or CLI to check on the experiment run.
-For more details om these two please take a look into the corresponding section of the documentation.
+For more details on these two please take a look at the corresponding section of the documentation.
 
 For more details on specific algorithms please take a look at the individual sections.
 
@@ -183,7 +189,7 @@ TQ42 offers a dedicated Help Center, allowing you to access a wide range of supp
 
 Please visit our [Help Center Homepage](https://help.terraquantum.io/).
 
-Customers can also contact our Customer Support team via the Help Centre using the help widget. Here, you can:
+Customers can also contact our Customer Support team via the Help Center using the help widget. Here, you can:
 
 - Contact our team for technical support
 - Report a bug on our platform
