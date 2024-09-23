@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+import os
+from dataclasses import dataclass
 from typing import Optional
 
 from tq42.organization import Organization, list_all as list_all_organizations
@@ -11,6 +14,93 @@ from typing import TYPE_CHECKING
 # only import the stuff for type hints -> avoid circular imports
 if TYPE_CHECKING:
     from tq42.client import TQ42Client
+
+_DEFAULT_BASE_URL = "terraquantum.io"
+_DEFAULT_CLIENT_ID = "gvBa4BHKOTlotDuE6E2HSQBzBDlM00F4"
+_DEFAULT_SCOPE = "openid profile email offline_access tq42"
+
+
+@dataclass
+class ConfigEnvironment:
+    """
+    Configuration environment for the TQ42 SDK
+    """
+
+    base_url: str
+    client_id: str
+    scope: str
+
+    @property
+    def api_host(self):
+        return "api.{}".format(self.base_url)
+
+    @property
+    def channels_host(self):
+        return f"channels.{self.base_url}"
+
+    @property
+    def auth_url_token(self):
+        return f"https://auth.{self.base_url}/oauth/token"
+
+    @property
+    def auth_url_code(self):
+        return f"https://auth.{self.base_url}/oauth/device/code"
+
+    @property
+    def audience(self):
+        return f"https://graphql-gateway.{self.base_url}/graphql"
+
+    @property
+    def client_credential_flow_audience(self):
+        return f"https://api.{self.base_url}"
+
+    @property
+    def headers(self):
+        return {"Content-Type": "application/x-www-form-urlencoded"}
+
+    @property
+    def code_data(self):
+        return {
+            "client_id": self.client_id,
+            "scope": self.scope,
+            "audience": self.audience,
+        }
+
+    def token_data(self, device_code: str):
+        return {
+            "grant_type": "urn:ietf:params:oauth:grant-type:device_code",
+            "device_code": device_code,
+            "client_id": self.client_id,
+        }
+
+    def refresh_token_data(self, refresh_token: str):
+        return {
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token,
+            "client_id": self.client_id,
+        }
+
+    def client_credentials_data(
+        self, client_id: str, client_secret: str, audience: str
+    ):
+        return {
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "grant_type": "client_credentials",
+            "audience": audience,
+        }
+
+    @staticmethod
+    def from_env(name: Optional[str] = None) -> "ConfigEnvironment":
+        env_var_prefix = "TQ42_SDK_"
+        if name is not None:
+            env_var_prefix = f"{env_var_prefix}{name.upper()}_"
+
+        base_url = os.getenv(f"{env_var_prefix}BASE_URL", _DEFAULT_BASE_URL)
+        client_id = os.getenv(f"{env_var_prefix}CLIENT_ID", _DEFAULT_CLIENT_ID)
+        scope = os.getenv(f"{env_var_prefix}SCOPE", _DEFAULT_SCOPE)
+
+        return ConfigEnvironment(base_url=base_url, client_id=client_id, scope=scope)
 
 
 def get_environment() -> str:

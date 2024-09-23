@@ -1,30 +1,35 @@
-from tq42.utils import dirs, file_handling
+import os
+
+from tq42.utils import file_handling
+from tq42.utils.environment import ConfigEnvironment
 from tq42.utils.misc import get_token, save_token
 from datetime import datetime
 import requests
 
+_REFRESH_TOKEN_KEY = "tq42_refresh_token"
+
 
 class TokenManager:
-    def __init__(self, environment, alt_config_folder):
-        self.alt_config_folder = alt_config_folder
-        self.environment = environment
+    def __init__(self, environment: ConfigEnvironment):
+        self._config_dir = os.path.expanduser("~/.config/tq42")
+        self._environment = environment
+
+        if not os.path.exists(self._config_dir):
+            os.makedirs(self._config_dir)
 
     @property
     def token_file_path(self):
-        token_folder = dirs.create_or_get_config_dir(self.alt_config_folder)
-        return dirs.full_path(token_folder, "token.json")
+        return os.path.join(self._config_dir, "token")
 
     @property
     def timestamp_file_path(self):
-        token_folder = dirs.create_or_get_config_dir(self.alt_config_folder)
-        return dirs.full_path(token_folder, "timestamp.json")
+        return os.path.join(self._config_dir, "timestamp")
 
     @property
     def refresh_token_file_path(self):
-        token_folder = dirs.create_or_get_config_dir(self.alt_config_folder)
-        return dirs.full_path(token_folder, "refresh_token.json")
+        return os.path.join(self._config_dir, "refresh_token")
 
-    def renew_expring_token(self):
+    def renew_expiring_token(self):
         token_timestamp = file_handling.read_file(self.timestamp_file_path)
         if token_timestamp == "":
             return False
@@ -41,14 +46,14 @@ class TokenManager:
 
     def request_new_access_token(self):
         refresh_token = get_token(
-            service_name="tq42_refresh_token",
+            service_name=_REFRESH_TOKEN_KEY,
             backup_save_path=self.refresh_token_file_path,
         )
-        data = self.environment.refresh_token_data(refresh_token)
+        data = self._environment.refresh_token_data(refresh_token)
         response = requests.post(
-            self.environment.auth_url_token,
+            self._environment.auth_url_token,
             data=data,
-            headers=self.environment.headers,
+            headers=self._environment.headers,
         )
         json_response = response.json()
         if "access_token" in json_response:

@@ -1,3 +1,6 @@
+import os
+from typing import Optional
+
 import click
 
 from tq42.cli.completion import generate_completion
@@ -12,14 +15,15 @@ from .environment_group import environment_group
 
 @click.group()
 @click.option(
-    "--config",
-    "config_path",
+    "--env",
+    "environment_name",
     required=False,
-    help="Set path to alternate configuration file location",
+    default=lambda: os.environ.get("ENV", None),
+    help="Environment to use for the CLI",
 )
 @click.version_option()
 @click.pass_context
-def cli(ctx: TQ42CliContext, config_path: str):
+def cli(ctx: TQ42CliContext, environment_name: Optional[str]):
     """
     Visit https://help.terraquantum.io/ to access our help center, from where you can access help articles and video tutorials, report bugs,
     contact support and request improvements.
@@ -37,7 +41,7 @@ def cli(ctx: TQ42CliContext, config_path: str):
     All other command are optional.
     """
     ctx.ensure_object(TQ42CliObject)
-    ctx.obj.client = TQ42Client(alt_config_file=config_path)
+    ctx.obj.client = TQ42Client(environment_name=environment_name)
 
 
 cli.add_command(auth_group)
