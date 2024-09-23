@@ -1,14 +1,25 @@
 ![](banner.png)
 
+<div align="center">
+  <a href="https://api-reference.terraquantum.io">API Reference</a>
+  &middot; 
+  <a href="https://pypi.org/project/tq42/">TQ42SDK on PyPI</a>
+</div>
+
 # Introduction to TQ42
-The [TQ42 Python SDK](https://github.com/terra-quantum-public/tq42sdk) puts the power in your hands to accelerate delivery of custom, high-impact solutions. After installing the SDK and authenticating, access algorithms such as:
+
+The [TQ42 Python SDK](https://github.com/terra-quantum-public/tq42sdk) puts the power in your hands to accelerate
+delivery of custom, high-impact solutions. After installing the SDK and authenticating, access algorithms such as:
 
 - **TetraOpt** – a global optimization library based on tensor train (TT) decomposition.
 - **ClearVu Analytics (CVA)** – build predictive models for data driven insights, automated ML and optimization.
-- **Quantum Encoding (QuEnc)** – a gradient-based optimization algorithm tailored for hardware-efficient quantum circuits utilizing amplitude encoding. 
-- **TQnet** – train and apply custom, sequential hybrid quantum-classical neural networks with our comprehensive library.
+- **Quantum Encoding (QuEnc)** – a gradient-based optimization algorithm tailored for hardware-efficient quantum
+  circuits utilizing amplitude encoding.
+- **TQnet** – train and apply custom, sequential hybrid quantum-classical neural networks with our comprehensive
+  library.
 
-With TQ42, there is no need to build or manage your own quantum circuits. Let our algorithms do the work. From the CLI, your Python IDE, or a Jupyter notebook:
+With TQ42, there is no need to build or manage your own quantum circuits. Let our algorithms do the work. From the CLI,
+your Python IDE, or a Jupyter notebook:
 
 - Set up your environment to work in the correct organization, project, and experiment
 - Connect a dataset, if needed, or use communication channels
@@ -16,57 +27,66 @@ With TQ42, there is no need to build or manage your own quantum circuits. Let ou
 - Run and manage experiments
 - Visualize results
 
-Collaborate with your teams across organizations and projects, and visit the [TQ42 web interface](https://terraquantum.io) for web-based tools to help you manage your account, projects, and experiments.
-
+Collaborate with your teams across organizations and projects, and visit
+the [TQ42 web interface](https://terraquantum.io) for web-based tools to help you manage your account, projects, and
+experiments.
 
 # TQ42 Features
 
 ![](infographic.jpg)
 
 # Getting Started
+
 ## System Requirements
+
 Be sure your system can support TQ42, which requires the following:
-- Any modern operating system, in particular, Mac OSX 12.0 (Ventura) or above, Windows 10+, Linux will do
+
+- Any modern operating system, in particular, macOS 12.0 (Ventura) or above, Windows 10+, Linux will do
 - Python 3.8 or above
-- x86 64-bit CPU (Intel / AMD architecture); ARM CPUs are not supported
-- 4 GB RAM
-- 5 GB free disk space
+- 256 MB RAM
+- approx. 260 MB free disk space
 
 The following Python packages are hard dependencies, and will automatically be installed alongside TQ42:
+
 - [protobuf](https://googleapis.dev/python/protobuf/latest/)
-- [grpcio-tools](https://pypi.org/project/grpcio-tools/) 
+- [grpcio-tools](https://pypi.org/project/grpcio-tools/)
 
 ## Quick Start
+
 List of commands to execute to have a conda environment ready to work with the sdk.
 After having installed [conda](https://docs.anaconda.com/free/anaconda/install/index.html):
+
 ```bash
-conda create -n "my_env_name" python=3.9  # create the conda enviroment, it needs to be python 3.8 or higher
-conda activate my_env_name                # activate your conda enviroment
+conda create -n "my_env_name" python=3.9  # create the conda environment, it needs to be python 3.8 or higher
+conda activate my_env_name                # activate your conda environment
 pip install -U tq42                       # install the sdk using the newest available version
 pip install jupyter                       # install jupyter if you work with notebook
 pip install jupyter matplotlib            # install matplotlib for visualization purpose
 tq42 auth login                           # authenticate the user 
 tq42 -h                                   # for visualizing the help
-
-git clone git@github.com:terra-quantum-public/tq42sdk.git # cloning the repo in case you want to use the example's notebook 
 ```
 
-
 ## Installation
+
 Prior to installing TQ42, create a virtual environment or conda environment.
+
 - [virtual environment](https://docs.python.org/3/library/venv.html)
 - [conda environment](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
 
-TQ42 is published on pypi, so on x86_64, i686, ppc64le, s390x, and aarch64 Linux systems, x86_64 on Mac OSX, and 32 and 64 bit Windows installing is as simple as running the `pip install tq42` command:
+TQ42 is published on pypi, so on x86_64, i686, ppc64le, s390x, and aarch64 Linux systems, x86_64 or ARM (Apple Silicon)
+on macOS, and 32 and 64-bit Windows installing is as simple as running the `pip install tq42` command:
+
 ```bash
 pip install tq42
 ```
 
-NOTE: We will refer to `pip` rather than `pip3`. Depending on how your system is configured you may have to use `pip3` rather than `pip` if the alias is not set.
-
+NOTE: We will refer to `pip` rather than `pip3`. Depending on how your system is configured you may have to use `pip3`
+rather than `pip` if the alias is not set.
 
 ## Authentication
+
 After installing TQ42, authenticate by typing the `tq42 auth login` CLI command:
+
 ```bash
 tq42 auth login
 ```
@@ -80,7 +100,8 @@ with TQ42Client() as client:
     client.login()
 ```
 
-This API call will open a window in your browser where you must confirm the MFA code, then enter your TQ42 username and password to authenticate.
+This API call will open a window in your browser where you must confirm the MFA code, then enter your TQ42 username and
+password to authenticate.
 
 The authentication validity will keep extending as long as you are using it within a 30 day period.
 
@@ -126,7 +147,8 @@ toy_params = {
 }
 ```
 
-After creating the available metadata and retrieving an experiment id the last step is to actually create the experiment run.
+After creating the available metadata and retrieving an experiment id the last step is to actually create the experiment
+run.
 
 ```python
 from tq42.client import TQ42Client
@@ -151,24 +173,27 @@ with TQ42Client() as client:
 The experiment run can now be found via the UI and checked for its status.
 
 Alternatively, you can also use either the SDK or CLI to check on the experiment run.
-For more details om these two please take a look into the corresponding section of the documentation.
+For more details on these two please take a look at the corresponding section of the documentation.
 
 For more details on specific algorithms please take a look at the individual sections.
 
-# TQ42 Help Center 
- 
-TQ42 offers a dedicated Help Center, allowing you to access a wide range of support and learning materials, including: 
- 
-- Video tutorials on SDK processes. 
-- Help articles across a range of platform workflows, including organisation and project configuration, inviting team members and running experiments. 
-- A scientific knowledge base – including articles on quantum computing, machine learning, optimization, simulation and our flagship algorithms. 
- 
-Please visit our [Help Center Homepage](https://help.terraquantum.io/). 
- 
-Customers can also contact our Customer Support team via the Help Centre using the help widget. Here, you can: 
- 
-- Contact our team for technical support 
-- Report a bug on our platform 
-- Suggest an improvement on TQ42. 
- 
-Our Help Center can also be accessed via CLI and Python specific commands. Please see the appropriate developer guides further through our SDK documentation for more information. 
+# TQ42 Help Center
+
+TQ42 offers a dedicated Help Center, allowing you to access a wide range of support and learning materials, including:
+
+- Video tutorials on SDK processes.
+- Help articles across a range of platform workflows, including organisation and project configuration, inviting team
+  members and running experiments.
+- A scientific knowledge base – including articles on quantum computing, machine learning, optimization, simulation and
+  our flagship algorithms.
+
+Please visit our [Help Center Homepage](https://help.terraquantum.io/).
+
+Customers can also contact our Customer Support team via the Help Center using the help widget. Here, you can:
+
+- Contact our team for technical support
+- Report a bug on our platform
+- Suggest an improvement on TQ42.
+
+Our Help Center can also be accessed via CLI and Python specific commands. Please see the appropriate developer guides
+further through our SDK documentation for more information. 
