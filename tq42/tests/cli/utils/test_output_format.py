@@ -224,3 +224,8 @@ class TestOutputFormat(unittest.TestCase):
         ]
         actual = formatter.run_formatter.run_checked_lines(exp_run)
         self.assertEqual(expected, actual)
+
+    def test_should_show_no_results_to_display(self):
+        expected = ["No results to display."]
+        actual = formatter.exp_formatter.format_by_list_object([])
+        self.assertEqual(expected, actual)

@@ -29,6 +29,9 @@ class ItemWithIDFormatter(metaclass=ABCMeta):
         return self.format_by_id(item.id)
 
     def format_by_list_object(self, list_items):
+        if len(list_items) == 0:
+            return ["No results to display."]
+
         return [self.format(item) for item in self._get_items(list_items)]
 
 
