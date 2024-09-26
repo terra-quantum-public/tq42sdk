@@ -2,7 +2,6 @@ import json
 import os
 import webbrowser
 from datetime import datetime
-from typing import Optional
 
 import grpc
 from grpc import aio
@@ -77,8 +76,8 @@ class TQ42Client:
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
 
-    def __init__(self, environment_name: Optional[str] = None):
-        self._environment = ConfigEnvironment.from_env(name=environment_name)
+    def __init__(self):
+        self._environment = ConfigEnvironment.from_env()
         self._token_manager = TokenManager(self._environment)
 
         self.server_port = 443

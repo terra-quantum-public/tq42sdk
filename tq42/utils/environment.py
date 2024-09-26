@@ -91,14 +91,11 @@ class ConfigEnvironment:
         }
 
     @staticmethod
-    def from_env(name: Optional[str] = None) -> "ConfigEnvironment":
-        env_var_prefix = "TQ42_SDK_"
-        if name is not None:
-            env_var_prefix = f"{env_var_prefix}{name.upper()}_"
-
-        base_url = os.getenv(f"{env_var_prefix}BASE_URL", _DEFAULT_BASE_URL)
-        client_id = os.getenv(f"{env_var_prefix}CLIENT_ID", _DEFAULT_CLIENT_ID)
-        scope = os.getenv(f"{env_var_prefix}SCOPE", _DEFAULT_SCOPE)
+    def from_env() -> "ConfigEnvironment":
+        env_var_prefix = "TQ42_SDK"
+        base_url = os.getenv(f"{env_var_prefix}_BASE_URL", _DEFAULT_BASE_URL)
+        client_id = os.getenv(f"{env_var_prefix}_CLIENT_ID", _DEFAULT_CLIENT_ID)
+        scope = os.getenv(f"{env_var_prefix}_SCOPE", _DEFAULT_SCOPE)
 
         return ConfigEnvironment(base_url=base_url, client_id=client_id, scope=scope)
 
