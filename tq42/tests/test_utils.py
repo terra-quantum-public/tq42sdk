@@ -1,4 +1,3 @@
-import json
 import os
 import unittest
 from dataclasses import dataclass
@@ -8,8 +7,9 @@ from unittest import mock
 
 from keyring.errors import InitError, NoKeyringError, PasswordSetError, KeyringLocked
 
-from tq42.client import _ConfigEnvironment, TQ42Client
+from tq42.client import TQ42Client
 from tq42.utils import dirs, file_handling
+from tq42.utils.environment import ConfigEnvironment
 from tq42.utils.misc import (
     save_token,
     get_token,
@@ -48,32 +48,17 @@ class TestUtils(unittest.TestCase):
             self.client._timestamp_file_path, str(token_timestamp)
         )
 
-        # load config file
-        alt_config_file = dirs.text_files_dir("config.json")
-        with open(alt_config_file, encoding="utf-8") as f:
-            config_data = json.load(f)
+        environment = ConfigEnvironment.from_env()
+        token_manager = TokenManager(environment)
 
-        environment = _ConfigEnvironment(
-            config_data["base_url"],
-            config_data["client_id"],
-            config_data["scope"],
-        )
-
-        token_manager = TokenManager(environment, None)
-
-        success = token_manager.renew_expring_token()
+        success = token_manager.renew_expiring_token()
         # old token timestamp should renew token
         self.assertTrue(success)
 
         # renew should return false as timestamp has been updated already
-        success = token_manager.renew_expring_token()
+        success = token_manager.renew_expiring_token()
         # new token timestamp should NOT renew token
         self.assertFalse(success)
-
-    def test_config_file_path(self):
-        alternative_json_path = dirs.testdata("config.json")
-        tq42 = TQ42Client(alternative_json_path)
-        self.assertEqual(tq42.config_file, alternative_json_path)
 
     def test_save_get_token_with_keyring_enabled(self):
         # keyring is working on Mac Sonoma 14.4 and Windows 11

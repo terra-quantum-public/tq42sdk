@@ -11,15 +11,9 @@ from .environment_group import environment_group
 
 
 @click.group()
-@click.option(
-    "--config",
-    "config_path",
-    required=False,
-    help="Set path to alternate configuration file location",
-)
 @click.version_option()
 @click.pass_context
-def cli(ctx: TQ42CliContext, config_path: str):
+def cli(ctx: TQ42CliContext):
     """
     Visit https://help.terraquantum.io/ to access our help center, from where you can access help articles and video tutorials, report bugs,
     contact support and request improvements.
@@ -37,7 +31,7 @@ def cli(ctx: TQ42CliContext, config_path: str):
     All other command are optional.
     """
     ctx.ensure_object(TQ42CliObject)
-    ctx.obj.client = TQ42Client(alt_config_file=config_path)
+    ctx.obj.client = TQ42Client()
 
 
 cli.add_command(auth_group)

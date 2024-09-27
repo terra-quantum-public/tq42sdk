@@ -2,10 +2,12 @@ import json
 import os
 import webbrowser
 from datetime import datetime
+
 import grpc
 from grpc import aio
 import requests
-from tq42.utils import dirs, file_handling, misc
+
+from tq42.utils import file_handling, misc
 from tq42.utils.token_manager import TokenManager
 from tq42.utils.exception_handling import handle_generic_sdk_errors
 import time
@@ -29,7 +31,8 @@ from com.terraquantum.channel.v1alpha1 import (
     channel_service_pb2_grpc as pb2_channel_grpc,
 )
 import com.terraquantum.plan.v1.plan.plan_service_pb2_grpc as pb2_plan_grpc
-from tq42.utils.environment import environment_default_set
+
+from tq42.utils.environment import ConfigEnvironment, environment_default_set
 from tq42.exceptions import AuthenticationError
 
 _service_config = {
@@ -53,75 +56,6 @@ _service_config = {
 }
 
 
-class _ConfigEnvironment:
-    """
-    URLs determining environment
-    """
-
-    def __init__(self, base_url, client_id, scope):
-        self.base_url = base_url
-        self.client_id = client_id
-        self.scope = scope
-
-    @property
-    def api_host(self):
-        return "api.{}".format(self.base_url)
-
-    @property
-    def channels_host(self):
-        return "channels.{}".format(self.base_url)
-
-    @property
-    def auth_url_token(self):
-        return "https://auth.{}/oauth/token".format(self.base_url)
-
-    @property
-    def auth_url_code(self):
-        return "https://auth.{}/oauth/device/code".format(self.base_url)
-
-    @property
-    def audience(self):
-        return "https://graphql-gateway.{}/graphql".format(self.base_url)
-
-    @property
-    def client_credential_flow_audience(self):
-        return "https://api.{}".format(self.base_url)
-
-    @property
-    def headers(self):
-        return {"Content-Type": "application/x-www-form-urlencoded"}
-
-    @property
-    def code_data(self):
-        return {
-            "client_id": self.client_id,
-            "scope": self.scope,
-            "audience": self.audience,
-        }
-
-    def token_data(self, device_code):
-        return {
-            "grant_type": "urn:ietf:params:oauth:grant-type:device_code",
-            "device_code": device_code,
-            "client_id": self.client_id,
-        }
-
-    def refresh_token_data(self, refresh_token):
-        return {
-            "grant_type": "refresh_token",
-            "refresh_token": refresh_token,
-            "client_id": self.client_id,
-        }
-
-    def client_credentials_data(self, client_id, client_secret, audience):
-        return {
-            "client_id": client_id,
-            "client_secret": client_secret,
-            "grant_type": "client_credentials",
-            "audience": audience,
-        }
-
-
 class TQ42Client:
     """
     Create a new instance of the TQ42Client to pass to any resource
@@ -142,39 +76,15 @@ class TQ42Client:
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
 
-    def __init__(self, alt_config_file=None):
-        # check whether "alt_config_file" is the default filepath, if it is, token.json resides
-        # in ~/.tqsdk/ and config.json inside utils/text_files/, if not using default,
-        # config.json and token.json will reside in the same path
-        # this happens when the user specifies a path during initialization of tq42 (usually for doing tests)
+    def __init__(self):
+        self._environment = ConfigEnvironment.from_env()
+        self._token_manager = TokenManager(self._environment)
 
-        self.default_config_file = dirs.text_files_dir("config.json")
-        self.config_file = self.default_config_file
-        self.config_folder = dirs.get_config_folder_path()
-
-        if alt_config_file is not None and not self._is_config_filepath_default(
-            alt_config_file
-        ):
-            self.config_file = alt_config_file
-            self.config_folder = os.path.dirname(alt_config_file)
-
-        with open(self.config_file, encoding="utf-8") as f:
-            config_data = json.load(f)
-
-        environment = _ConfigEnvironment(
-            config_data["base_url"], config_data["client_id"], config_data["scope"]
-        )
-
-        self.token_manager = TokenManager(environment, self.config_folder)
-
-        self.environment = environment
-        self.api_host = environment.api_host
-        self.channels_host = environment.channels_host
         self.server_port = 443
 
         # instantiate a channel
-        self.api_channel = grpc.secure_channel(
-            self.api_host,
+        self._api_channel = grpc.secure_channel(
+            self._environment.api_host,
             grpc.ssl_channel_credentials(),
             options=[
                 ("grpc.max_receive_message_length", 10_000_000),
@@ -183,23 +93,21 @@ class TQ42Client:
             ],
         )
         self.channels_channel = aio.secure_channel(
-            self.channels_host, grpc.ssl_channel_credentials()
+            self._environment.channels_host, grpc.ssl_channel_credentials()
         )
 
         # bind the client and the server
         self.organization_client = pb2_org_grpc.OrganizationServiceStub(
-            self.api_channel
+            self._api_channel
         )
-        self.project_client = pb2_proj_grpc.ProjectServiceStub(self.api_channel)
-        self.experiment_client = pb2_exp_grpc.ExperimentServiceStub(self.api_channel)
-        self.storage_client = pb2_data_grpc.StorageServiceStub(self.api_channel)
+        self.project_client = pb2_proj_grpc.ProjectServiceStub(self._api_channel)
+        self.experiment_client = pb2_exp_grpc.ExperimentServiceStub(self._api_channel)
+        self.storage_client = pb2_data_grpc.StorageServiceStub(self._api_channel)
         self.experiment_run_client = pb2_exp_run_grpc.ExperimentRunServiceStub(
-            self.api_channel
+            self._api_channel
         )
-        self.plan_client = pb2_plan_grpc.PlanServiceStub(self.api_channel)
+        self.plan_client = pb2_plan_grpc.PlanServiceStub(self._api_channel)
         self.channel_client = pb2_channel_grpc.ChannelServiceStub(self.channels_channel)
-        self.credential_flow_client_id = os.getenv("TQ42_AUTH_CLIENT_ID")
-        self.credential_flow_client_secret = os.getenv("TQ42_AUTH_CLIENT_SECRET")
 
     @handle_generic_sdk_errors
     def login(self):
@@ -208,21 +116,27 @@ class TQ42Client:
 
         If the environment variables `TQ42_AUTH_CLIENT_ID` and `TQ42_AUTH_CLIENT_SECRET` are set the flow is performed without user interaction.
         """
-        if self.credential_flow_client_id and self.credential_flow_client_secret:
-            self._login_without_user_interaction()
+        credential_flow_client_id = os.getenv("TQ42_AUTH_CLIENT_ID")
+        credential_flow_client_secret = os.getenv("TQ42_AUTH_CLIENT_SECRET")
+
+        if credential_flow_client_id and credential_flow_client_secret:
+            self._login_without_user_interaction(
+                client_id=credential_flow_client_id,
+                client_secret=credential_flow_client_secret,
+            )
         else:
             self._login_with_user_interaction()
 
     @handle_generic_sdk_errors
-    def _login_without_user_interaction(self):
+    def _login_without_user_interaction(self, client_id: str, client_secret: str):
         response = requests.post(
-            self.environment.auth_url_token,
-            data=self.environment.client_credentials_data(
-                client_id=self.credential_flow_client_id,
-                client_secret=self.credential_flow_client_secret,
-                audience=self.environment.client_credential_flow_audience,
+            self._environment.auth_url_token,
+            data=self._environment.client_credentials_data(
+                client_id=client_id,
+                client_secret=client_secret,
+                audience=self._environment.client_credential_flow_audience,
             ),
-            headers=self.environment.headers,
+            headers=self._environment.headers,
         )
 
         response_json = response.json()
@@ -242,9 +156,9 @@ class TQ42Client:
         """
         # Send the POST request and print the response
         response = requests.post(
-            self.environment.auth_url_code,
-            data=self.environment.code_data,
-            headers=self.environment.headers,
+            self._environment.auth_url_code,
+            data=self._environment.code_data,
+            headers=self._environment.headers,
         )
 
         json_response = response.json()
@@ -261,14 +175,14 @@ class TQ42Client:
 
         webbrowser.open(verification_uri_complete)
 
-        data_token = self.environment.token_data(device_code)
+        data_token = self._environment.token_data(device_code)
 
         while True:
             # Send the POST request to get access token and extract the JSON response
             response_token = requests.post(
-                self.environment.auth_url_token,
+                self._environment.auth_url_token,
                 data=data_token,
-                headers=self.environment.headers,
+                headers=self._environment.headers,
             )
             response_json = response_token.json()
 
@@ -307,20 +221,17 @@ class TQ42Client:
         current_datetime = datetime.now()
         file_handling.write_to_file(self._timestamp_file_path, current_datetime)
 
-    def _is_config_filepath_default(self, config_file):
-        return config_file == self.default_config_file
-
     @property
     def _token_file_path(self):
-        return self.token_manager.token_file_path
+        return self._token_manager.token_file_path
 
     @property
     def _timestamp_file_path(self):
-        return self.token_manager.timestamp_file_path
+        return self._token_manager.timestamp_file_path
 
     @property
     def _refresh_token_file_path(self):
-        return self.token_manager.refresh_token_file_path
+        return self._token_manager.refresh_token_file_path
 
     @property
     def metadata(self):
@@ -328,7 +239,7 @@ class TQ42Client:
         :meta private:
         """
 
-        self.token_manager.renew_expring_token()
+        self._token_manager.renew_expiring_token()
         token = misc.get_token(
             service_name="tq42_access_token", backup_save_path=self._token_file_path
         )
