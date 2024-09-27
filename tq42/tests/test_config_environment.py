@@ -75,9 +75,9 @@ class TestConfigEnvironment(unittest.TestCase):
     @mock.patch.dict(
         "os.environ",
         {
-            "TQ42_SDK_BASE_URL": "base_url",
-            "TQ42_SDK_CLIENT_ID": "client_id",
-            "TQ42_SDK_SCOPE": "scope",
+            "TQ42_BASE_URL": "base_url",
+            "TQ42_CLIENT_ID": "client_id",
+            "TQ42_SCOPE": "scope",
         },
     )
     def test_environment_name(self):

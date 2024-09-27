@@ -92,10 +92,9 @@ class ConfigEnvironment:
 
     @staticmethod
     def from_env() -> "ConfigEnvironment":
-        env_var_prefix = "TQ42_SDK"
-        base_url = os.getenv(f"{env_var_prefix}_BASE_URL", _DEFAULT_BASE_URL)
-        client_id = os.getenv(f"{env_var_prefix}_CLIENT_ID", _DEFAULT_CLIENT_ID)
-        scope = os.getenv(f"{env_var_prefix}_SCOPE", _DEFAULT_SCOPE)
+        base_url = os.getenv("TQ42_BASE_URL", _DEFAULT_BASE_URL)
+        client_id = os.getenv("TQ42_CLIENT_ID", _DEFAULT_CLIENT_ID)
+        scope = os.getenv("TQ42_SCOPE", _DEFAULT_SCOPE)
 
         return ConfigEnvironment(base_url=base_url, client_id=client_id, scope=scope)
 
