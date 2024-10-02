@@ -1,0 +1,66 @@
+{
+  "client_data": {
+    "number_of_clients": 3,
+    "client_coordinates": {
+      "0": [
+        10.0,
+        10.0
+      ],
+      "1": [
+        5.0,
+        20.0
+      ],
+      "2": [
+        10.0,
+        20.0
+      ]
+    },
+    "demands": {
+      "0": 350.0,
+      "1": 260.0,
+      "2": 400.0
+    }
+  },
+  "fleet_data": {
+    "number_of_depots": 1,
+    "number_of_vehicle_types": 1,
+    "depot_coordinates": {
+      "0": [
+        0.0,
+        0.0
+      ]
+    },
+    "capacities": {
+      "0": 1000
+    },
+    "n_vehicles_for_each_type": {
+      "0": 2
+    }
+  },
+  "distance_matrix_data": {
+    "0": [
+      0,
+      12,
+      8,
+      4
+    ],
+    "1": [
+      9,
+      0,
+      7,
+      5
+    ],
+    "2": [
+      10,
+      13,
+      0,
+      9
+    ],
+    "3": [
+      12,
+      20,
+      7,
+      0
+    ]
+  }
+}
