@@ -11,6 +11,7 @@ from com.terraquantum.experiment.v1.experimentrun.experiment_run_pb2 import (
 from tq42.channel import Ask, Tell, Channel
 from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.functional_tests.functional_test_config import FunctionalTestConfig
+from tq42.utils.decorators import timeout
 
 
 def _mass_flow_lm(row):
@@ -51,6 +52,7 @@ async def channels(config) -> tuple[Channel, Channel]:
     return mass_flow_channel, tumble_channel
 
 
+@timeout(240)
 @pytest.mark.asyncio
 async def test_optimax_successfully_runs(
     config: FunctionalTestConfig, channels: Awaitable[tuple[Channel, Channel]]

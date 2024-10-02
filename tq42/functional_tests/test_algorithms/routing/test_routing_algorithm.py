@@ -11,6 +11,7 @@ from com.terraquantum.storage.v1alpha1.storage_pb2 import DatasetSensitivityProt
 from tq42.dataset import Dataset
 from tq42.experiment_run import ExperimentRun, HardwareProto
 from tq42.functional_tests.functional_test_config import FunctionalTestConfig
+from tq42.utils.decorators import timeout
 
 
 @pytest.fixture
@@ -32,6 +33,7 @@ def data_storage_id(config: FunctionalTestConfig) -> str:
     return dataset.id
 
 
+@timeout(240)
 def test_routing_successfully_runs(config: FunctionalTestConfig, data_storage_id: str):
     routing_params = {
         "nbGranular": 20,

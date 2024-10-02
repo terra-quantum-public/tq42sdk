@@ -13,6 +13,8 @@ from tq42.functional_tests.functional_test_config import FunctionalTestConfig
 import OptimizationTestFunctions as otf
 from scipy import optimize
 
+from tq42.utils.decorators import timeout
+
 
 @pytest.fixture
 def config() -> FunctionalTestConfig:
@@ -27,6 +29,7 @@ async def channels(config) -> tuple[Channel, Channel]:
     return objective_func_channel, local_opt_channel
 
 
+@timeout(240)
 @pytest.mark.asyncio
 async def test_tetra_opt_successfully_runs(
     config: FunctionalTestConfig, channels: Awaitable[tuple[Channel, Channel]]
