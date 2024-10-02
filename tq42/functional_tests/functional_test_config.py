@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Any
 
 from click.testing import CliRunner
 
@@ -18,7 +17,6 @@ class Args:
     exp: str
     run: str
     export_path: str
-    config: Any
 
 
 class FunctionalTestConfig:
@@ -45,20 +43,16 @@ class FunctionalTestConfig:
     def export_path(self):
         return self.args.export_path
 
-    @property
-    def config(self):
-        return self.args.config
-
     def get_client(self) -> TQ42Client:
         if self._client is None:
-            self._client = TQ42Client(self.config)
+            self._client = TQ42Client()
         return self._client
 
     @staticmethod
     def prepare_defaults():
         auto_pick = False
         client = TQ42Client()
-        arguments = Args(org="", proj="", exp="", run="", export_path="", config=None)
+        arguments = Args(org="", proj="", exp="", run="", export_path="")
 
         choices = [
             "{} ({})".format(org.id, org.data.name)
