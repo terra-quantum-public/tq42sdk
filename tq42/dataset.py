@@ -220,11 +220,12 @@ class Dataset:
         )
 
     @handle_generic_sdk_errors
-    def export(self, directory_path: str) -> List[str]:
+    def export(self, directory_path: str, friendly_name: str = "") -> List[str]:
         """
         Export all files within a dataset to a local path
 
         :param directory_path: local path where all files should be exported to (must exist and be a directory)
+        :param friendly_name: if provided, create a subfolder with this name and save files there
         :returns: a list of exported file paths
         """
         if not os.path.isdir(directory_path):
@@ -238,11 +239,17 @@ class Dataset:
             request=export_storage_request, metadata=self._client.metadata
         )
 
+        if friendly_name:
+            export_dir = os.path.join(directory_path, friendly_name)
+            os.makedirs(export_dir, exist_ok=True)
+        else:
+            export_dir = directory_path
+
         exported_file_paths = []
 
         for signed_url in res.signed_urls:
             file_path = os.path.join(
-                directory_path,
+                export_dir,
                 self._get_file_name_from_signed_url(signed_url=signed_url),
             )
             self._download_file_from_url(url=signed_url, file_path=file_path)
