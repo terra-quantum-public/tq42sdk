@@ -220,12 +220,11 @@ class Dataset:
         )
 
     @handle_generic_sdk_errors
-        def export(self, directory_path: str = ".") -> List[str]:
+    def export(self, directory_path: str = ".") -> List[str]:
         """
         Export all files within a dataset to a local path
 
         :param directory_path: local path where all files should be exported to (must exist and be a directory)
-        :param friendly_name: if provided, create a subfolder with this name and save files there
         :returns: a list of exported file paths
         """
         if not os.path.isdir(directory_path):
