@@ -1,6 +1,8 @@
 import unittest
 import uuid
+from uuid import uuid4
 
+from tq42.exceptions import PermissionDeniedError
 from tq42.organization import list_all as list_all_organizations, Organization
 from tq42.project import Project, list_all as list_all_projects
 from tq42.experiment import Experiment, list_all as list_all_experiments
@@ -51,6 +53,10 @@ class TestFunctionalTQ42API(unittest.TestCase, FunctionalTestConfig):
         # Expect that specific project is in project list
         proj_ids = [proj.id for proj in proj_list]
         self.assertIn(self.proj, proj_ids)
+
+    def test_proj_list_with_invalid_org_id(self):
+        with self.assertRaises(PermissionDeniedError):
+            list_all_projects(client=self.get_client(), organization_id=str(uuid4()))
 
     def test_proj_get(self):
         proj = Project(client=self.get_client(), id=self.proj)
