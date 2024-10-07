@@ -220,7 +220,7 @@ class Dataset:
         )
 
     @handle_generic_sdk_errors
-    def export(self, directory_path: str, friendly_name: str = "") -> List[str]:
+        def export(self, directory_path: str = ".") -> List[str]:
         """
         Export all files within a dataset to a local path
 
@@ -239,11 +239,8 @@ class Dataset:
             request=export_storage_request, metadata=self._client.metadata
         )
 
-        if friendly_name:
-            export_dir = os.path.join(directory_path, friendly_name)
-            os.makedirs(export_dir, exist_ok=True)
-        else:
-            export_dir = directory_path
+        export_dir = os.path.join(directory_path, self.data.name)
+        os.makedirs(export_dir, exist_ok=True)
 
         exported_file_paths = []
 
