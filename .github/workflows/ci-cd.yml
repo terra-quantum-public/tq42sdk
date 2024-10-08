@@ -75,7 +75,7 @@ jobs:
       - test
 
     outputs:
-      version_change: ${{ steps.install.outcome }} != 'success'
+      version_already_present: ${{ steps.check_version.outcome }}
 
 #    if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
 
@@ -94,8 +94,8 @@ jobs:
         uses: snok/install-poetry@v1
 
       - name: Check if package is already present in this version
-        id: install
-        run: poetry run pip install tq42==$(poetry version --short) --dry-run
+        id: check_version
+        run: curl -f -I https://pypi.org/pypi/tq42/$(poetry version --short)/json
         continue-on-error: true
 
   publish:
@@ -109,7 +109,7 @@ jobs:
       id-token: 'write'
 
     # if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && needs.prepub.outputs.version_change }}
-    if: ${{ needs.prepub.outputs.version_change }}
+    if: ${{ needs.prepub.outputs.version_change != 'success' }}
 
     steps:
       - name: Set up Python 3.9
