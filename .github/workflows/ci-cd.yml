@@ -95,7 +95,7 @@ jobs:
 
       - name: Check if package is already present in this version
         id: check_version
-        run: curl -f -I https://pypi.org/pypi/tq42/$(poetry version --short)/json
+        run: curl -f https://pypi.org/pypi/tq42/$(poetry version --short)/json
         continue-on-error: true
 
   publish:
@@ -109,7 +109,7 @@ jobs:
       id-token: 'write'
 
     # if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && needs.prepub.outputs.version_change }}
-    if: ${{ needs.prepub.outputs.version_change != 'success' }}
+    if: ${{ needs.prepub.outputs.version_already_present != 'success' }}
 
     steps:
       - name: Set up Python 3.9
