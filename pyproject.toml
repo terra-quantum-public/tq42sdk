@@ -5,7 +5,7 @@ include = ["utils/text_files/*.txt", "utils/text_files/config.json", "tests/test
 
 [tool.poetry]
 name = "tq42"
-version = "0.9.9"
+version = "0.9.10"
 description = "tq42 sdk"
 readme = "README.md"
 authors = ["Terra Quantum AG"]
@@ -39,6 +39,14 @@ optimizationtestfunctions = "^1.0.1"
 numpy = [
     { version = "^1.26.4", python = ">3.11" },
     { version = "^1.24.4", python = "<=3.11" }
+]
+scipy = [
+    { version = "^1.13.1", python = ">=3.9" },
+    { version = "^1.10.1", python = "<3.9" }
+]
+pandas = [
+    { version = "^2.2.3", python = ">=3.9" },
+    { version = "^2.0.1", python = "<3.9" }
 ]
 
 
