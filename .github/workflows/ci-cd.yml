@@ -3,19 +3,25 @@ name: CI & CD
 on:
   pull_request:
     types: [opened, reopened, synchronize]
-    paths:
-      - "src/**"
-      - "poetry.lock"
-      - "pyproject.toml"
-      - "Makefile"
+    paths-ignore:
+      - "docs/**"
+      - ".gitignore"
+      - ".pre-commit-config.yaml"
+      - ".readthedocs.yaml"
+      - "banner.png"
+      - "infographic.jpg"
+      - "README.md"
     branches:
       - "main"
   push:
-    paths:
-      - "src/**"
-      - "poetry.lock"
-      - "pyproject.toml"
-      - "Makefile"
+    paths-ignore:
+      - "docs/**"
+      - ".gitignore"
+      - ".pre-commit-config.yaml"
+      - ".readthedocs.yaml"
+      - "banner.png"
+      - "infographic.jpg"
+      - "README.md"
     branches:
       - "main"
 
