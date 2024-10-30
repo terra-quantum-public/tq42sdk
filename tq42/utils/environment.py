@@ -48,7 +48,7 @@ class ConfigEnvironment:
 
     @property
     def audience(self):
-        return f"https://graphql-gateway.{self.base_url}/graphql"
+        return f"https://web-api.{self.base_url}"
 
     @property
     def client_credential_flow_audience(self):

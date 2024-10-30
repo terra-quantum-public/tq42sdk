@@ -40,9 +40,7 @@ class TestConfigEnvironment(unittest.TestCase):
             "openid profile email",
         )
         self.assertEqual("api.int.terraquantum.io", env.api_host)
-        self.assertEqual(
-            "https://graphql-gateway.int.terraquantum.io/graphql", env.audience
-        )
+        self.assertEqual("https://web-api.int.terraquantum.io", env.audience)
         self.assertEqual(
             "https://auth.int.terraquantum.io/oauth/device/code", env.auth_url_code
         )
@@ -60,9 +58,7 @@ class TestConfigEnvironment(unittest.TestCase):
         )
 
         self.assertEqual("api.staging.terraquantum.io", env.api_host)
-        self.assertEqual(
-            "https://graphql-gateway.staging.terraquantum.io/graphql", env.audience
-        )
+        self.assertEqual("https://web-api.staging.terraquantum.io", env.audience)
         self.assertEqual(
             "https://auth.staging.terraquantum.io/oauth/device/code", env.auth_url_code
         )
