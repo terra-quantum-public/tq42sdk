@@ -70,8 +70,10 @@ jobs:
       - name: Check-out repository
         uses: actions/checkout@v4
 
-      - name: Install poetry
+      - name: Install Poetry 1.6.1
         uses: snok/install-poetry@v1
+        with:
+          version: 1.6.1
 
       - name: Install package
         run: poetry install
