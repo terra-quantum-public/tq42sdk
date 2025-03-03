@@ -1,7 +1,12 @@
 import json
 import os
+import socketserver
+import urllib
 import webbrowser
 from datetime import datetime
+from http.server import SimpleHTTPRequestHandler
+from typing import Any
+from urllib.parse import quote
 
 import grpc
 from grpc import aio
@@ -108,6 +113,59 @@ class TQ42Client:
         )
         self.plan_client = pb2_plan_grpc.PlanServiceStub(self._api_channel)
         self.channel_client = pb2_channel_grpc.ChannelServiceStub(self.channels_channel)
+
+    @handle_generic_sdk_errors
+    def iap_login(self):
+        client_id = self._environment.iap_client_id
+        client_secret = self._environment.iap_client_secret
+
+        def auth_code_handler(id_token_file_path: str):
+            class AuthCodeHandler(SimpleHTTPRequestHandler):
+                def do_GET(self):
+                    parsed_path = urllib.parse.urlparse(self.path)
+                    query_params: dict[str, Any] = urllib.parse.parse_qs(
+                        parsed_path.query
+                    )
+
+                    code = query_params.get("code")
+                    if not code:
+                        self.send_response(400, "Bad Request")
+                        self.end_headers()
+                        return
+
+                    url = "https://oauth2.googleapis.com/token"
+                    data = {
+                        "client_id": client_id,
+                        "client_secret": client_secret,
+                        "code": code,
+                        "redirect_uri": "http://localhost:4444",
+                        "grant_type": "authorization_code",
+                    }
+
+                    response = requests.post(url, data=data)
+                    data = response.json()
+                    id_token = data.get("id_token")
+
+                    misc.save_token("tq42_id_token", id_token_file_path, id_token)
+
+                    self.send_response(200, "Ok")
+                    self.end_headers()
+                    self.wfile.write(
+                        b"Authentication successful! You can close this window now."
+                    )
+
+            return AuthCodeHandler
+
+        with socketserver.TCPServer(
+            ("localhost", 4444), auth_code_handler(self._id_token_file_path)
+        ) as httpd:
+            port = httpd.server_address[1]
+            print(f"Starting server on http://localhost:{port}")
+            print(
+                f"https://accounts.google.com/o/oauth2/v2/auth?client_id={quote(client_id)}&response_type=code&scope=openid%20email&access_type=offline&redirect_uri={quote(f'http://localhost:{port}')}&cred_ref=true"
+            )
+
+            httpd.handle_request()
 
     @handle_generic_sdk_errors
     def login(self):
@@ -234,6 +292,10 @@ class TQ42Client:
         return self._token_manager.refresh_token_file_path
 
     @property
+    def _id_token_file_path(self):
+        return self._token_manager.id_token_file_path
+
+    @property
     def metadata(self):
         """
         :meta private:
@@ -243,4 +305,15 @@ class TQ42Client:
         token = misc.get_token(
             service_name="tq42_access_token", backup_save_path=self._token_file_path
         )
+
+        id_token = misc.get_token(
+            service_name="tq42_id_token", backup_save_path=self._id_token_file_path
+        )
+
+        if id_token:
+            return (
+                ("proxy-authorization", "Bearer " + id_token),
+                ("authorization", "Bearer " + token),
+            )
+
         return (("authorization", "Bearer " + token),)
