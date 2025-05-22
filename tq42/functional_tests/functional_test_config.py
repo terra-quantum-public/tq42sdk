@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List
 
 from click.testing import CliRunner
 
@@ -55,7 +56,7 @@ class FunctionalTestConfig:
         arguments = Args(org="", proj="", exp="", run="", export_path="")
 
         choices = [
-            "{} ({})".format(org.id, org.data.name)
+            f"{org.id} ({org.data.name})"
             for org in list_all_organizations(client=client)
         ]
         arguments.org = FunctionalTestConfig.provide_choice_id(
@@ -63,21 +64,21 @@ class FunctionalTestConfig:
         )
 
         choices = [
-            "{} ({})".format(proj.id, proj.data.name)
+            f"{proj.id} ({proj.data.name})"
             for proj in list_all_projects(client=client, organization_id=arguments.org)
         ]
         arguments.proj = FunctionalTestConfig.provide_choice_id(
             "proj", choices, auto_pick
         )
         choices = [
-            "{} ({})".format(exp.id, exp.data.name)
+            f"{exp.id} ({exp.data.name})"
             for exp in list_all_experiments(client=client, project_id=arguments.proj)
         ]
         arguments.exp = FunctionalTestConfig.provide_choice_id(
             "exp", choices, auto_pick
         )
         choices = [
-            "{}".format(runs.id)
+            f"{runs.id}"
             for runs in list_all_experiment_runs(
                 client=client, experiment_id=arguments.exp
             )
@@ -118,12 +119,12 @@ class FunctionalTestConfig:
                 print("Invalid input. Please enter a number.")
 
     @staticmethod
-    def provide_choice_id(arg_type: str, choices: [str], auto_pick: bool) -> str:
+    def provide_choice_id(arg_type: str, choices: List[str], auto_pick: bool) -> str:
         if auto_pick:
             return choices[0].split(" ")[0]
 
         choice = FunctionalTestConfig.custom_select(
-            "Which {} do you want to use?".format(arg_type), choices=choices
+            f"Which {arg_type} do you want to use?", choices=choices
         )
         return choice.split(" ")[0]
 

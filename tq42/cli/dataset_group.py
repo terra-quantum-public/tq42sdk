@@ -80,6 +80,22 @@ def create_dataset(
     )
 
 
+@dataset_group.command("delete")
+@click.argument("dataset_id", required=True, type=str)
+@click.pass_context
+def delete(ctx: TQ42CliContext, dataset_id: str) -> None:
+    """
+    Delete a specific dataset.
+
+    e.g.: tq42 proj dataset delete 98ccb1d2-a3d0-48c8-b172-022f6db9be01
+
+    https://docs.tq42.com/en/latest/CLI_Developer_Guide/Working_with_Datasets.html
+    """
+    dataset = Dataset(client=ctx.obj.client, id=dataset_id)
+    dataset.delete()
+    click.echo(dataset.data)
+
+
 @dataset_group.command("list")
 @click.option(
     "--proj",
