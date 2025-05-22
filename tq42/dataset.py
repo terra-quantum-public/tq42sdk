@@ -25,6 +25,10 @@ from com.terraquantum.storage.v1alpha1.create_storage_from_file_pb2 import (
     CreateStorageFromFileRequest,
     CreateStorageFromFileResponse,
 )
+
+from com.terraquantum.storage.v1alpha1.delete_storage_pb2 import (
+    DeleteStorageRequest,
+)
 from com.terraquantum.storage.v1alpha1.create_storage_from_external_pb2 import (
     CreateStorageFromExternalBucketRequest,
 )
@@ -217,6 +221,16 @@ class Dataset:
 
         return client.storage_client.CreateStorageFromExternalBucket(
             request=create_dataset_request, metadata=client.metadata
+        )
+
+    @handle_generic_sdk_errors
+    def delete(self):
+        """
+        Delete this dataset.
+        """
+        delete_dataset_request = DeleteStorageRequest(storage_id=self.id)
+        self.data = self._client.storage_client.DeleteStorage(
+            request=delete_dataset_request, metadata=self._client.metadata
         )
 
     @handle_generic_sdk_errors
