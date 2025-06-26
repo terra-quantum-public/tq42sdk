@@ -52,7 +52,6 @@ class TestAPI(unittest.TestCase):
             "organization_id": "this-is-a-random-org-id-1",
             "name": "right project",
             "description": "this is the right project",
-            "created_at": Timestamp().GetCurrentTime(),
         }
         project = ParseDict(project, proj_def.ProjectProto())
         self.assertIsNotNone(project)
@@ -75,7 +74,6 @@ class TestAPI(unittest.TestCase):
             "organization_id": "this-is-a-random-org-id-1",
             "name": "right project",
             "description": "this is the right project",
-            "created_at": Timestamp().GetCurrentTime(),
         }
 
         cache = {}
