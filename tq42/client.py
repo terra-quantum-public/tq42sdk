@@ -18,10 +18,10 @@ from com.terraquantum.experiment.v3alpha1.experiment import (
 from com.terraquantum.experiment.v3alpha2.experimentrun import (
     experiment_run_service_pb2_grpc as pb2_exp_run_grpc,
 )
-from com.terraquantum.organization.v1.organization import (
+from com.terraquantum.organization.v2.organization import (
     organization_service_pb2_grpc as pb2_org_grpc,
 )
-from com.terraquantum.project.v1.project import (
+from com.terraquantum.project.v2 import (
     project_service_pb2_grpc as pb2_proj_grpc,
 )
 from com.terraquantum.storage.v1alpha1 import (

@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from typing import Optional, List
 
-from google.protobuf.field_mask_pb2 import FieldMask
-from google.protobuf.timestamp_pb2 import Timestamp
 from google.protobuf.json_format import MessageToJson
 
 from tq42.utils.exception_handling import handle_generic_sdk_errors
@@ -14,17 +12,15 @@ from tq42.utils.cache import (
     clear_cache,
 )
 
-from com.terraquantum.project.v1.project.project_pb2 import ProjectProto
-from com.terraquantum.project.v1.project.get_project_request_pb2 import (
+from com.terraquantum.project.v2.project_pb2 import ProjectProto
+from com.terraquantum.project.v2.get_project_pb2 import (
     GetProjectRequest,
 )
-from com.terraquantum.project.v1.project.update_project_request_pb2 import (
+from com.terraquantum.project.v2.update_project_pb2 import (
     UpdateProjectRequest,
 )
-from com.terraquantum.project.v1.project.list_projects_request_pb2 import (
+from com.terraquantum.project.v2.list_projects_pb2 import (
     ListProjectsRequest,
-)
-from com.terraquantum.project.v1.project.list_projects_response_pb2 import (
     ListProjectsResponse,
 )
 
@@ -72,7 +68,7 @@ class Project:
         """
         Gets the data corresponding to this project id.
         """
-        get_proj_request = GetProjectRequest(id=self.id)
+        get_proj_request = GetProjectRequest(project_id=self.id)
         res = self._client.project_client.GetProject(
             request=get_proj_request, metadata=self._client.metadata
         )
@@ -95,22 +91,10 @@ class Project:
         :param name: new name for the project
         :returns: the updated project
         """
-        project = {
-            "id": self.id,
-            "name": name,
-        }
-
-        # Create a new FieldMask instance
-        field_mask = FieldMask()
-
-        # Add paths to the FieldMask
-        field_mask.paths.append("id")
-        field_mask.paths.append("name")
 
         update_proj_request = UpdateProjectRequest(
-            project=project,
-            update_mask=field_mask,
-            request_id=None,
+            project_id=self.id,
+            name=name,
         )
         self.data = self._client.project_client.UpdateProject(
             request=update_proj_request, metadata=self._client.metadata
@@ -167,14 +151,7 @@ class Project:
         if len(project_list) == 0:
             return None
 
-        for proj in project_list:
-            if proj.data.default_project and proj.data.default_project is True:
-                return proj
-
-        def access_created_at(project: Project) -> Timestamp:
-            return project.data.created_at
-
-        projects_sorted = sorted(project_list, key=access_created_at)
+        projects_sorted = sorted(project_list, key=lambda proj: proj.id)
         return projects_sorted[0]
 
 
