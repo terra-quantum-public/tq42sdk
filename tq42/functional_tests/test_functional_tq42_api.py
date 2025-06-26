@@ -38,9 +38,6 @@ class TestFunctionalTQ42API(unittest.TestCase, FunctionalTestConfig):
     def test_org_get(self):
         org = Organization(client=self.get_client(), id=self.org)
         self.assertEqual(self.org, org.id)
-        # TODO: We need the appropriate enum for status
-        self.assertEqual(1, org.data.state)
-        self.assertTrue(org.data.default_org)
 
     def test_proj_list(self):
         proj_list = list_all_projects(

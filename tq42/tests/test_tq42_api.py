@@ -5,13 +5,8 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from grpc import StatusCode
 from grpc._channel import _InactiveRpcError as InactiveRpcError, _RPCState as RPCState
 
-from com.terraquantum.project.v1.project import (
-    project_pb2 as proj_def,
-    list_projects_response_pb2 as list_proj_res,
-)
-from com.terraquantum.organization.v1.organization import (
-    organization_pb2 as org_def,
-)
+from com.terraquantum.project.v2 import project_pb2 as proj_def
+from com.terraquantum.organization.v2.organization import organization_pb2 as org_def
 
 from tq42.client import TQ42Client
 from tq42.organization import Organization
@@ -56,10 +51,7 @@ class TestAPI(unittest.TestCase):
             "organization_id": "this-is-a-random-org-id-1",
             "name": "right project",
             "description": "this is the right project",
-            "image_url": "https://random-image.url",
-            "state": 1,  # active project state
             "created_at": Timestamp().GetCurrentTime(),
-            "created_by": "steven",
         }
         project = ParseDict(project, proj_def.ProjectProto())
         self.assertIsNotNone(project)
@@ -82,10 +74,7 @@ class TestAPI(unittest.TestCase):
             "organization_id": "this-is-a-random-org-id-1",
             "name": "right project",
             "description": "this is the right project",
-            "image_url": "https://random-image.url",
-            "state": 1,  # active project state
             "created_at": Timestamp().GetCurrentTime(),
-            "created_by": "steven",
         }
 
         cache = {}
@@ -134,33 +123,28 @@ class TestAPI(unittest.TestCase):
     def test_org_set(self, clear_cache_mock, write_key_value_to_cache_mock):
         org = {
             "id": "new-org-uuid-we-wanna-set",
-            "owner": "steven",
             "name": "just-so-random-org",
             "description": "random description for org",
-            "image_url": "https://random-image.url",
-            "state": 1,  # active org state
         }
 
-        projects_dict = {
-            "projects": [
+        projects_dicts = [
                 {
                     "id": "nfec987b-bf43-46e5-a0f0-85bc08c9cf18",
                     "organization_id": "new-org-uuid-we-wanna-set",
                     "name": "Ymixer shape optimization",
-                    "state": "ACTIVE",
-                    "created_by": "e31d88a8-8720-4e4b-b95b-92538899a6ba",
                 },
                 {
                     "id": "new-proj-uuid-we-wanna-set",
                     "organization_id": "new-org-uuid-we-wanna-set",
                     "name": "b225f5e5-eaa0-47d0-8ef0-7e954da6d681",
-                    "state": "ACTIVE",
-                    "created_by": "0e02a4b1-28c1-4a33-8995-d39db7de8bb9",
                 },
-            ]
-        }
+        ]
+        
+        projects = []
+        for project_dict in projects_dicts:
+            project = ParseDict(project_dict, proj_def.ProjectProto())
+            projects.append(project)
 
-        projects = ParseDict(projects_dict, list_proj_res.ListProjectsResponse())
         self.assertIsNotNone(projects)
 
         cache = {}
