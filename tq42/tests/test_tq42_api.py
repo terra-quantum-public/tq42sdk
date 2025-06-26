@@ -6,6 +6,7 @@ from grpc import StatusCode
 from grpc._channel import _InactiveRpcError as InactiveRpcError, _RPCState as RPCState
 
 from com.terraquantum.project.v2 import project_pb2 as proj_def
+from com.terraquantum.project.v2 import list_projects_pb2
 from com.terraquantum.organization.v2.organization import organization_pb2 as org_def
 
 from tq42.client import TQ42Client
@@ -127,7 +128,8 @@ class TestAPI(unittest.TestCase):
             "description": "random description for org",
         }
 
-        projects_dicts = [
+        projects_dict = {
+            "projects": [
                 {
                     "id": "nfec987b-bf43-46e5-a0f0-85bc08c9cf18",
                     "organization_id": "new-org-uuid-we-wanna-set",
@@ -138,13 +140,10 @@ class TestAPI(unittest.TestCase):
                     "organization_id": "new-org-uuid-we-wanna-set",
                     "name": "b225f5e5-eaa0-47d0-8ef0-7e954da6d681",
                 },
-        ]
-        
-        projects = []
-        for project_dict in projects_dicts:
-            project = ParseDict(project_dict, proj_def.ProjectProto())
-            projects.append(project)
+            ]
+        }
 
+        projects = ParseDict(projects_dict, list_projects_pb2.ListProjectsResponse())
         self.assertIsNotNone(projects)
 
         cache = {}
