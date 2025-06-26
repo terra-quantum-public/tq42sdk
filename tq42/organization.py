@@ -8,11 +8,13 @@ from google.protobuf.json_format import MessageToJson
 from tq42.project import Project
 from tq42.utils.exception_handling import handle_generic_sdk_errors
 
-from com.terraquantum.organization.v1.organization.organization_pb2 import (
+from com.terraquantum.organization.v2.organization.organization_pb2 import (
     OrganizationProto,
+)
+from com.terraquantum.organization.v2.organization.list_organizations_pb2 import (
     ListOrganizationsResponse,
 )
-from com.terraquantum.organization.v1.organization.get_organization_request_pb2 import (
+from com.terraquantum.organization.v2.organization.get_organization_pb2 import (
     GetOrganizationRequest,
 )
 
@@ -61,7 +63,7 @@ class Organization:
         """
         Gets the information about the provided organization
         """
-        get_org_request = GetOrganizationRequest(id=self.id)
+        get_org_request = GetOrganizationRequest(organization_id=self.id)
         res: OrganizationProto = self._client.organization_client.GetOrganization(
             request=get_org_request, metadata=self._client.metadata
         )
@@ -99,10 +101,11 @@ class Organization:
         :returns: the default organization if one is set as a default
         """
         org_list = list_all(client=client)
-        for org in org_list:
-            if org.data.default_org and org.data.default_org is True:
-                return org
-        return None
+        if len(org_list) == 0:
+            return None
+
+        orgs_sorted = sorted(org_list, key=lambda o: o.id)
+        return orgs_sorted[0]
 
 
 @handle_generic_sdk_errors
@@ -114,10 +117,8 @@ def list_all(client: TQ42Client) -> List[Organization]:
     :returns: a list of all organizations
     """
     empty = empty_pb2.Empty()
-    res: ListOrganizationsResponse = (
-        client.organization_client.ListAssignedOrganizations(
-            request=empty, metadata=client.metadata
-        )
+    res: ListOrganizationsResponse = client.organization_client.ListOrganizations(
+        request=empty, metadata=client.metadata
     )
     return PrettyList(
         [Organization.from_proto(client=client, msg=msg) for msg in res.organizations]
