@@ -1,7 +1,6 @@
 import unittest
 from unittest.mock import MagicMock, patch
 from google.protobuf.json_format import ParseDict
-from google.protobuf.timestamp_pb2 import Timestamp
 from grpc import StatusCode
 from grpc._channel import _InactiveRpcError as InactiveRpcError, _RPCState as RPCState
 
