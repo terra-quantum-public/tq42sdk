@@ -60,7 +60,6 @@ class TestAPI(unittest.TestCase):
             "state": 1,  # active project state
             "created_at": Timestamp().GetCurrentTime(),
             "created_by": "steven",
-            "default_project": True,
         }
         project = ParseDict(project, proj_def.ProjectProto())
         self.assertIsNotNone(project)
@@ -71,7 +70,7 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(1, self.client.project_client.GetProject.call_count)
         self.assertEqual(
             "this-is-a-random-but-valid-uuid",
-            self.client.project_client.GetProject.call_args[1]["request"].id,
+            self.client.project_client.GetProject.call_args[1]["request"].project_id,
         )
         self.assertEqual("right project", res.data.name)
 
@@ -87,7 +86,6 @@ class TestAPI(unittest.TestCase):
             "state": 1,  # active project state
             "created_at": Timestamp().GetCurrentTime(),
             "created_by": "steven",
-            "default_project": True,
         }
 
         cache = {}
@@ -141,13 +139,12 @@ class TestAPI(unittest.TestCase):
             "description": "random description for org",
             "image_url": "https://random-image.url",
             "state": 1,  # active org state
-            "default_org": False,
         }
 
         projects_dict = {
             "projects": [
                 {
-                    "id": "75ec987b-bf43-46e5-a0f0-85bc08c9cf18",
+                    "id": "nfec987b-bf43-46e5-a0f0-85bc08c9cf18",
                     "organization_id": "new-org-uuid-we-wanna-set",
                     "name": "Ymixer shape optimization",
                     "state": "ACTIVE",
@@ -159,7 +156,6 @@ class TestAPI(unittest.TestCase):
                     "name": "b225f5e5-eaa0-47d0-8ef0-7e954da6d681",
                     "state": "ACTIVE",
                     "created_by": "0e02a4b1-28c1-4a33-8995-d39db7de8bb9",
-                    "default_project": True,
                 },
             ]
         }
