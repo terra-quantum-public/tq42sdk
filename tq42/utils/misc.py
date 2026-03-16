@@ -21,10 +21,13 @@ def save_token(service_name: str, backup_save_path: str, token: str) -> str:
 
 def get_token(service_name: str, backup_save_path: str) -> str:
     try:
-        return keyring.get_password(
+        token = keyring.get_password(
             service_name=service_name,
             username="username",
         )
+        if token is None:
+            raise NoKeyringError
 
+        return token
     except (NoKeyringError, InitError, KeyringLocked):
         return file_handling.read_file(backup_save_path)
