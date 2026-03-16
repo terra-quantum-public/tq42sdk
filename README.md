@@ -42,7 +42,7 @@ experiments.
 Be sure your system can support TQ42, which requires the following:
 
 - Any modern operating system, in particular, macOS 12.0 (Ventura) or above, Windows 10+, Linux will do
-- Python 3.8 or above
+- Python 3.9 or above
 - 256 MB RAM
 - approx. 260 MB free disk space
 
@@ -63,7 +63,7 @@ pip install -U tq42                       # install the sdk using the newest ava
 pip install jupyter                       # install jupyter if you work with notebook
 pip install jupyter matplotlib            # install matplotlib for visualization purpose
 tq42 auth login                           # authenticate the user 
-tq42 -h                                   # for visualizing the help
+tq42 --help                               # for visualizing the help
 ```
 
 ## Installation

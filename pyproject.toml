@@ -5,17 +5,17 @@ include = ["utils/text_files/*.txt", "utils/text_files/config.json", "tests/test
 
 [tool.poetry]
 name = "tq42"
-version = "0.9.15"
+version = "0.10.0"
 description = "tq42 sdk"
 readme = "README.md"
 authors = ["Terra Quantum AG"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.9,<3.14"
 requests = "^2.31.0"
 PyYAML = "^6.0.1"
-grpcio = "1.64.1"
-tq42_grpc_client = "1.0.269"
+grpcio = "1.73.0"
+tq42_grpc_client = "1.0.271"
 pytest = "^7.4.4"
 keyring = "^25.0.0"
 tqdm = "^4.66.4"
@@ -41,12 +41,17 @@ numpy = [
     { version = "^1.24.4", python = "<=3.11" }
 ]
 scipy = [
-    { version = "^1.13.1", python = ">=3.9" },
+    { version = "^1.15.0", python = ">3.12" },
+    { version = "^1.13.1", python = ">=3.9,<=3.12" },
     { version = "^1.10.1", python = "<3.9" }
 ]
 pandas = [
     { version = "^2.2.3", python = ">=3.9" },
     { version = "^2.0.1", python = "<3.9" }
+]
+matplotlib = [
+    { version = "^3.10.0", python = ">=3.13" },
+    { version = "^3.7.5", python = "<3.13" }
 ]
 
 
