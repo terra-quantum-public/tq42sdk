@@ -29,6 +29,10 @@ class TokenManager:
     def refresh_token_file_path(self):
         return os.path.join(self._config_dir, "refresh_token")
 
+    @property
+    def id_token_file_path(self):
+        return os.path.join(self._config_dir, "id_token")
+
     def renew_expiring_token(self):
         token_timestamp = file_handling.read_file(self.timestamp_file_path)
         if token_timestamp == "":

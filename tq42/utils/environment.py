@@ -29,10 +29,12 @@ class ConfigEnvironment:
     base_url: str
     client_id: str
     scope: str
+    iap_client_id: str
+    iap_client_secret: str
 
     @property
     def api_host(self):
-        return "api.{}".format(self.base_url)
+        return "api-iap.{}".format(self.base_url)
 
     @property
     def channels_host(self):
@@ -95,8 +97,16 @@ class ConfigEnvironment:
         base_url = os.getenv("TQ42_BASE_URL", _DEFAULT_BASE_URL)
         client_id = os.getenv("TQ42_CLIENT_ID", _DEFAULT_CLIENT_ID)
         scope = os.getenv("TQ42_SCOPE", _DEFAULT_SCOPE)
+        iap_client_id = os.getenv("TQ42_IAP_CLIENT_ID", "")
+        iap_client_secret = os.getenv("TQ42_IAP_CLIENT_SECRET", "")
 
-        return ConfigEnvironment(base_url=base_url, client_id=client_id, scope=scope)
+        return ConfigEnvironment(
+            base_url=base_url,
+            client_id=client_id,
+            scope=scope,
+            iap_client_id=iap_client_id,
+            iap_client_secret=iap_client_secret,
+        )
 
 
 def get_environment() -> str:
